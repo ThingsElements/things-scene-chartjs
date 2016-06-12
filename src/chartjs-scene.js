@@ -1,2 +1,0 @@
-var { Component } = scene
-
