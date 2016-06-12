@@ -325,4 +325,4 @@ Object.defineProperty(exports, 'ChartJSWrapper', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[1,3,4,5]);
+},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[5]);
