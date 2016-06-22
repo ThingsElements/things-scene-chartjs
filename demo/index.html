@@ -78,7 +78,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
                 datasets: [{
                   label: '# of Votes',
-                  data: [12, 19, 3, 5, 2, 3],
+                  data: [],
                   backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -96,7 +96,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     'rgba(255, 159, 64, 1)'
                   ],
                   borderWidth: 1
-                }]
+                }],
+                seriesData : [[12, 19, 3, 5, 2, 3]]
               },
               options: {
                 scales: {
@@ -123,7 +124,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               data: {
                 datasets: [{
                   label: 'Scatter Dataset',
-                  data: [{
+                  data: []
+                }],
+                seriesData : [
+                  [{
                     x: -10,
                     y: 0
                   }, {
@@ -133,7 +137,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     x: 10,
                     y: 5
                   }]
-                }]
+                ]
+              },
+              options: {
+                scales: {
+                  xAxes: [{
+                    type: 'linear',
+                    position: 'bottom'
+                  }]
+                }
+              }
+            }
+          }, {
+            type: 'chartjs',
+            top: 200,
+            left: 0,
+            width: 200,
+            height: 200,
+            fillStyle: '#ffff00',
+            strokeStyle: '#552555',
+            fontColor: '#FF0000',
+            lineWidth: 5,
+            chart: {
+              type: 'line',
+              data: {
+                datasets: [{
+                  label: 'Scatter Dataset',
+                  data: []
+                }],
+                seriesData : [
+                  [{
+                    x: -10,
+                    y: 0
+                  }, {
+                    x: 0,
+                    y: 10
+                  }, {
+                    x: 10,
+                    y: 5
+                  }]
+                ]
               },
               options: {
                 scales: {

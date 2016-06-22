@@ -28,6 +28,8 @@ var ChartController = function (_Chart$Controller) {
     _classCallCheck(this, ChartController);
 
     return _possibleConstructorReturn(this, Object.getPrototypeOf(ChartController).call(this, instance));
+
+    // this.loadData();
   }
 
   _createClass(ChartController, [{
@@ -129,6 +131,34 @@ var ChartController = function (_Chart$Controller) {
     //   this.render(animationDuration, lazy);
     // }
 
+    /*public methods*/
+
+  }, {
+    key: 'loadData',
+    value: function loadData(data) {
+      if (!data) return;
+
+      this.config.data.seriesData = data;
+    }
+
+    // loadData() {
+    //   if(this.config.data.seriesData.length !== this.config.data.datasets.length){
+    //     this.clear();
+    //   }
+    //   for(let i in this.config.data.seriesData) {
+    //     if(this.config.data.datasets[i]){
+    //       console.log("this.config.data.datasets["+i+"]", this.config.data.datasets[i])
+    //       this.config.data.datasets[i].data = this.config.data.seriesData[i];
+    //     }
+    //
+    //   }
+    // }
+
+  }, {
+    key: 'appendData',
+    value: function appendData() {
+      // console.log(this.config.seriesData, this.data)
+    }
   }]);
 
   return ChartController;
@@ -256,6 +286,8 @@ var ChartJSWrapper = function (_Rect) {
 
 
         if (chart) this._chart = new _chartOverload2.default(context, JSON.parse(JSON.stringify(chart)), this);else return;
+
+        this._chart.appendData();
       }
 
       var _model = this.model;
@@ -269,7 +301,7 @@ var ChartJSWrapper = function (_Rect) {
 
       if (!this._draw_once) {
         this._chart.reset(width, height, context);
-        this._chart.update();
+        this._chart.update(0);
         this._draw_once = true;
       } else {
         this._chart.draw(this._chart.__ease__);
@@ -285,6 +317,20 @@ var ChartJSWrapper = function (_Rect) {
         this.invalidate();
       }
     }
+  }, {
+    key: 'onclick',
+    value: function onclick(e) {
+      var newEvt = {};
+      for (var key in window.event) {
+        newEvt[key] = window.event[key] || e[key];
+      }
+      newEvt.currentTarget = this._chart.canvas;
+      // e = newEvt
+      this._chart.eventHandler(newEvt);
+    }
+  }, {
+    key: 'ondragstart',
+    value: function ondragstart(e) {}
   }, {
     key: 'controls',
     get: function get() {}
@@ -325,4 +371,58 @@ Object.defineProperty(exports, 'ChartJSWrapper', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[5]);
+function updateSeriesDatas(chartInstance) {
+  var seriesData = chartInstance.data.seriesData;
+  var chartId = chartInstance.id;
+
+  if (!seriesData || seriesData.length === 0) seriesData = [null];
+
+  for (var key in seriesData) {
+    var meta = chartInstance.chartSeries[key]._meta[chartId];
+
+    if (seriesData[key]) {
+      if (seriesData[key].length > 0 && meta.data.length === seriesData[key].length) {
+        meta.data.shift(1);
+      }
+    }
+
+    chartInstance.chartSeries[key].data = seriesData[key] || [];
+  }
+}
+
+Chart.plugins.register({
+  beforeInit: function beforeInit(chartInstance) {
+    chartInstance.chartSeries = [];
+
+    var _iteratorNormalCompletion = true;
+    var _didIteratorError = false;
+    var _iteratorError = undefined;
+
+    try {
+      for (var _iterator = chartInstance.data.datasets[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+        var dataset = _step.value;
+
+        chartInstance.chartSeries.push(dataset);
+      }
+    } catch (err) {
+      _didIteratorError = true;
+      _iteratorError = err;
+    } finally {
+      try {
+        if (!_iteratorNormalCompletion && _iterator.return) {
+          _iterator.return();
+        }
+      } finally {
+        if (_didIteratorError) {
+          throw _iteratorError;
+        }
+      }
+    }
+  },
+  beforeUpdate: function beforeUpdate(chartInstance) {
+    var seriesData = chartInstance.data.seriesData;
+    updateSeriesDatas(chartInstance);
+  }
+});
+
+},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[1,2,3,4,5]);
