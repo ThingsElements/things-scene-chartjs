@@ -3,7 +3,6 @@ import helpers from './chart-helpers-overload'
 export default class ChartController extends Chart.Controller {
   constructor(instance) {
     super(instance)
-
     // this.loadData();
   }
 

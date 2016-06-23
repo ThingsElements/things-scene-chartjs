@@ -28,7 +28,6 @@ var ChartController = function (_Chart$Controller) {
     _classCallCheck(this, ChartController);
 
     return _possibleConstructorReturn(this, Object.getPrototypeOf(ChartController).call(this, instance));
-
     // this.loadData();
   }
 
@@ -167,7 +166,7 @@ var ChartController = function (_Chart$Controller) {
 exports.default = ChartController;
 
 },{"./chart-helpers-overload":2}],2:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -182,6 +181,24 @@ helpers.retinaScale = noop;
 helpers.addResizeListener = noop;
 helpers.removeResizeListener = noop;
 
+var originalGetRelativePosition = Chart.helpers.getRelativePosition;
+
+Chart.helpers.getRelativePosition = function (evt, chart) {
+
+  if (!evt.chartJSWrapper) return originalGetRelativePosition(evt, chart);
+
+  var wrapper = evt.chartJSWrapper;
+  var mouseX, mouseY;
+  var e = evt;
+
+  var point = evt.chartJSWrapper.transcoordC2S(e.offsetX, e.offsetY);
+
+  return {
+    x: point.x - wrapper.get('left'),
+    y: point.y - wrapper.get('top')
+  };
+};
+
 exports.default = helpers;
 
 },{}],3:[function(require,module,exports){
@@ -190,6 +207,8 @@ exports.default = helpers;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _chartHelpersOverload = require('./chart-helpers-overload');
 
@@ -212,31 +231,35 @@ function noop() {}
 var helpers_backup = Chart.helpers;
 var controller_backup = Chart.Controller;
 
-function backup() {
-  Chart.helpers = _chartHelpersOverload2.default;
-  Chart.Controller = _chartControllerOverload2.default;
-}
-
-function restore() {
-  Chart.helpers = helpers_backup;
-  Chart.Controller = controller_backup;
-}
-
 var SceneChart = function (_Chart) {
   _inherits(SceneChart, _Chart);
 
   function SceneChart(context, config, component) {
     _classCallCheck(this, SceneChart);
 
-    backup();
+    SceneChart.backup();
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SceneChart).call(this, context, config));
 
-    restore();
+    SceneChart.restore();
 
     _this._component = component;
     return _this;
   }
+
+  _createClass(SceneChart, null, [{
+    key: 'backup',
+    value: function backup() {
+      Chart.helpers = _chartHelpersOverload2.default;
+      Chart.Controller = _chartControllerOverload2.default;
+    }
+  }, {
+    key: 'restore',
+    value: function restore() {
+      Chart.helpers = helpers_backup;
+      Chart.Controller = controller_backup;
+    }
+  }]);
 
   return SceneChart;
 }(Chart);
@@ -320,17 +343,18 @@ var ChartJSWrapper = function (_Rect) {
   }, {
     key: 'onclick',
     value: function onclick(e) {
-      var newEvt = {};
-      for (var key in window.event) {
-        newEvt[key] = window.event[key] || e[key];
-      }
-      newEvt.currentTarget = this._chart.canvas;
-      // e = newEvt
-      this._chart.eventHandler(newEvt);
+      e.chartJSWrapper = this;
+      if (this._chart) this._chart.eventHandler(e);
     }
   }, {
     key: 'ondragstart',
     value: function ondragstart(e) {}
+  }, {
+    key: 'onmousemove',
+    value: function onmousemove(e) {
+      e.chartJSWrapper = this;
+      if (this._chart) this._chart.eventHandler(e);
+    }
   }, {
     key: 'controls',
     get: function get() {}

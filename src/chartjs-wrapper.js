@@ -46,18 +46,19 @@ export default class ChartJSWrapper extends Rect {
   }
 
   onclick(e) {
-    var newEvt = {}
-    for(let key in window.event){
-      newEvt[key] = window.event[key] || e[key];
-    }
-    newEvt.currentTarget = this._chart.canvas;
-    // e = newEvt
-    this._chart.eventHandler(newEvt)
-
+    e.chartJSWrapper = this;
+    if(this._chart)
+      this._chart.eventHandler(e)
   }
 
   ondragstart(e) {
 
+  }
+
+  onmousemove(e) {
+    e.chartJSWrapper = this;
+    if(this._chart)
+      this._chart.eventHandler(e)
   }
 }
 
