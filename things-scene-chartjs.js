@@ -339,6 +339,11 @@ var ChartJSWrapper = function (_Rect) {
         this._draw_once = false;
         this.invalidate();
       }
+
+      if (after.hasOwnProperty('data')) {
+        this._chart.config.data.seriesData = after.data;
+        this._chart.update();
+      }
     }
   }, {
     key: 'onclick',
@@ -355,9 +360,6 @@ var ChartJSWrapper = function (_Rect) {
       e.chartJSWrapper = this;
       if (this._chart) this._chart.eventHandler(e);
     }
-  }, {
-    key: 'controls',
-    get: function get() {}
   }]);
 
   return ChartJSWrapper;
