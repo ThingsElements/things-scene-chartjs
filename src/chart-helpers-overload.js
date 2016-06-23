@@ -10,16 +10,13 @@ helpers.removeResizeListener = noop;
 
 var originalGetRelativePosition = Chart.helpers.getRelativePosition;
 
-Chart.helpers.getRelativePosition = function(evt, chart) {
+Chart.helpers.getRelativePosition = function(e, chart) {
+  var wrapper = e.chartJSWrapper;
 
-  if(!evt.chartJSWrapper)
-    return originalGetRelativePosition(evt, chart);
+  if(!wrapper)
+    return originalGetRelativePosition(e, chart);
 
-  var wrapper = evt.chartJSWrapper;
-  var mouseX, mouseY;
-  var e = evt;
-
-  var point = evt.chartJSWrapper.transcoordC2S(
+  var point = e.chartJSWrapper.transcoordC2S(
     e.offsetX,
     e.offsetY
   )

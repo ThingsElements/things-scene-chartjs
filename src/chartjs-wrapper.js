@@ -36,14 +36,17 @@ export default class ChartJSWrapper extends Rect {
 
   }
 
-  get controls() {}
-
   onchange(after) {
     if(after.width || after.height) {
       this._draw_once = false;
       this.invalidate();
     }
-  }
+
+    if(after.hasOwnProperty('data')) {
+      this._chart.config.data.seriesData = after.data;
+      this._chart.update()
+    }
+}
 
   onclick(e) {
     e.chartJSWrapper = this;

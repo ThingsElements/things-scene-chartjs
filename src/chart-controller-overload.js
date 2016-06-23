@@ -9,6 +9,7 @@ export default class ChartController extends Chart.Controller {
   resize() {}
   destroy() {}
   clear() {}
+  bindEvents(){}
 
   draw(ease) {
     if(arguments.length > 1) {

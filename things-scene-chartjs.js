@@ -41,6 +41,9 @@ var ChartController = function (_Chart$Controller) {
     key: 'clear',
     value: function clear() {}
   }, {
+    key: 'bindEvents',
+    value: function bindEvents() {}
+  }, {
     key: 'draw',
     value: function draw(ease) {
       if (arguments.length > 1) {
@@ -183,15 +186,12 @@ helpers.removeResizeListener = noop;
 
 var originalGetRelativePosition = Chart.helpers.getRelativePosition;
 
-Chart.helpers.getRelativePosition = function (evt, chart) {
+Chart.helpers.getRelativePosition = function (e, chart) {
+  var wrapper = e.chartJSWrapper;
 
-  if (!evt.chartJSWrapper) return originalGetRelativePosition(evt, chart);
+  if (!wrapper) return originalGetRelativePosition(e, chart);
 
-  var wrapper = evt.chartJSWrapper;
-  var mouseX, mouseY;
-  var e = evt;
-
-  var point = evt.chartJSWrapper.transcoordC2S(e.offsetX, e.offsetY);
+  var point = e.chartJSWrapper.transcoordC2S(e.offsetX, e.offsetY);
 
   return {
     x: point.x - wrapper.get('left'),
