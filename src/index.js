@@ -1,5 +1,5 @@
 function updateSeriesDatas(chartInstance) {
-  let seriesData = chartInstance.data.seriesData;
+  let seriesData = chartInstance.data.rawData.seriesData;
   let chartId = chartInstance.id;
 
   if(!seriesData || seriesData.length === 0)
@@ -18,8 +18,14 @@ function updateSeriesDatas(chartInstance) {
   }
 }
 
+function updateLabelDatas(chartInstance){
+  let labelData = chartInstance.data.rawData.labelData;
+  chartInstance.config.data.labels = labelData || [];
+}
+
 Chart.plugins.register({
   beforeInit : function(chartInstance){
+    console.log("Init")
     chartInstance.chartSeries = [];
 
     for(let dataset of chartInstance.data.datasets) {
@@ -27,8 +33,13 @@ Chart.plugins.register({
     }
   },
   beforeUpdate : function(chartInstance){
-    let seriesData = chartInstance.data.seriesData;
+    console.log("update")
+    let seriesData = chartInstance.data.rawData.seriesData;
+    updateLabelDatas(chartInstance);
     updateSeriesDatas(chartInstance);
+  },
+  beforeRender: function(chartInstance){
+    console.log("render");
   }
 });
 

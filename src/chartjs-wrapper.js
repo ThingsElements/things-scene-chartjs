@@ -22,6 +22,8 @@ export default class ChartJSWrapper extends Rect {
 
     var { width, height, left, top } = this.model;
 
+    var self = this;
+
     context.translate(left, top);
 
     if(!this._draw_once) {
@@ -36,6 +38,8 @@ export default class ChartJSWrapper extends Rect {
 
   }
 
+  get controls() {}
+
   onchange(after) {
     if(after.width || after.height) {
       this._draw_once = false;
@@ -43,7 +47,7 @@ export default class ChartJSWrapper extends Rect {
     }
 
     if(after.hasOwnProperty('data')) {
-      this._chart.config.data.seriesData = after.data;
+      this._chart.config.data.rawData = after.data || {};
       this._chart.update()
     }
 }

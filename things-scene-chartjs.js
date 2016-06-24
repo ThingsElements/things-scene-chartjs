@@ -320,6 +320,8 @@ var ChartJSWrapper = function (_Rect) {
       var top = _model.top;
 
 
+      var self = this;
+
       context.translate(left, top);
 
       if (!this._draw_once) {
@@ -341,7 +343,7 @@ var ChartJSWrapper = function (_Rect) {
       }
 
       if (after.hasOwnProperty('data')) {
-        this._chart.config.data.seriesData = after.data;
+        this._chart.config.data.rawData = after.data || {};
         this._chart.update();
       }
     }
@@ -360,6 +362,9 @@ var ChartJSWrapper = function (_Rect) {
       e.chartJSWrapper = this;
       if (this._chart) this._chart.eventHandler(e);
     }
+  }, {
+    key: 'controls',
+    get: function get() {}
   }]);
 
   return ChartJSWrapper;
@@ -371,24 +376,24 @@ exports.default = ChartJSWrapper;
 Component.register('chartjs', ChartJSWrapper);
 
 },{"./chart-overload":3}],5:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _chartOverload = require('./chart-overload');
+var _chartOverload = require("./chart-overload");
 
-Object.defineProperty(exports, 'SceneChart', {
+Object.defineProperty(exports, "SceneChart", {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_chartOverload).default;
   }
 });
 
-var _chartjsWrapper = require('./chartjs-wrapper');
+var _chartjsWrapper = require("./chartjs-wrapper");
 
-Object.defineProperty(exports, 'ChartJSWrapper', {
+Object.defineProperty(exports, "ChartJSWrapper", {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_chartjsWrapper).default;
@@ -398,7 +403,7 @@ Object.defineProperty(exports, 'ChartJSWrapper', {
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function updateSeriesDatas(chartInstance) {
-  var seriesData = chartInstance.data.seriesData;
+  var seriesData = chartInstance.data.rawData.seriesData;
   var chartId = chartInstance.id;
 
   if (!seriesData || seriesData.length === 0) seriesData = [null];
@@ -416,8 +421,14 @@ function updateSeriesDatas(chartInstance) {
   }
 }
 
+function updateLabelDatas(chartInstance) {
+  var labelData = chartInstance.data.rawData.labelData;
+  chartInstance.config.data.labels = labelData || [];
+}
+
 Chart.plugins.register({
   beforeInit: function beforeInit(chartInstance) {
+    console.log("Init");
     chartInstance.chartSeries = [];
 
     var _iteratorNormalCompletion = true;
@@ -446,8 +457,13 @@ Chart.plugins.register({
     }
   },
   beforeUpdate: function beforeUpdate(chartInstance) {
-    var seriesData = chartInstance.data.seriesData;
+    console.log("update");
+    var seriesData = chartInstance.data.rawData.seriesData;
+    updateLabelDatas(chartInstance);
     updateSeriesDatas(chartInstance);
+  },
+  beforeRender: function beforeRender(chartInstance) {
+    console.log("render");
   }
 });
 

@@ -98,7 +98,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   ],
                   borderWidth: 1
                 }],
-                seriesData : [[12, 19, 3, 5, 2, 3]]
+                rawData: {
+                  seriesData : [[12, 19, 3, 5, 2, 3]],
+                  labelData: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
+                }
               },
               options: {
                 scales: {
@@ -127,18 +130,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   label: 'Scatter Dataset',
                   data: []
                 }],
-                seriesData : [
-                  [{
-                    x: -10,
-                    y: 0
-                  }, {
-                    x: 0,
-                    y: 10
-                  }, {
-                    x: 10,
-                    y: 5
-                  }]
-                ]
+                rawData : {
+                  seriesData : [
+                    [{
+                      x: -10,
+                      y: 0
+                    }, {
+                      x: 0,
+                      y: 10
+                    }, {
+                      x: 10,
+                      y: 5
+                    }]
+                  ]
+                }
               },
               options: {
                 scales: {
@@ -162,22 +167,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             chart: {
               type: 'line',
               data: {
+                labels: [],
                 datasets: [{
-                  label: 'Scatter Dataset',
+                  label: 'Line Dataset',
                   data: []
                 }],
-                seriesData : [
-                  [{
-                    x: -10,
-                    y: 0
-                  }, {
-                    x: 0,
-                    y: 10
-                  }, {
-                    x: 10,
-                    y: 5
-                  }]
-                ]
+                rawData : {
+                  seriesData : [
+                    [{
+                      x: -10,
+                      y: 0
+                    }, {
+                      x: 0,
+                      y: 10
+                    }, {
+                      x: 10,
+                      y: 5
+                    }]
+                    // , [0, 1, 6, 3, 5]
+                  ],
+                  labelData : [-20, -10, 0, 10, 20]
+                }
               },
               options: {
                 scales: {
@@ -234,7 +244,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     var currYear = 2016;
 
     var model = {
-      labels: [["January", currYear], "February", "March", "April", "May", "June", "July"],
+      labels: [],
       datasets: [
         {
           label: "My First dataset",
@@ -258,8 +268,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           data : []
         }
       ],
-      spcData: spcData,
-      seriesData : values
+      rawData: {
+        labelData : [["January", currYear], "February", "March", "April", "May", "June", "July"],
+        spcData: spcData,
+        seriesData : values
+      }
     };
 
 
