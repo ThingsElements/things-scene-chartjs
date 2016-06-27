@@ -391,9 +391,9 @@ var ChartJSWrapper = function (_Rect) {
         for (var i = 0; i < datasets.length; i++) {
           Object.assign(datasets[i], seriesOptions);
         }
-      }
 
-      this._chart.update(0);
+        this._chart.update(0);
+      }
     }
   }, {
     key: 'onclick',
