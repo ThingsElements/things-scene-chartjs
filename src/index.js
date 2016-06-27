@@ -25,7 +25,7 @@ function updateLabelDatas(chartInstance){
 
 Chart.plugins.register({
   beforeInit : function(chartInstance){
-    console.log("Init")
+    
     chartInstance.chartSeries = [];
 
     for(let dataset of chartInstance.data.datasets) {
@@ -33,13 +33,13 @@ Chart.plugins.register({
     }
   },
   beforeUpdate : function(chartInstance){
-    console.log("update")
+
     let seriesData = chartInstance.data.rawData.seriesData;
     updateLabelDatas(chartInstance);
     updateSeriesDatas(chartInstance);
   },
   beforeRender: function(chartInstance){
-    console.log("render");
+
   }
 });
 

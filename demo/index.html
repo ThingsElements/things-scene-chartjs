@@ -18,6 +18,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link rel="import" href="../../things-scene-viewer/things-scene-viewer.html">
     <link rel="import" href="../../things-scene-viewer/things-scene-layer.html">
     <link rel="import" href="../../things-scene-viewer/things-scene-handler.html">
+    <link rel="import" href="../../things-designer-elements/elements.html">
+    <link rel="import" href="../../things-scene-modeler/things-scene-properties.html">
 
     <link rel="import" href="./things-scene-chartjs.html">
 
@@ -40,7 +42,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template is="dom-bind" id="app">
       <p>An example of <code>&lt;things-scene-chartjs&gt;</code>:</p>
 
-      <things-scene-viewer id='scene' model='{{model}}' mode="1">
+      <things-scene-viewer id='scene' scene='{{scene}}' model='[[model]]' selected='{{selected}}'>
         <things-scene-layer type="selection-layer"></things-scene-layer>
         <things-scene-layer type="modeling-layer"></things-scene-layer>
         <things-scene-handler type="text-editor"></things-scene-handler>
@@ -48,6 +50,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </things-scene-viewer>
 
       <button id="change">Change Value</button>
+      <fieldset>
+        <legend>Chart.js properties</legend>
+        <things-scene-properties id="properties"
+                                 scene="[[scene]]"
+                                 selected="[[selected]]"
+                                 model="{{target}}"
+                                 bounds="{{bounds}}"
+                                 props="{{props}}">
+          <things-editor-properties id="properties"
+                                   target="{{target}}"
+                                   props="{{props}}">
+          </things-editor-properties>
+        </things-scene-properties>
+      </fieldset>
 
     </template>
     <canvas id="chartCanvas" width="300" height="300">
@@ -59,6 +75,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         app.$.change.addEventListener('click', function() {
           var viewer = app.$.scene
         })
+
+        app.$.properties.addEventListener('change', function(e) {
+          console.log('change', e, app.$.properties.model)
+        })
+
+        app.props = [{
+          type: 'color',
+          label: 'Border Color',
+          name: 'chart.seriesOptions.borderColor',
+          property: 'color'
+        }, {
+          type: 'color',
+          label: 'Background Color',
+          name: 'chart.seriesOptions.backgroundColor',
+          property: 'color'
+        }, {
+          type: 'number',
+          label: 'Border Width',
+          name: 'chart.seriesOptions.borderWidth',
+          property: 'number'
+        }, {
+          type: 'color',
+          label: 'Point Border Color',
+          name: 'chart.seriesOptions.pointBorderColor',
+          property: 'color'
+        }, {
+          type: 'color',
+          label: 'Point Background Color',
+          name: 'chart.seriesOptions.pointBackgroundColor',
+          property: 'color'
+        }, {
+          type: 'number',
+          label: 'Point Border Width',
+          name: 'chart.seriesOptions.pointBorderWidth',
+          property: 'number'
+        }, {
+          type: 'checkbox',
+          label: 'Fill',
+          name: 'chart.seriesOptions.fill',
+          property: 'checkbox'
+        }]
 
         app.model = {
           width: 500,
@@ -75,6 +132,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             lineWidth: 5,
             chart: {
               type: 'bar',
+              seriesOptions: {
+                backgroundColor: "rgba(102,102,102,0.4)",
+                borderColor: "rgba(102,102,102,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(102,102,102,1)",
+                pointBackgroundColor: "rgba(220,220,220,1)",
+                pointBorderWidth: 5,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(102,102,102,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10
+              },
               data: {
                 labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
                 datasets: [{
@@ -125,6 +199,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             lineWidth: 5,
             chart: {
               type: 'line',
+              /* series options */
+              seriesOptions: {
+                backgroundColor: "rgba(102,102,102,0.4)",
+                borderColor: "rgba(102,102,102,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(102,102,102,1)",
+                pointBackgroundColor: "rgba(220,220,220,1)",
+                pointBorderWidth: 5,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(102,102,102,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10
+              },
               data: {
                 datasets: [{
                   label: 'Scatter Dataset',
@@ -166,6 +258,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             lineWidth: 5,
             chart: {
               type: 'line',
+              seriesOptions: {
+                backgroundColor: "rgba(102,102,102,0.4)",
+                borderColor: "rgba(102,102,102,1)",
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderColor: "rgba(102,102,102,1)",
+                pointBackgroundColor: "rgba(220,220,220,1)",
+                pointBorderWidth: 5,
+                pointHoverRadius: 5,
+                pointHoverBackgroundColor: "rgba(102,102,102,1)",
+                pointHoverBorderColor: "rgba(220,220,220,1)",
+                pointHoverBorderWidth: 2,
+                pointRadius: 1,
+                pointHitRadius: 10
+              },
               data: {
                 labels: [],
                 datasets: [{
@@ -287,6 +396,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
     });
+
+
+
     </script>
   </body>
 </html>

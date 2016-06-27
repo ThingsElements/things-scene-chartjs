@@ -41,6 +41,7 @@ export default class ChartJSWrapper extends Rect {
   get controls() {}
 
   onchange(after) {
+
     if(after.width || after.height) {
       this._draw_once = false;
       this.invalidate();
@@ -50,6 +51,56 @@ export default class ChartJSWrapper extends Rect {
       this._chart.config.data.rawData = after.data || {};
       this._chart.update()
     }
+
+
+
+    // TODO: Series Option 관련 정리 필요.
+    var seriesOptions = null;
+    for (var key in after) {
+      if (!after.hasOwnProperty(key)) {
+        continue;
+      }
+
+      var keySplit = key.split('.');
+      if(keySplit.length > 0) {
+        // var subObject = this._chart.config
+        // var subValue = after[key];
+        for(var i =0; i<keySplit.length; i++) {
+          // if(i === keySplit.length-1) {
+          //   subObject[keySplit[i]] = after[key];
+          //   break;
+          // }
+
+          if(keySplit[i] === 'seriesOptions') {
+            seriesOptions = {};
+          }
+
+          if(seriesOptions) {
+            if(keySplit[i] !== 'seriesOptions') {
+              seriesOptions[keySplit[i]] = after[key];
+            }
+          }
+
+          // if(keySplit[i] !== 'chart'){
+          //   subObject = subObject[keySplit[i]];
+          // }
+        }
+      }
+
+    }
+
+    if(seriesOptions) {
+
+      Object.assign(this.model.chart.seriesOptions, seriesOptions);
+      Object.assign(this._chart.config.seriesOptions, seriesOptions);
+
+      var datasets = this._chart.data.datasets;
+      for(var i = 0; i < datasets.length; i++) {
+        Object.assign(datasets[i], seriesOptions);
+      }
+    }
+
+    this._chart.update(0);
 }
 
   onclick(e) {

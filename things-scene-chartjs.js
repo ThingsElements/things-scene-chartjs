@@ -337,6 +337,7 @@ var ChartJSWrapper = function (_Rect) {
   }, {
     key: 'onchange',
     value: function onchange(after) {
+
       if (after.width || after.height) {
         this._draw_once = false;
         this.invalidate();
@@ -346,6 +347,53 @@ var ChartJSWrapper = function (_Rect) {
         this._chart.config.data.rawData = after.data || {};
         this._chart.update();
       }
+
+      // TODO: Series Option 관련 정리 필요.
+      var seriesOptions = null;
+      for (var key in after) {
+        if (!after.hasOwnProperty(key)) {
+          continue;
+        }
+
+        var keySplit = key.split('.');
+        if (keySplit.length > 0) {
+          // var subObject = this._chart.config
+          // var subValue = after[key];
+          for (var i = 0; i < keySplit.length; i++) {
+            // if(i === keySplit.length-1) {
+            //   subObject[keySplit[i]] = after[key];
+            //   break;
+            // }
+
+            if (keySplit[i] === 'seriesOptions') {
+              seriesOptions = {};
+            }
+
+            if (seriesOptions) {
+              if (keySplit[i] !== 'seriesOptions') {
+                seriesOptions[keySplit[i]] = after[key];
+              }
+            }
+
+            // if(keySplit[i] !== 'chart'){
+            //   subObject = subObject[keySplit[i]];
+            // }
+          }
+        }
+      }
+
+      if (seriesOptions) {
+
+        Object.assign(this.model.chart.seriesOptions, seriesOptions);
+        Object.assign(this._chart.config.seriesOptions, seriesOptions);
+
+        var datasets = this._chart.data.datasets;
+        for (var i = 0; i < datasets.length; i++) {
+          Object.assign(datasets[i], seriesOptions);
+        }
+      }
+
+      this._chart.update(0);
     }
   }, {
     key: 'onclick',
@@ -376,24 +424,24 @@ exports.default = ChartJSWrapper;
 Component.register('chartjs', ChartJSWrapper);
 
 },{"./chart-overload":3}],5:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _chartOverload = require("./chart-overload");
+var _chartOverload = require('./chart-overload');
 
-Object.defineProperty(exports, "SceneChart", {
+Object.defineProperty(exports, 'SceneChart', {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_chartOverload).default;
   }
 });
 
-var _chartjsWrapper = require("./chartjs-wrapper");
+var _chartjsWrapper = require('./chartjs-wrapper');
 
-Object.defineProperty(exports, "ChartJSWrapper", {
+Object.defineProperty(exports, 'ChartJSWrapper', {
   enumerable: true,
   get: function get() {
     return _interopRequireDefault(_chartjsWrapper).default;
@@ -428,7 +476,7 @@ function updateLabelDatas(chartInstance) {
 
 Chart.plugins.register({
   beforeInit: function beforeInit(chartInstance) {
-    console.log("Init");
+
     chartInstance.chartSeries = [];
 
     var _iteratorNormalCompletion = true;
@@ -457,14 +505,12 @@ Chart.plugins.register({
     }
   },
   beforeUpdate: function beforeUpdate(chartInstance) {
-    console.log("update");
+
     var seriesData = chartInstance.data.rawData.seriesData;
     updateLabelDatas(chartInstance);
     updateSeriesDatas(chartInstance);
   },
-  beforeRender: function beforeRender(chartInstance) {
-    console.log("render");
-  }
+  beforeRender: function beforeRender(chartInstance) {}
 });
 
 },{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[1,2,3,4,5]);
