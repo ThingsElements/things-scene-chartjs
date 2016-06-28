@@ -185,7 +185,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     'rgba(153, 102, 255, 1)',
                     'rgba(255, 159, 64, 1)'
                   ],
-                  borderWidth: 1
+                  borderWidth: [1, 2, 3, 4, 5, 6]
                 }],
                 rawData: {
                   seriesData : [[12, 19, 3, 5, 2, 3]],
@@ -235,6 +235,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               data: {
                 datasets: [{
                   label: 'Scatter Dataset',
+                  backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                  data: []
+                }, {
+                  label: 'Dataset 2',
+                  backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                  data: []
+                }, {
+                  label: 'Dataset 3',
+                  backgroundColor: 'rgba(255, 159, 64, 0.2)',
                   data: []
                 }],
                 rawData : {
@@ -242,6 +251,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     [{
                       x: -10,
                       y: 0
+                    }, {
+                      x: 0,
+                      y: 10
+                    }, {
+                      x: 10,
+                      y: 5
+                    }],
+                    [{
+                      x: -10,
+                      y: 0
+                    }, {
+                      x: 0,
+                      y: -10
+                    }, {
+                      x: 10,
+                      y: -5
+                    }],
+                    [{
+                      x: -10,
+                      y: -10
                     }, {
                       x: 0,
                       y: 10
@@ -320,6 +349,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     position: 'bottom'
                   }]
                 }
+              }
+            }
+          }, {
+            type: 'chartjs',
+            top: 0,
+            left: 0,
+            width: 200,
+            height: 200,
+            fillStyle: '#ffff00',
+            strokeStyle: '#552555',
+            fontColor: '#FF0000',
+            lineWidth: 5,
+            chart: {
+              type: 'doughnut',
+              data: {
+                labels: [],
+                datasets: [{
+                  data: [],
+                  backgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56"
+                  ],
+                  hoverBackgroundColor: [
+                    "#FF6384",
+                    "#36A2EB",
+                    "#FFCE56"
+                  ]
+                }],
+                rawData: {
+                  seriesData: [[300, 50, 100]],
+                  labelData: [
+                    "Red",
+                    "Blue",
+                    "Yellow"
+                  ]
+                }
+              },
+              animation:{
+                animateScale:true
               }
             }
           }]

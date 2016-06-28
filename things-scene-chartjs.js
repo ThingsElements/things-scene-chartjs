@@ -459,11 +459,11 @@ function updateSeriesDatas(chartInstance) {
   for (var key in seriesData) {
     var meta = chartInstance.chartSeries[key]._meta[chartId];
 
-    if (seriesData[key]) {
-      if (seriesData[key].length > 0 && meta.data.length === seriesData[key].length) {
-        meta.data.shift(1);
-      }
-    }
+    // if(seriesData[key]) {
+    //   if(seriesData[key].length > 0 && meta.data.length === seriesData[key].length){
+    //     meta.data.shift(1);
+    //   }
+    // }
 
     chartInstance.chartSeries[key].data = seriesData[key] || [];
   }
