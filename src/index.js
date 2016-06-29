@@ -1,3 +1,26 @@
+// function updateSeriesDatas(chartInstance) {
+//   let seriesData = chartInstance.data.rawData.seriesData;
+//   let chartId = chartInstance.id;
+//
+//   if(!seriesData || seriesData.length === 0)
+//     seriesData = [null];
+//
+//   let seriesOptions = chartInstance.seriesOptions || [];
+//
+//   chartInstance.data.datasets = [];
+//
+//   for(let key in seriesData) {
+//     var opt = seriesOptions
+//     if(seriesOptions.length > 0)
+//       opt = seriesOptions[key % seriesOptions.length]
+//
+//     var dataset = Object.assign({}, opt);
+//     opt.data = seriesData[key] || [];
+//
+//     chartInstance.data.datasets.push(opt);
+//   }
+// }
+
 function updateSeriesDatas(chartInstance) {
   let seriesData = chartInstance.data.rawData.seriesData;
   let chartId = chartInstance.id;
@@ -6,15 +29,8 @@ function updateSeriesDatas(chartInstance) {
     seriesData = [null];
 
   for(let key in seriesData) {
-    let meta = chartInstance.chartSeries[key]._meta[chartId];
-
-    // if(seriesData[key]) {
-    //   if(seriesData[key].length > 0 && meta.data.length === seriesData[key].length){
-    //     meta.data.shift(1);
-    //   }
-    // }
-
-    chartInstance.chartSeries[key].data = seriesData[key] || [];
+    if(chartInstance.data.datasets[key])
+      chartInstance.data.datasets[key].data = seriesData[key] || [];
   }
 }
 
@@ -26,11 +42,11 @@ function updateLabelDatas(chartInstance){
 Chart.plugins.register({
   beforeInit : function(chartInstance){
 
-    chartInstance.chartSeries = [];
-
-    for(let dataset of chartInstance.data.datasets) {
-      chartInstance.chartSeries.push(dataset);
-    }
+    // chartInstance.chartSeries = [];
+    //
+    // for(let dataset of chartInstance.data.datasets) {
+    //   chartInstance.chartSeries.push(dataset);
+    // }
   },
   beforeUpdate : function(chartInstance){
 

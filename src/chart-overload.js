@@ -9,7 +9,7 @@ var controller_backup = Chart.Controller;
 export default class SceneChart extends Chart {
   constructor(context, config, component) {
     SceneChart.backup()
-    
+
     super(context, config)
 
     SceneChart.restore()

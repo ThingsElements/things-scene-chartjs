@@ -348,51 +348,34 @@ var ChartJSWrapper = function (_Rect) {
         this._chart.update();
       }
 
-      // TODO: Series Option 관련 정리 필요.
-      var seriesOptions = null;
       for (var key in after) {
         if (!after.hasOwnProperty(key)) {
           continue;
         }
 
+        var lastObj = this.model;
+        var lastChartObj = this;
         var keySplit = key.split('.');
         if (keySplit.length > 0) {
-          // var subObject = this._chart.config
-          // var subValue = after[key];
+          var isChartChanged = false;
           for (var i = 0; i < keySplit.length; i++) {
-            // if(i === keySplit.length-1) {
-            //   subObject[keySplit[i]] = after[key];
-            //   break;
-            // }
+            var k = keySplit[i];
 
-            if (keySplit[i] === 'seriesOptions') {
-              seriesOptions = {};
+            if (k === 'chart') isChartChanged = true;
+
+            k = k.replace('#', '');
+
+            if (i === keySplit.length - 1) {
+              lastObj[k] = after[key];
+              lastChartObj[k] = after[key];
             }
 
-            if (seriesOptions) {
-              if (keySplit[i] !== 'seriesOptions') {
-                seriesOptions[keySplit[i]] = after[key];
-              }
-            }
-
-            // if(keySplit[i] !== 'chart'){
-            //   subObject = subObject[keySplit[i]];
-            // }
+            lastObj = lastObj[k];
+            lastChartObj = lastChartObj[k] || lastChartObj["_" + k];
           }
+
+          if (isChartChanged) this._chart.update(0);
         }
-      }
-
-      if (seriesOptions) {
-
-        Object.assign(this.model.chart.seriesOptions, seriesOptions);
-        Object.assign(this._chart.config.seriesOptions, seriesOptions);
-
-        var datasets = this._chart.data.datasets;
-        for (var i = 0; i < datasets.length; i++) {
-          Object.assign(datasets[i], seriesOptions);
-        }
-
-        this._chart.update(0);
       }
     }
   }, {
@@ -450,6 +433,29 @@ Object.defineProperty(exports, 'ChartJSWrapper', {
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// function updateSeriesDatas(chartInstance) {
+//   let seriesData = chartInstance.data.rawData.seriesData;
+//   let chartId = chartInstance.id;
+//
+//   if(!seriesData || seriesData.length === 0)
+//     seriesData = [null];
+//
+//   let seriesOptions = chartInstance.seriesOptions || [];
+//
+//   chartInstance.data.datasets = [];
+//
+//   for(let key in seriesData) {
+//     var opt = seriesOptions
+//     if(seriesOptions.length > 0)
+//       opt = seriesOptions[key % seriesOptions.length]
+//
+//     var dataset = Object.assign({}, opt);
+//     opt.data = seriesData[key] || [];
+//
+//     chartInstance.data.datasets.push(opt);
+//   }
+// }
+
 function updateSeriesDatas(chartInstance) {
   var seriesData = chartInstance.data.rawData.seriesData;
   var chartId = chartInstance.id;
@@ -457,15 +463,7 @@ function updateSeriesDatas(chartInstance) {
   if (!seriesData || seriesData.length === 0) seriesData = [null];
 
   for (var key in seriesData) {
-    var meta = chartInstance.chartSeries[key]._meta[chartId];
-
-    // if(seriesData[key]) {
-    //   if(seriesData[key].length > 0 && meta.data.length === seriesData[key].length){
-    //     meta.data.shift(1);
-    //   }
-    // }
-
-    chartInstance.chartSeries[key].data = seriesData[key] || [];
+    if (chartInstance.data.datasets[key]) chartInstance.data.datasets[key].data = seriesData[key] || [];
   }
 }
 
@@ -477,32 +475,11 @@ function updateLabelDatas(chartInstance) {
 Chart.plugins.register({
   beforeInit: function beforeInit(chartInstance) {
 
-    chartInstance.chartSeries = [];
-
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
-
-    try {
-      for (var _iterator = chartInstance.data.datasets[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var dataset = _step.value;
-
-        chartInstance.chartSeries.push(dataset);
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
+    // chartInstance.chartSeries = [];
+    //
+    // for(let dataset of chartInstance.data.datasets) {
+    //   chartInstance.chartSeries.push(dataset);
+    // }
   },
   beforeUpdate: function beforeUpdate(chartInstance) {
 

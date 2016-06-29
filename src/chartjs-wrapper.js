@@ -52,55 +52,38 @@ export default class ChartJSWrapper extends Rect {
       this._chart.update()
     }
 
-
-
-    // TODO: Series Option 관련 정리 필요.
-    var seriesOptions = null;
     for (var key in after) {
       if (!after.hasOwnProperty(key)) {
         continue;
       }
 
+      var lastObj = this.model;
+      var lastChartObj = this;
       var keySplit = key.split('.');
       if(keySplit.length > 0) {
-        // var subObject = this._chart.config
-        // var subValue = after[key];
+        var isChartChanged = false;
         for(var i =0; i<keySplit.length; i++) {
-          // if(i === keySplit.length-1) {
-          //   subObject[keySplit[i]] = after[key];
-          //   break;
-          // }
+          var k = keySplit[i]
 
-          if(keySplit[i] === 'seriesOptions') {
-            seriesOptions = {};
+          if(k === 'chart')
+            isChartChanged = true;
+
+          k = k.replace('#', '')
+
+          if(i === keySplit.length - 1){
+            lastObj[k] = after[key];
+            lastChartObj[k] = after[key];
           }
 
-          if(seriesOptions) {
-            if(keySplit[i] !== 'seriesOptions') {
-              seriesOptions[keySplit[i]] = after[key];
-            }
-          }
-
-          // if(keySplit[i] !== 'chart'){
-          //   subObject = subObject[keySplit[i]];
-          // }
+          lastObj = lastObj[k];
+          lastChartObj = lastChartObj[k] || lastChartObj["_"+k];
         }
-      }
 
+        if(isChartChanged)
+          this._chart.update(0)
+      }
     }
 
-    if(seriesOptions) {
-
-      Object.assign(this.model.chart.seriesOptions, seriesOptions);
-      Object.assign(this._chart.config.seriesOptions, seriesOptions);
-
-      var datasets = this._chart.data.datasets;
-      for(var i = 0; i < datasets.length; i++) {
-        Object.assign(datasets[i], seriesOptions);
-      }
-
-      this._chart.update(0);
-    }
 }
 
   onclick(e) {
