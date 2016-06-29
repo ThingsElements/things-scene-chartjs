@@ -22,6 +22,10 @@
 // }
 
 function updateSeriesDatas(chartInstance) {
+  if (!chartInstance.data.rawData) {
+    return;
+  }
+
   let seriesData = chartInstance.data.rawData.seriesData;
   let chartId = chartInstance.id;
 
@@ -49,6 +53,9 @@ Chart.plugins.register({
     // }
   },
   beforeUpdate : function(chartInstance){
+    if (!chartInstance.data.rawData) {
+      return;
+    }
 
     let seriesData = chartInstance.data.rawData.seriesData;
     updateLabelDatas(chartInstance);
