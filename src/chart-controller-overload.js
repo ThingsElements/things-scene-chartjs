@@ -26,6 +26,7 @@ export default class ChartController extends Chart.Controller {
 
     this.chart.width = width;
     this.chart.height = height;
+
     this.chart.ctx = context;
 
     for (let box of this.boxes) {

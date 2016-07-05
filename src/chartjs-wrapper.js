@@ -109,8 +109,11 @@ export default class ChartJSWrapper extends Rect {
           lastChartObj = lastChartObj[k] || lastChartObj["_"+k];
         }
 
-        if(isChartChanged)
-          this._chart.update(0)
+        if(isChartChanged){
+          this._draw_once = false;
+          this.invalidate();
+        }
+
       }
     }
 

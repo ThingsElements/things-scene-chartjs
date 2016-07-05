@@ -61,6 +61,7 @@ var ChartController = function (_Chart$Controller) {
 
       this.chart.width = width;
       this.chart.height = height;
+
       this.chart.ctx = context;
 
       var _iteratorNormalCompletion = true;
@@ -402,7 +403,10 @@ var ChartJSWrapper = function (_Rect) {
             lastChartObj = lastChartObj[k] || lastChartObj["_" + k];
           }
 
-          if (isChartChanged) this._chart.update(0);
+          if (isChartChanged) {
+            this._draw_once = false;
+            this.invalidate();
+          }
         }
       }
     }
