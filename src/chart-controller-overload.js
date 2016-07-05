@@ -28,10 +28,6 @@ export default class ChartController extends Chart.Controller {
     this.chart.height = height;
     this.chart.ctx = context;
 
-    for (let box of this.boxes) {
-      box.ctx = context;
-    }
-
     changed && this.updateLayout();
   }
 
@@ -102,4 +98,28 @@ export default class ChartController extends Chart.Controller {
   //   this.render(animationDuration, lazy);
   // }
 
+  /*public methods*/
+  loadData(data) {
+    if(!data)
+      return;
+
+    this.config.data.seriesData = data;
+  }
+
+  // loadData() {
+  //   if(this.config.data.seriesData.length !== this.config.data.datasets.length){
+  //     this.clear();
+  //   }
+  //   for(let i in this.config.data.seriesData) {
+  //     if(this.config.data.datasets[i]){
+  //       console.log("this.config.data.datasets["+i+"]", this.config.data.datasets[i])
+  //       this.config.data.datasets[i].data = this.config.data.seriesData[i];
+  //     }
+  //
+  //   }
+  // }
+
+  appendData() {
+    // console.log(this.config.seriesData, this.data)
+  }
 }

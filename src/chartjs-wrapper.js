@@ -16,6 +16,8 @@ export default class ChartJSWrapper extends Rect {
         )
       else
         return
+
+      this._chart.appendData()
     }
 
     var { width, height, left, top } = this.model;
@@ -29,12 +31,7 @@ export default class ChartJSWrapper extends Rect {
       this._chart.update(0);
       this._draw_once = true;
     } else {
-      if(this._chart.chart.ctx != context){
-        this._chart.reset(width, height, context);
-      }
-
       this._chart.draw(this._chart.__ease__);
-
     }
 
     context.translate(-left, -top);
@@ -44,27 +41,6 @@ export default class ChartJSWrapper extends Rect {
   get controls() {}
 
   onchange(after) {
-
-    if (after.hasOwnProperty('chart')) {
-      this._chart = null;
-      this._draw_once = false;
-
-      var datasets = this.model.chart.data.datasets;
-      var seriesData = this.model.chart.data.rawData.seriesData;
-
-      var data = [];
-
-      if(datasets.length > seriesData.length) {
-        for(var i = 0; i < this.model.chart.data.rawData.labelData.length; i++) {
-          data.push(Math.floor(Math.random() * seriesData[0][i] / 2));
-        }
-
-        seriesData.push(data);
-      }
-
-      this.invalidate();
-      return;
-    }
 
     if(after.width || after.height) {
       this._draw_once = false;
@@ -84,12 +60,6 @@ export default class ChartJSWrapper extends Rect {
       var lastObj = this.model;
       var lastChartObj = this;
       var keySplit = key.split('.');
-      var value = after[key];
-
-      if(typeof value === 'object') {
-        value = JSON.parse(JSON.stringify(value));
-      }
-
       if(keySplit.length > 0) {
         var isChartChanged = false;
         for(var i =0; i<keySplit.length; i++) {
@@ -101,8 +71,8 @@ export default class ChartJSWrapper extends Rect {
           k = k.replace('#', '')
 
           if(i === keySplit.length - 1){
-            lastObj[k] = value;
-            lastChartObj[k] = value;
+            lastObj[k] = after[key];
+            lastChartObj[k] = after[key];
           }
 
           lastObj = lastObj[k];

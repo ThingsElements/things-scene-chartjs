@@ -63,31 +63,6 @@ var ChartController = function (_Chart$Controller) {
       this.chart.height = height;
       this.chart.ctx = context;
 
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.boxes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var box = _step.value;
-
-          box.ctx = context;
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
       changed && this.updateLayout();
     }
 
@@ -158,6 +133,34 @@ var ChartController = function (_Chart$Controller) {
     //   this.render(animationDuration, lazy);
     // }
 
+    /*public methods*/
+
+  }, {
+    key: 'loadData',
+    value: function loadData(data) {
+      if (!data) return;
+
+      this.config.data.seriesData = data;
+    }
+
+    // loadData() {
+    //   if(this.config.data.seriesData.length !== this.config.data.datasets.length){
+    //     this.clear();
+    //   }
+    //   for(let i in this.config.data.seriesData) {
+    //     if(this.config.data.datasets[i]){
+    //       console.log("this.config.data.datasets["+i+"]", this.config.data.datasets[i])
+    //       this.config.data.datasets[i].data = this.config.data.seriesData[i];
+    //     }
+    //
+    //   }
+    // }
+
+  }, {
+    key: 'appendData',
+    value: function appendData() {
+      // console.log(this.config.seriesData, this.data)
+    }
   }]);
 
   return ChartController;
@@ -270,8 +273,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _chartOverload = require('./chart-overload');
@@ -308,6 +309,8 @@ var ChartJSWrapper = function (_Rect) {
 
 
         if (chart) this._chart = new _chartOverload2.default(context, JSON.parse(JSON.stringify(chart)), this);else return;
+
+        this._chart.appendData();
       }
 
       var _model = this.model;
@@ -326,10 +329,6 @@ var ChartJSWrapper = function (_Rect) {
         this._chart.update(0);
         this._draw_once = true;
       } else {
-        if (this._chart.chart.ctx != context) {
-          this._chart.reset(width, height, context);
-        }
-
         this._chart.draw(this._chart.__ease__);
       }
 
@@ -338,27 +337,6 @@ var ChartJSWrapper = function (_Rect) {
   }, {
     key: 'onchange',
     value: function onchange(after) {
-
-      if (after.hasOwnProperty('chart')) {
-        this._chart = null;
-        this._draw_once = false;
-
-        var datasets = this.model.chart.data.datasets;
-        var seriesData = this.model.chart.data.rawData.seriesData;
-
-        var data = [];
-
-        if (datasets.length > seriesData.length) {
-          for (var i = 0; i < this.model.chart.data.rawData.labelData.length; i++) {
-            data.push(Math.floor(Math.random() * seriesData[0][i] / 2));
-          }
-
-          seriesData.push(data);
-        }
-
-        this.invalidate();
-        return;
-      }
 
       if (after.width || after.height) {
         this._draw_once = false;
@@ -378,12 +356,6 @@ var ChartJSWrapper = function (_Rect) {
         var lastObj = this.model;
         var lastChartObj = this;
         var keySplit = key.split('.');
-        var value = after[key];
-
-        if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
-          value = JSON.parse(JSON.stringify(value));
-        }
-
         if (keySplit.length > 0) {
           var isChartChanged = false;
           for (var i = 0; i < keySplit.length; i++) {
@@ -394,8 +366,8 @@ var ChartJSWrapper = function (_Rect) {
             k = k.replace('#', '');
 
             if (i === keySplit.length - 1) {
-              lastObj[k] = value;
-              lastChartObj[k] = value;
+              lastObj[k] = after[key];
+              lastChartObj[k] = after[key];
             }
 
             lastObj = lastObj[k];
@@ -485,10 +457,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 // }
 
 function updateSeriesDatas(chartInstance) {
-  if (!chartInstance.data.rawData) {
-    return;
-  }
-
   var seriesData = chartInstance.data.rawData.seriesData;
   var chartId = chartInstance.id;
 
@@ -514,9 +482,6 @@ Chart.plugins.register({
     // }
   },
   beforeUpdate: function beforeUpdate(chartInstance) {
-    if (!chartInstance.data.rawData) {
-      return;
-    }
 
     var seriesData = chartInstance.data.rawData.seriesData;
     updateLabelDatas(chartInstance);
@@ -525,4 +490,4 @@ Chart.plugins.register({
   beforeRender: function beforeRender(chartInstance) {}
 });
 
-},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[5]);
+},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[1,2,3,4,5]);
