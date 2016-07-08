@@ -7,15 +7,18 @@ export default class ChartJSWrapper extends Rect {
   _draw(context) {
 
     if(!this._chart) {
-      var { chart } = this.model
+      var { chart, data } = this.model
 
-      if(chart)
+      if(chart) {
         this._chart = new SceneChart(context,
           JSON.parse(JSON.stringify(chart)),
           this
         )
-      else
-        return
+      }
+      
+      if(data) {
+        this._chart.data.rawData = data
+      }
     }
 
     var { width, height, left, top } = this.model;
@@ -117,7 +120,7 @@ export default class ChartJSWrapper extends Rect {
       }
     }
 
-}
+  }
 
   onclick(e) {
     e.chartJSWrapper = this;

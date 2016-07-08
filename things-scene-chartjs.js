@@ -305,17 +305,25 @@ var ChartJSWrapper = function (_Rect) {
     value: function _draw(context) {
 
       if (!this._chart) {
-        var chart = this.model.chart;
+        var _model = this.model;
+        var chart = _model.chart;
+        var data = _model.data;
 
 
-        if (chart) this._chart = new _chartOverload2.default(context, JSON.parse(JSON.stringify(chart)), this);else return;
+        if (chart) {
+          this._chart = new _chartOverload2.default(context, JSON.parse(JSON.stringify(chart)), this);
+        }
+
+        if (data) {
+          this._chart.data.rawData = data;
+        }
       }
 
-      var _model = this.model;
-      var width = _model.width;
-      var height = _model.height;
-      var left = _model.left;
-      var top = _model.top;
+      var _model2 = this.model;
+      var width = _model2.width;
+      var height = _model2.height;
+      var left = _model2.left;
+      var top = _model2.top;
 
 
       var self = this;
