@@ -101,10 +101,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           name: 'chart.data.datasets.0.borderColor',
           property: 'color'
         }, {
-          type: 'color',
+          type: 'multiple-color',
           label: 'Background Color',
           name: 'chart.data.datasets.0.backgroundColor',
-          property: 'color'
+          property: 'multiple-color'
         }, {
           type: 'number',
           label: 'Border Width',
@@ -135,6 +135,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           label: 'X Axis Grid Line',
           name: 'chart.options.scales.xAxes.0.gridLines.display',
           property: 'checkbox'
+        }, {
+          type: 'string',
+          label: 'Theme',
+          name: 'chart.options.theme',
+          property: 'string'
+        }, {
+          type: 'checkbox',
+          label: 'Show Legend',
+          name: 'chart.options.legend.display',
+          property: 'checkbox'
+        }, {
+          type: 'string',
+          label: 'Legend Position',
+          name: 'chart.options.legend.position',
+          property: 'string'
         }]
 
         app.model = {
@@ -146,8 +161,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             left: 300,
             width: 200,
             height: 200,
-            fillStyle: '#ffff00',
-            strokeStyle: '#552555',
             fontColor: '#FF0000',
             lineWidth: 5,
             chart: {
@@ -193,6 +206,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       beginAtZero:true
                     }
                   }]
+                },
+                legend: {
+                  display : false
                 }
               }
             }
@@ -202,8 +218,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             left: 0,
             width: 200,
             height: 200,
-            fillStyle: '#ffff00',
-            strokeStyle: '#552555',
             fontColor: '#FF0000',
             lineWidth: 5,
             chart: {
@@ -259,6 +273,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
               },
               options: {
+                legend: {
+                  display: true,
+                  position: 'top'
+                },
                 scales: {
                   xAxes: [{
                     type: 'linear',
@@ -276,8 +294,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             left: 0,
             width: 200,
             height: 200,
-            fillStyle: '#ffff00',
-            strokeStyle: '#552555',
             fontColor: '#FF0000',
             lineWidth: 5,
             chart: {
@@ -306,6 +322,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
               },
               options: {
+                legend: {
+                  display: true,
+                  position: 'top'
+                },
                 scales: {
                   xAxes: [{
                     type: 'linear',
@@ -323,8 +343,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             left: 300,
             width: 200,
             height: 200,
-            fillStyle: '#ffff00',
-            strokeStyle: '#552555',
             fontColor: '#FF0000',
             lineWidth: 5,
             chart: {
@@ -354,6 +372,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
               },
               options: {
+                theme : 'dark',
+                legend: {
+                  display: true,
+                  position: 'top'
+                },
                 animation:{
                   animateScale:true
                 }

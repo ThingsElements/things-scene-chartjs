@@ -265,7 +265,7 @@ var SceneChart = function (_Chart) {
 exports.default = SceneChart;
 
 },{"./chart-controller-overload":1,"./chart-helpers-overload":2}],4:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -275,7 +275,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _chartOverload = require('./chart-overload');
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _chartOverload = require("./chart-overload");
 
 var _chartOverload2 = _interopRequireDefault(_chartOverload);
 
@@ -291,6 +293,9 @@ var _scene = scene;
 var Component = _scene.Component;
 var Rect = _scene.Rect;
 
+
+Chart.defaults.global.defaultFontSize = 10;
+
 var ChartJSWrapper = function (_Rect) {
   _inherits(ChartJSWrapper, _Rect);
 
@@ -301,8 +306,9 @@ var ChartJSWrapper = function (_Rect) {
   }
 
   _createClass(ChartJSWrapper, [{
-    key: '_draw',
+    key: "_draw",
     value: function _draw(context) {
+      _get(Object.getPrototypeOf(ChartJSWrapper.prototype), "_draw", this).call(this, context);
 
       if (!this._chart) {
         var _model = this.model;
@@ -316,6 +322,10 @@ var ChartJSWrapper = function (_Rect) {
 
         if (data) {
           this._chart.data.rawData = data;
+        }
+
+        if (this._chart.options) {
+          this.setTheme(this._chart.options.theme);
         }
       }
 
@@ -345,7 +355,107 @@ var ChartJSWrapper = function (_Rect) {
       context.translate(-left, -top);
     }
   }, {
-    key: 'onchange',
+    key: "setTheme",
+    value: function setTheme(theme) {
+
+      var darkColor = "#000";
+      var lightColor = "#fff";
+
+      var baseColor;
+
+      switch (theme) {
+        case 'dark':
+          baseColor = lightColor;
+          break;
+        case 'light':
+        default:
+          baseColor = darkColor;
+          break;
+      }
+
+      baseColor = tinycolor(baseColor);
+
+      var isDark = baseColor.isDark();
+
+      var operatorFunction = isDark ? "brighten" : "darken";
+
+      var options = this._chart.options;
+      if (!options) return;
+
+      if (options.legend && options.legend.labels) {
+        options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
+      }
+
+      if (!options.scales) options.scales = {};
+
+      if (options.scales && options.scales.xAxes) {
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = options.scales.xAxes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var axis = _step.value;
+
+            if (!axis.gridLines) axis.gridLines = {};
+            axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
+            axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
+
+            if (!axis.ticks) axis.ticks = {};
+
+            axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+      }
+
+      if (options.scales && options.scales.yAxes) {
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = options.scales.yAxes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var _axis = _step2.value;
+
+            if (!_axis.gridLines) _axis.gridLines = {};
+            _axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
+            _axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
+
+            if (!_axis.ticks) _axis.ticks = {};
+
+            _axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+              _iterator2.return();
+            }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
+            }
+          }
+        }
+      }
+    }
+  }, {
+    key: "onchange",
     value: function onchange(after) {
 
       if (after.hasOwnProperty('chart')) {
@@ -369,10 +479,10 @@ var ChartJSWrapper = function (_Rect) {
         return;
       }
 
-      if (after.width || after.height) {
-        this._draw_once = false;
-        this.invalidate();
-      }
+      // if(after.width || after.height) {
+      //   this._draw_once = false;
+      //   this.invalidate();
+      // }
 
       if (after.hasOwnProperty('data')) {
         this._chart.config.data.rawData = after.data || {};
@@ -389,7 +499,7 @@ var ChartJSWrapper = function (_Rect) {
         var keySplit = key.split('.');
         var value = after[key];
 
-        if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
+        if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === 'object') {
           value = JSON.parse(JSON.stringify(value));
         }
 
@@ -412,29 +522,33 @@ var ChartJSWrapper = function (_Rect) {
           }
 
           if (isChartChanged) {
+            this._chart = null;
             this._draw_once = false;
             this.invalidate();
           }
         }
       }
+
+      this._draw_once = false;
+      this.invalidate();
     }
   }, {
-    key: 'onclick',
+    key: "onclick",
     value: function onclick(e) {
       e.chartJSWrapper = this;
       if (this._chart) this._chart.eventHandler(e);
     }
   }, {
-    key: 'ondragstart',
+    key: "ondragstart",
     value: function ondragstart(e) {}
   }, {
-    key: 'onmousemove',
+    key: "onmousemove",
     value: function onmousemove(e) {
       e.chartJSWrapper = this;
       if (this._chart) this._chart.eventHandler(e);
     }
   }, {
-    key: 'controls',
+    key: "controls",
     get: function get() {}
   }]);
 
@@ -537,4 +651,4 @@ Chart.plugins.register({
   beforeRender: function beforeRender(chartInstance) {}
 });
 
-},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[5]);
+},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[1,2,3,4,5]);

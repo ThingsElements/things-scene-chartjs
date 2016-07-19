@@ -2,9 +2,12 @@ import SceneChart from './chart-overload'
 
 var { Component, Rect } = scene
 
+Chart.defaults.global.defaultFontSize = 10
+
 export default class ChartJSWrapper extends Rect {
 
   _draw(context) {
+    super._draw(context);
 
     if(!this._chart) {
       var { chart, data } = this.model
@@ -15,9 +18,13 @@ export default class ChartJSWrapper extends Rect {
           this
         )
       }
-      
+
       if(data) {
         this._chart.data.rawData = data
+      }
+
+      if(this._chart.options){
+        this.setTheme(this._chart.options.theme)
       }
     }
 
@@ -46,6 +53,71 @@ export default class ChartJSWrapper extends Rect {
 
   get controls() {}
 
+  setTheme(theme) {
+
+    let darkColor = "#000"
+    let lightColor = "#fff"
+
+    var baseColor;
+
+    switch(theme) {
+      case 'dark' :
+        baseColor = lightColor
+        break;
+      case 'light' :
+      default:
+        baseColor = darkColor
+        break;
+    }
+
+    baseColor = tinycolor(baseColor)
+
+    var isDark = baseColor.isDark();
+
+    var operatorFunction = isDark ? "brighten" : "darken"
+
+
+    var options = this._chart.options
+    if(!options)
+      return
+
+    if(options.legend && options.legend.labels) {
+        options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
+    }
+
+    if(!options.scales)
+      options.scales = {}
+
+    if(options.scales && options.scales.xAxes){
+      for(let axis of options.scales.xAxes) {
+        if(!axis.gridLines)
+          axis.gridLines = {}
+        axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
+        axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
+
+        if(!axis.ticks)
+          axis.ticks = {}
+
+        axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+      }
+    }
+
+    if(options.scales && options.scales.yAxes){
+      for(let axis of options.scales.yAxes) {
+        if(!axis.gridLines)
+          axis.gridLines = {}
+        axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
+        axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
+
+        if(!axis.ticks)
+          axis.ticks = {}
+
+        axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+      }
+    }
+
+  }
+
   onchange(after) {
 
     if (after.hasOwnProperty('chart')) {
@@ -69,10 +141,10 @@ export default class ChartJSWrapper extends Rect {
       return;
     }
 
-    if(after.width || after.height) {
-      this._draw_once = false;
-      this.invalidate();
-    }
+    // if(after.width || after.height) {
+    //   this._draw_once = false;
+    //   this.invalidate();
+    // }
 
     if(after.hasOwnProperty('data')) {
       this._chart.config.data.rawData = after.data || {};
@@ -113,12 +185,16 @@ export default class ChartJSWrapper extends Rect {
         }
 
         if(isChartChanged){
+          this._chart = null;
           this._draw_once = false;
           this.invalidate();
         }
 
       }
     }
+
+    this._draw_once = false;
+    this.invalidate()
 
   }
 
