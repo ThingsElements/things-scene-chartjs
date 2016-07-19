@@ -7,7 +7,6 @@ Chart.defaults.global.defaultFontSize = 10
 export default class ChartJSWrapper extends Rect {
 
   _draw(context) {
-    super._draw(context);
 
     if(!this._chart) {
       var { chart, data } = this.model
