@@ -322,7 +322,7 @@ var ChartJSWrapper = function (_Rect) {
         }
 
         if (this._chart.options) {
-          this.setTheme(this._chart.options.theme);
+          this.convertOptions(this._chart.options);
         }
       }
 
@@ -352,36 +352,17 @@ var ChartJSWrapper = function (_Rect) {
       context.translate(-left, -top);
     }
   }, {
-    key: "setTheme",
-    value: function setTheme(theme) {
-
-      var darkColor = "#000";
-      var lightColor = "#fff";
-
-      var baseColor;
-
-      switch (theme) {
-        case 'dark':
-          baseColor = lightColor;
-          break;
-        case 'light':
-        default:
-          baseColor = darkColor;
-          break;
-      }
-
-      baseColor = tinycolor(baseColor);
-
-      var isDark = baseColor.isDark();
-
-      var operatorFunction = isDark ? "brighten" : "darken";
-
-      var options = this._chart.options;
+    key: "convertOptions",
+    value: function convertOptions(options) {
+      this.setStacked(options);
+      this.setTheme(options);
+    }
+  }, {
+    key: "setStacked",
+    value: function setStacked(options) {
       if (!options) return;
 
-      if (options.legend && options.legend.labels) {
-        options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
-      }
+      var stacked = options.stacked;
 
       if (!options.scales) options.scales = {};
 
@@ -394,13 +375,7 @@ var ChartJSWrapper = function (_Rect) {
           for (var _iterator = options.scales.xAxes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             var axis = _step.value;
 
-            if (!axis.gridLines) axis.gridLines = {};
-            axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
-            axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
-
-            if (!axis.ticks) axis.ticks = {};
-
-            axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+            axis.stacked = stacked;
           }
         } catch (err) {
           _didIteratorError = true;
@@ -427,13 +402,7 @@ var ChartJSWrapper = function (_Rect) {
           for (var _iterator2 = options.scales.yAxes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
             var _axis = _step2.value;
 
-            if (!_axis.gridLines) _axis.gridLines = {};
-            _axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
-            _axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
-
-            if (!_axis.ticks) _axis.ticks = {};
-
-            _axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+            _axis.stacked = stacked;
           }
         } catch (err) {
           _didIteratorError2 = true;
@@ -446,6 +415,106 @@ var ChartJSWrapper = function (_Rect) {
           } finally {
             if (_didIteratorError2) {
               throw _iteratorError2;
+            }
+          }
+        }
+      }
+    }
+  }, {
+    key: "setTheme",
+    value: function setTheme(options) {
+      if (!options) return;
+
+      var theme = options.theme;
+
+      var darkColor = "#000";
+      var lightColor = "#fff";
+
+      var baseColor;
+
+      switch (theme) {
+        case 'light':
+          baseColor = lightColor;
+          break;
+        case 'dark':
+        default:
+          baseColor = darkColor;
+          break;
+      }
+
+      baseColor = tinycolor(baseColor);
+
+      var isDark = baseColor.isDark();
+
+      var operatorFunction = isDark ? "brighten" : "darken";
+
+      if (options.legend && options.legend.labels) {
+        options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
+      }
+
+      if (!options.scales) options.scales = {};
+
+      if (options.scales && options.scales.xAxes) {
+        var _iteratorNormalCompletion3 = true;
+        var _didIteratorError3 = false;
+        var _iteratorError3 = undefined;
+
+        try {
+          for (var _iterator3 = options.scales.xAxes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+            var axis = _step3.value;
+
+            if (!axis.gridLines) axis.gridLines = {};
+            axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
+            axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
+
+            if (!axis.ticks) axis.ticks = {};
+
+            axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+          }
+        } catch (err) {
+          _didIteratorError3 = true;
+          _iteratorError3 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion3 && _iterator3.return) {
+              _iterator3.return();
+            }
+          } finally {
+            if (_didIteratorError3) {
+              throw _iteratorError3;
+            }
+          }
+        }
+      }
+
+      if (options.scales && options.scales.yAxes) {
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
+
+        try {
+          for (var _iterator4 = options.scales.yAxes[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            var _axis2 = _step4.value;
+
+            if (!_axis2.gridLines) _axis2.gridLines = {};
+            _axis2.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
+            _axis2.gridLines.color = baseColor.clone().setAlpha(.1).toString();
+
+            if (!_axis2.ticks) _axis2.ticks = {};
+
+            _axis2.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+          }
+        } catch (err) {
+          _didIteratorError4 = true;
+          _iteratorError4 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion4 && _iterator4.return) {
+              _iterator4.return();
+            }
+          } finally {
+            if (_didIteratorError4) {
+              throw _iteratorError4;
             }
           }
         }

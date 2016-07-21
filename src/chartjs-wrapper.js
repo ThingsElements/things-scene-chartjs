@@ -23,7 +23,8 @@ export default class ChartJSWrapper extends Rect {
       }
 
       if(this._chart.options){
-        this.setTheme(this._chart.options.theme)
+        this.convertOptions(this._chart.options)
+
       }
     }
 
@@ -52,7 +53,38 @@ export default class ChartJSWrapper extends Rect {
 
   get controls() {}
 
-  setTheme(theme) {
+  convertOptions(options) {
+    this.setStacked(options)
+    this.setTheme(options)
+  }
+
+  setStacked(options) {
+    if(!options)
+      return
+
+    var stacked = options.stacked
+
+    if(!options.scales)
+      options.scales = {}
+
+    if(options.scales && options.scales.xAxes){
+      for(let axis of options.scales.xAxes) {
+        axis.stacked = stacked
+      }
+    }
+
+    if(options.scales && options.scales.yAxes){
+      for(let axis of options.scales.yAxes) {
+        axis.stacked = stacked
+      }
+    }
+  }
+
+  setTheme(options) {
+    if(!options)
+      return
+
+    var theme = options.theme
 
     let darkColor = "#000"
     let lightColor = "#fff"
@@ -60,10 +92,10 @@ export default class ChartJSWrapper extends Rect {
     var baseColor;
 
     switch(theme) {
-      case 'dark' :
+      case 'light' :
         baseColor = lightColor
         break;
-      case 'light' :
+      case 'dark' :
       default:
         baseColor = darkColor
         break;
@@ -75,13 +107,8 @@ export default class ChartJSWrapper extends Rect {
 
     var operatorFunction = isDark ? "brighten" : "darken"
 
-
-    var options = this._chart.options
-    if(!options)
-      return
-
     if(options.legend && options.legend.labels) {
-        options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
+      options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
     }
 
     if(!options.scales)
