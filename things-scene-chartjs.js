@@ -265,7 +265,7 @@ var SceneChart = function (_Chart) {
 exports.default = SceneChart;
 
 },{"./chart-controller-overload":1,"./chart-helpers-overload":2}],4:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -275,7 +275,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _chartOverload = require("./chart-overload");
+var _chartOverload = require('./chart-overload');
 
 var _chartOverload2 = _interopRequireDefault(_chartOverload);
 
@@ -304,7 +304,7 @@ var ChartJSWrapper = function (_Rect) {
   }
 
   _createClass(ChartJSWrapper, [{
-    key: "_draw",
+    key: '_draw',
     value: function _draw(context) {
 
       if (!this._chart) {
@@ -314,15 +314,15 @@ var ChartJSWrapper = function (_Rect) {
 
 
         if (chart) {
+          if (chart.options) {
+            this.convertOptions(chart);
+          }
+
           this._chart = new _chartOverload2.default(context, JSON.parse(JSON.stringify(chart)), this);
         }
 
         if (data) {
           this._chart.data.rawData = data;
-        }
-
-        if (this._chart.options) {
-          this.convertOptions(this._chart.options);
         }
       }
 
@@ -352,13 +352,14 @@ var ChartJSWrapper = function (_Rect) {
       context.translate(-left, -top);
     }
   }, {
-    key: "convertOptions",
-    value: function convertOptions(options) {
-      this.setStacked(options);
-      this.setTheme(options);
+    key: 'convertOptions',
+    value: function convertOptions(chart) {
+      this.setStacked(chart.options);
+      this.setMultiAxis(chart);
+      this.setTheme(chart.options);
     }
   }, {
-    key: "setStacked",
+    key: 'setStacked',
     value: function setStacked(options) {
       if (!options) return;
 
@@ -421,7 +422,63 @@ var ChartJSWrapper = function (_Rect) {
       }
     }
   }, {
-    key: "setTheme",
+    key: 'setMultiAxis',
+    value: function setMultiAxis(chart) {
+      if (!chart) return;
+
+      var options = chart.options;
+      if (!options) return;
+
+      var multiAxis = options.multiAxis;
+
+      if (!options.scales) options.scales = {};
+
+      if (!options.scales.yAxes) return;
+
+      var datasets = chart.data.datasets;
+      if (multiAxis) {
+
+        if (options.scales.yAxes.length === 1) {
+          options.scales.yAxes.push({
+            position: 'right',
+            id: 'right'
+          });
+        }
+      } else {
+        if (datasets) {
+          var _iteratorNormalCompletion3 = true;
+          var _didIteratorError3 = false;
+          var _iteratorError3 = undefined;
+
+          try {
+            for (var _iterator3 = datasets[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+              var dataset = _step3.value;
+
+              if (dataset.yAxisID == 'right') dataset.yAxisID = 'left';
+            }
+          } catch (err) {
+            _didIteratorError3 = true;
+            _iteratorError3 = err;
+          } finally {
+            try {
+              if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                _iterator3.return();
+              }
+            } finally {
+              if (_didIteratorError3) {
+                throw _iteratorError3;
+              }
+            }
+          }
+        }
+
+        if (options.scales.yAxes.length > 1) {
+          options.scales.yAxes = [options.scales.yAxes[0]];
+        }
+      }
+    }
+  }, {
+    key: 'setTheme',
     value: function setTheme(options) {
       if (!options) return;
 
@@ -448,20 +505,22 @@ var ChartJSWrapper = function (_Rect) {
 
       var operatorFunction = isDark ? "brighten" : "darken";
 
-      if (options.legend && options.legend.labels) {
-        options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
-      }
+      if (!options.legend) options.legend = {};
+
+      if (!options.legend.labels) options.legend.labels = {};
+
+      options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
 
       if (!options.scales) options.scales = {};
 
       if (options.scales && options.scales.xAxes) {
-        var _iteratorNormalCompletion3 = true;
-        var _didIteratorError3 = false;
-        var _iteratorError3 = undefined;
+        var _iteratorNormalCompletion4 = true;
+        var _didIteratorError4 = false;
+        var _iteratorError4 = undefined;
 
         try {
-          for (var _iterator3 = options.scales.xAxes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-            var axis = _step3.value;
+          for (var _iterator4 = options.scales.xAxes[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+            var axis = _step4.value;
 
             if (!axis.gridLines) axis.gridLines = {};
             axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
@@ -470,39 +529,6 @@ var ChartJSWrapper = function (_Rect) {
             if (!axis.ticks) axis.ticks = {};
 
             axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
-          }
-        } catch (err) {
-          _didIteratorError3 = true;
-          _iteratorError3 = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion3 && _iterator3.return) {
-              _iterator3.return();
-            }
-          } finally {
-            if (_didIteratorError3) {
-              throw _iteratorError3;
-            }
-          }
-        }
-      }
-
-      if (options.scales && options.scales.yAxes) {
-        var _iteratorNormalCompletion4 = true;
-        var _didIteratorError4 = false;
-        var _iteratorError4 = undefined;
-
-        try {
-          for (var _iterator4 = options.scales.yAxes[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-            var _axis2 = _step4.value;
-
-            if (!_axis2.gridLines) _axis2.gridLines = {};
-            _axis2.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
-            _axis2.gridLines.color = baseColor.clone().setAlpha(.1).toString();
-
-            if (!_axis2.ticks) _axis2.ticks = {};
-
-            _axis2.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
           }
         } catch (err) {
           _didIteratorError4 = true;
@@ -519,9 +545,42 @@ var ChartJSWrapper = function (_Rect) {
           }
         }
       }
+
+      if (options.scales && options.scales.yAxes) {
+        var _iteratorNormalCompletion5 = true;
+        var _didIteratorError5 = false;
+        var _iteratorError5 = undefined;
+
+        try {
+          for (var _iterator5 = options.scales.yAxes[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+            var _axis2 = _step5.value;
+
+            if (!_axis2.gridLines) _axis2.gridLines = {};
+            _axis2.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
+            _axis2.gridLines.color = baseColor.clone().setAlpha(.1).toString();
+
+            if (!_axis2.ticks) _axis2.ticks = {};
+
+            _axis2.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+          }
+        } catch (err) {
+          _didIteratorError5 = true;
+          _iteratorError5 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion5 && _iterator5.return) {
+              _iterator5.return();
+            }
+          } finally {
+            if (_didIteratorError5) {
+              throw _iteratorError5;
+            }
+          }
+        }
+      }
     }
   }, {
-    key: "onchange",
+    key: 'onchange',
     value: function onchange(after) {
 
       if (after.hasOwnProperty('chart')) {
@@ -565,7 +624,7 @@ var ChartJSWrapper = function (_Rect) {
         var keySplit = key.split('.');
         var value = after[key];
 
-        if ((typeof value === "undefined" ? "undefined" : _typeof(value)) === 'object') {
+        if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
           value = JSON.parse(JSON.stringify(value));
         }
 
@@ -599,22 +658,22 @@ var ChartJSWrapper = function (_Rect) {
       this.invalidate();
     }
   }, {
-    key: "onclick",
+    key: 'onclick',
     value: function onclick(e) {
       e.chartJSWrapper = this;
       if (this._chart) this._chart.eventHandler(e);
     }
   }, {
-    key: "ondragstart",
+    key: 'ondragstart',
     value: function ondragstart(e) {}
   }, {
-    key: "onmousemove",
+    key: 'onmousemove',
     value: function onmousemove(e) {
       e.chartJSWrapper = this;
       if (this._chart) this._chart.eventHandler(e);
     }
   }, {
-    key: "controls",
+    key: 'controls',
     get: function get() {}
   }]);
 

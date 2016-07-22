@@ -12,6 +12,11 @@ export default class ChartJSWrapper extends Rect {
       var { chart, data } = this.model
 
       if(chart) {
+        if(chart.options){
+          this.convertOptions(chart)
+
+        }
+
         this._chart = new SceneChart(context,
           JSON.parse(JSON.stringify(chart)),
           this
@@ -22,10 +27,6 @@ export default class ChartJSWrapper extends Rect {
         this._chart.data.rawData = data
       }
 
-      if(this._chart.options){
-        this.convertOptions(this._chart.options)
-
-      }
     }
 
     var { width, height, left, top } = this.model;
@@ -53,9 +54,10 @@ export default class ChartJSWrapper extends Rect {
 
   get controls() {}
 
-  convertOptions(options) {
-    this.setStacked(options)
-    this.setTheme(options)
+  convertOptions(chart) {
+    this.setStacked(chart.options)
+    this.setMultiAxis(chart)
+    this.setTheme(chart.options)
   }
 
   setStacked(options) {
@@ -76,6 +78,45 @@ export default class ChartJSWrapper extends Rect {
     if(options.scales && options.scales.yAxes){
       for(let axis of options.scales.yAxes) {
         axis.stacked = stacked
+      }
+    }
+  }
+
+  setMultiAxis(chart) {
+    if(!chart)
+      return
+
+    var options = chart.options
+    if(!options)
+      return
+
+    var multiAxis = options.multiAxis
+
+    if(!options.scales)
+      options.scales = {}
+
+    if(!options.scales.yAxes)
+      return
+
+    var datasets = chart.data.datasets
+    if(multiAxis){
+
+      if(options.scales.yAxes.length === 1) {
+        options.scales.yAxes.push({
+          position: 'right',
+          id: 'right'
+        })
+      }
+    } else {
+      if(datasets) {
+        for(let dataset of datasets) {
+          if(dataset.yAxisID == 'right')
+            dataset.yAxisID = 'left'
+        }
+      }
+
+      if(options.scales.yAxes.length > 1) {
+        options.scales.yAxes = [options.scales.yAxes[0]]
       }
     }
   }
@@ -107,9 +148,13 @@ export default class ChartJSWrapper extends Rect {
 
     var operatorFunction = isDark ? "brighten" : "darken"
 
-    if(options.legend && options.legend.labels) {
-      options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
-    }
+    if(!options.legend)
+      options.legend = {}
+
+    if(!options.legend.labels)
+      options.legend.labels = {}
+
+    options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
 
     if(!options.scales)
       options.scales = {}

@@ -157,6 +157,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           label: 'is Stacked',
           name: 'chart.options.stacked',
           property: 'checkbox'
+        }, {
+          type: 'checkbox',
+          label: 'Multi Axis',
+          name: 'chart.options.multiAxis',
+          property: 'checkbox'
         }]
 
         app.model = {
@@ -299,42 +304,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             fontColor: '#FF0000',
             lineWidth: 5,
             chart: {
-              type: 'line',
+              type: 'bar',
               data: {
                 labels: [],
                 datasets: [{
+                  type: 'line',
                   label: 'Line Dataset',
+                  yAxisID: 'left',
+                  data: []
+                }, {
+                  type: 'bar',
+                  label: 'Bar Dataset',
+                  yAxisID: 'right',
                   data: []
                 }],
                 rawData : {
                   seriesData : [
-                    [{
-                      x: -10,
-                      y: 0
-                    }, {
-                      x: 0,
-                      y: 10
-                    }, {
-                      x: 10,
-                      y: 5
-                    }]
-                    // , [0, 1, 6, 3, 5]
+                    [0, 10, 5, 3, 6],
+                    [100, 10, 60, 30, 50]
                   ],
-                  labelData : [-20, -10, 0, 10, 20]
+                  labelData : ['a', 'b', 'c', 'd', 'e' ]
                 }
               },
               options: {
+                multiAxis: true,
                 legend: {
                   display: true,
                   position: 'top'
                 },
                 scales: {
                   xAxes: [{
-                    type: 'linear',
                     position: 'bottom',
                     gridLines: {
                       display: true
                     }
+                  }],
+                  yAxes: [{
+                    position: 'left',
+                    id: 'left'
+                  }, {
+                    position: 'right',
+                    id: 'right'
                   }]
                 }
               }
