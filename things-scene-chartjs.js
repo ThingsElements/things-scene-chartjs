@@ -776,4 +776,4 @@ Chart.plugins.register({
   beforeRender: function beforeRender(chartInstance) {}
 });
 
-},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[5]);
+},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[1,2,3,4,5]);
