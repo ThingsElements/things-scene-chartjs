@@ -52,6 +52,10 @@ export default class ChartJSWrapper extends Rect {
 
   }
 
+  get volatile() {
+    return []
+  }
+
   get controls() {}
 
   convertOptions(chart) {
@@ -218,8 +222,13 @@ export default class ChartJSWrapper extends Rect {
     // }
 
     if(after.hasOwnProperty('data')) {
-      this._chart.config.data.rawData = after.data || {};
-      this._chart.update()
+
+      this.model.data = after.data
+
+      if(this._chart) {
+        this._chart.config.data.rawData = after.data || {};
+        this._chart.update()
+      }
     }
 
     for (var key in after) {

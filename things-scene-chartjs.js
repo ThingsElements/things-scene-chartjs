@@ -610,8 +610,13 @@ var ChartJSWrapper = function (_Rect) {
       // }
 
       if (after.hasOwnProperty('data')) {
-        this._chart.config.data.rawData = after.data || {};
-        this._chart.update();
+
+        this.model.data = after.data;
+
+        if (this._chart) {
+          this._chart.config.data.rawData = after.data || {};
+          this._chart.update();
+        }
       }
 
       for (var key in after) {
@@ -671,6 +676,11 @@ var ChartJSWrapper = function (_Rect) {
     value: function onmousemove(e) {
       e.chartJSWrapper = this;
       if (this._chart) this._chart.eventHandler(e);
+    }
+  }, {
+    key: 'volatile',
+    get: function get() {
+      return [];
     }
   }, {
     key: 'controls',
@@ -776,4 +786,4 @@ Chart.plugins.register({
   beforeRender: function beforeRender(chartInstance) {}
 });
 
-},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[1,2,3,4,5]);
+},{"./chart-overload":3,"./chartjs-wrapper":4}]},{},[5]);
