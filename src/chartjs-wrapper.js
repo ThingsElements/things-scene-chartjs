@@ -61,6 +61,7 @@ export default class ChartJSWrapper extends Rect {
   convertOptions(chart) {
     this.setStacked(chart.options)
     this.setMultiAxis(chart)
+    this.setFontSize(chart.options)
     this.setTheme(chart.options)
   }
 
@@ -188,6 +189,46 @@ export default class ChartJSWrapper extends Rect {
           axis.ticks = {}
 
         axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+      }
+    }
+
+  }
+
+  setFontSize(options) {
+    if(!options)
+      return
+
+    var fontSize = options.fontSize
+
+    let darkColor = "#000"
+    let lightColor = "#fff"
+
+    if(!options.legend)
+      options.legend = {}
+
+    if(!options.legend.labels)
+      options.legend.labels = {}
+
+    options.legend.labels.fontSize = fontSize;
+
+    if(!options.scales)
+      options.scales = {}
+
+    if(options.scales && options.scales.xAxes){
+      for(let axis of options.scales.xAxes) {
+        if(!axis.ticks)
+          axis.ticks = {}
+
+        axis.ticks.fontSize = fontSize
+      }
+    }
+
+    if(options.scales && options.scales.yAxes){
+      for(let axis of options.scales.yAxes) {
+        if(!axis.ticks)
+          axis.ticks = {}
+
+        axis.ticks.fontSize = fontSize;
       }
     }
 
