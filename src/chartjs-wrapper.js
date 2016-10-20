@@ -4,9 +4,101 @@ var { Component, Rect } = scene
 
 Chart.defaults.global.defaultFontSize = 10
 
+const NATURE = {
+  mutable: false,
+  resizable: true,
+  rotatable: true,
+  properties : [
+    // Chart
+    {
+      type: 'select',
+      label: 'theme',
+      name: 'chart.options.theme',
+      property: {
+        options: [
+          'dark',
+          'light'
+        ]
+      }
+    }, {
+      type: 'checkbox',
+      label: 'legend',
+      name: 'chart.options.legend.display',
+      value: true,
+      property: 'checkbox'
+    }, {
+      type: 'select',
+      label: 'position',
+      name: 'chart.options.legend.position',
+      property: {
+        options: [
+          'top',
+          'left',
+          'bottom',
+          'right'
+        ]
+      }
+    }, {
+      type: 'number',
+      label: 'font-size',
+      name: 'chart.options.fontSize',
+      property: 'fontSize'
+    }, {
+      type: 'checkbox',
+      label: 'stacked',
+      name: 'chart.options.stacked',
+      value: false,
+      property: 'stacked'
+    }, {
+      type: 'checkbox',
+      label: 'multi-axis',
+      name: 'chart.options.multiAxis',
+      value: false,
+      property: 'multiAxis'
+    },
+    // Series
+    {
+      type: 'chart-series-editor'
+    },
+    // Axis
+    {
+      type: 'checkbox',
+      label: 'x-grid-line',
+      name: 'chart.options.xGridLine',
+      property: 'x-grid-line'
+    }, {
+      type: 'checkbox',
+      label: 'y-grid-line',
+      name: 'chart.options.yGridLine',
+      property: 'y-grid-line'
+    },
+    // Data
+    {
+      type: 'editor-script',
+      name: 'data',
+      property: 'data'
+    }
+  ]
+}
 export default class ChartJSWrapper extends Rect {
 
-  _draw(context) {
+  _draw(ctx) {}
+
+  _post_draw(context) {
+
+    var {
+      left,
+      top,
+      width,
+      height
+    } = this.bounds;
+
+    context.beginPath();
+    context.rect(left, top, width, height);
+    this.drawFill(context);
+    this.drawStroke(context);
+
+    context.closePath();
 
     if(!this._chart) {
       var { chart, data } = this.model
@@ -54,6 +146,10 @@ export default class ChartJSWrapper extends Rect {
 
   get volatile() {
     return []
+  }
+
+  get nature() {
+    return NATURE
   }
 
   get controls() {}
