@@ -8,77 +8,82 @@ const NATURE = {
   mutable: false,
   resizable: true,
   rotatable: true,
-  properties : [
-    // Chart
-    {
-      type: 'select',
-      label: 'theme',
-      name: 'chart.options.theme',
-      property: {
-        options: [
-          'dark',
-          'light'
-        ]
-      }
-    }, {
-      type: 'checkbox',
-      label: 'legend',
-      name: 'chart.options.legend.display',
-      value: true,
-      property: 'checkbox'
-    }, {
-      type: 'select',
-      label: 'position',
-      name: 'chart.options.legend.position',
-      property: {
-        options: [
-          'top',
-          'left',
-          'bottom',
-          'right'
-        ]
-      }
-    }, {
-      type: 'number',
-      label: 'font-size',
-      name: 'chart.options.fontSize',
-      property: 'fontSize'
-    }, {
-      type: 'checkbox',
-      label: 'stacked',
-      name: 'chart.options.stacked',
-      value: false,
-      property: 'stacked'
-    }, {
-      type: 'checkbox',
-      label: 'multi-axis',
-      name: 'chart.options.multiAxis',
-      value: false,
-      property: 'multiAxis'
-    },
-    // Series
-    {
-      type: 'chart-series-editor'
-    },
-    // Axis
-    {
-      type: 'checkbox',
-      label: 'x-grid-line',
-      name: 'chart.options.xGridLine',
-      property: 'x-grid-line'
-    }, {
-      type: 'checkbox',
-      label: 'y-grid-line',
-      name: 'chart.options.yGridLine',
-      property: 'y-grid-line'
-    },
-    // Data
-    {
-      type: 'editor-script',
-      name: 'data',
-      property: 'data'
-    }
-  ]
+  // properties : [
+  //   // Chart
+  //   {
+  //     type: 'select',
+  //     label: 'theme',
+  //     name: 'chart.options.theme',
+  //     property: {
+  //       options: [
+  //         'dark',
+  //         'light'
+  //       ]
+  //     }
+  //   }, {
+  //     type: 'checkbox',
+  //     label: 'legend',
+  //     name: 'chart.options.legend.display',
+  //     value: true,
+  //     property: 'checkbox'
+  //   }, {
+  //     type: 'select',
+  //     label: 'position',
+  //     name: 'chart.options.legend.position',
+  //     property: {
+  //       options: [
+  //         'top',
+  //         'left',
+  //         'bottom',
+  //         'right'
+  //       ]
+  //     }
+  //   }, {
+  //     type: 'number',
+  //     label: 'font-size',
+  //     name: 'chart.options.fontSize',
+  //     property: 'fontSize'
+  //   }, {
+  //     type: 'checkbox',
+  //     label: 'stacked',
+  //     name: 'chart.options.stacked',
+  //     value: false,
+  //     property: 'stacked'
+  //   }, {
+  //     type: 'checkbox',
+  //     label: 'multi-axis',
+  //     name: 'chart.options.multiAxis',
+  //     value: false,
+  //     property: 'multiAxis'
+  //   },
+  //   // Series
+  //   {
+  //     type: 'chart-series-editor'
+  //   },
+  //   // Axis
+  //   {
+  //     type: 'checkbox',
+  //     label: 'x-grid-line',
+  //     name: 'chart.options.xGridLine',
+  //     property: 'x-grid-line'
+  //   }, {
+  //     type: 'checkbox',
+  //     label: 'y-grid-line',
+  //     name: 'chart.options.yGridLine',
+  //     property: 'y-grid-line'
+  //   },
+  //   // Data
+  //   {
+  //     type: 'editor-script',
+  //     name: 'data',
+  //     property: 'data'
+  //   }
+  // ]
+  properties : [{
+    type: 'chartjs-properties',
+    label: "",
+    name: 'chart'
+  }]
 }
 export default class ChartJSWrapper extends Rect {
 
@@ -264,6 +269,8 @@ export default class ChartJSWrapper extends Rect {
       for(let axis of options.scales.xAxes) {
         if(!axis.gridLines)
           axis.gridLines = {}
+
+        axis.gridLines.display = options.xGridLine
         axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
         axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
 
@@ -278,6 +285,8 @@ export default class ChartJSWrapper extends Rect {
       for(let axis of options.scales.yAxes) {
         if(!axis.gridLines)
           axis.gridLines = {}
+
+        axis.gridLines.display = options.yGridLine
         axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
         axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
 
@@ -337,6 +346,14 @@ export default class ChartJSWrapper extends Rect {
       this._draw_once = false;
 
       var datasets = this.model.chart.data.datasets;
+      if(!this.model.chart.data.rawData) {
+        this.model.chart.data.rawData = {}
+      }
+      if(!this.model.chart.data.rawData.seriesData) {
+        this.model.chart.data.rawData.seriesData = {}
+      }
+
+
       var seriesData = this.model.chart.data.rawData.seriesData;
 
       var data = [];
