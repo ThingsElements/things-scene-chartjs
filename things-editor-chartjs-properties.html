@@ -284,6 +284,7 @@
           'onModelChanged(model.*)',
           'onSeriesChanged(series.*)',
           'onCurrentSeriesIndexChanged(currentSeriesIndex)',
+          'onDataChanged(data)',
           'onDataStringChanged(dataString)'
         ],
 
@@ -296,14 +297,15 @@
           this.set('data', this.$['eval-editor'].value)
         },
 
-
         onEditorReady: function(e) {
           // event.detail should be a ace-editor
           e.detail.renderer.setShowGutter(false);
 
-          console.log('ready');
           var data = this.get('data') || {}
-          this.set('dataString',JSON.stringify(data, null, '\t'))
+          this.set('dataString', '')
+          this.async(function() {
+            this.set('dataString',JSON.stringify(data, null, '\t'))
+          }, 1)
         },
 
         onModelChanged: function(model) {
@@ -316,9 +318,14 @@
           }
         },
 
+        onDataChanged: function(data) {
+          this.set('dataString', JSON.stringify(data, null, '\t'))
+        },
+
         onDataStringChanged: function(dataString) {
 
-          var value = this.get('data') || {}
+          var value
+          // var value = this.get('data') || {}
           try{
             eval(`value = ${dataString}`)
           } catch(e) {
