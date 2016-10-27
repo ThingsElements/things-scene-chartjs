@@ -112,7 +112,7 @@
           <things-i18n-msg msgid="label.font-size" auto>Font Size</things-i18n-msg>
         </label>
         <input is="things-editor-number-input" number="{{values.options.fontSize::change}}">
-        <template is="dom-if" if="[[_isAvailableOption(model, 'stacked')]]">
+        <template is="dom-if" if="[[_isAvailableOption(values, 'stacked')]]">
           <label>
             <things-i18n-msg msgid="label.stacked" auto>stacked</things-i18n-msg>
           </label>
@@ -127,7 +127,7 @@
         <legend>
           <things-i18n-msg msgid="label.series" auto>Series</things-i18n-msg>
         </legend>
-        <template is="dom-if" if="[[!_isSpcChart(values)]]">
+        <template is="dom-if" if="[[_isAvailableOption(values, 'multiSeries')]]">
           <paper-tabs selected="{{currentSeriesIndex}}">
             <paper-tab data-series="1">1</paper-tab>
             <paper-tab data-series="2">2</paper-tab>
@@ -139,7 +139,7 @@
           </paper-tabs>
         </template>
         <div class="tab-content">
-          <template is="dom-if" if="[[_isAvailableOption(model, 'type')]]">
+          <template is="dom-if" if="[[_isAvailableOption(values, 'type')]]">
             <label>
               <things-i18n-msg msgid="label.type" auto>type</things-i18n-msg>
             </label>
@@ -168,10 +168,10 @@
           <label>
             <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
           </label>
-          <template is="dom-if" if="[[_usingMutiColor(model)]]">
+          <template is="dom-if" if="[[_usingMutiColor(values)]]">
             <things-editor-multiple-color values="{{series.backgroundColor}}"></things-editor-multiple-color>
           </template>
-          <template is="dom-if" if="[[!_usingMutiColor(model)]]">
+          <template is="dom-if" if="[[!_usingMutiColor(values)]]">
             <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
           </template>
           <label>
@@ -265,8 +265,7 @@
           },
           values: {
             type: Object,
-            notify: true,
-            value: {}
+            notify: true
           },
           data: {
             type : Object,
@@ -276,7 +275,7 @@
           dataString: {
             type: String,
             notify: true,
-            value: ""
+            value: "{}"
           }
         },
 
@@ -310,6 +309,8 @@
 
         onModelChanged: function(model) {
           if(model.path === 'model' && !this.changedByChartMember) {
+
+            this.set('values', model.value.chart)
 
             this.set('currentSeriesIndex', null);
             this.set('currentSeriesIndex', 0);
@@ -345,7 +346,7 @@
             var last = -1
 
             for(var i = 0;i < 7;i++) {
-              var series = self.model.chart.data.datasets[i]
+              var series = self.values.data.datasets[i]
               var tab = self.querySelector(`paper-tab[data-series="${i + 1}"]`)
 
               if(series) {
@@ -376,7 +377,7 @@
 
           var series = this.series
 
-          if(!this.get('model.chart.data.datasets.#'+this.currentSeriesIndex)) {
+          if(!this.get('values.data.datasets.#'+this.currentSeriesIndex)) {
 
             var chart = JSON.parse(JSON.stringify(this.get('values')))
 
@@ -398,7 +399,7 @@
 
           }
 
-          var keyStr = 'model.chart.data.datasets.#'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
+          var keyStr = 'values.data.datasets.#'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
 
           this.set(keyStr, change.value)
 
@@ -435,15 +436,15 @@
         },
 
         onCurrentSeriesIndexChanged: function(currentSeriesIndex) {
-          if(!this.model.chart) {
+          if(!this.values) {
             this.set('series', null)
             return
           }
 
-          if(!this.model.chart.data.datasets)
+          if(!this.values.data.datasets)
             return
 
-          this.set('series', this.model.chart.data.datasets[currentSeriesIndex] || {})
+          this.set('series', this.values.data.datasets[currentSeriesIndex] || {})
 
         },
 
@@ -506,29 +507,29 @@
           }
         },
 
-        _isAvailableOption: function(model, optionName) {
-          if(!model.chart)
-            return false;
+        _isAvailableOption: function(values, optionName) {
+          if(!values || Object.getOwnPropertyNames(values).length === 0)
+            return false
 
           var availableOptions = {
-            bar : ['type', 'stacked'],
-            line : ['type']
+            bar : ['multiSeries','type', 'stacked'],
+            line : ['multiSeries','type']
           }
 
-          if(availableOptions[model.chart.type] &&
-            availableOptions[model.chart.type].indexOf(optionName) >= 0) {
+          if(availableOptions[values.type] &&
+            availableOptions[values.type].indexOf(optionName) >= 0) {
             return true;
           }
 
           return false;
         },
 
-        _usingMutiColor: function(model) {
+        _usingMutiColor: function(values) {
 
-          if(!model.chart)
+          if(!values)
             return false;
 
-          switch (model.chart.type) {
+          switch (values.type) {
             case 'pie':
             case 'doughnut':
                 return true;
