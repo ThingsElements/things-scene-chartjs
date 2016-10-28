@@ -348,6 +348,8 @@
             for(var i = 0;i < 7;i++) {
               var series = self.values.data.datasets[i]
               var tab = self.querySelector(`paper-tab[data-series="${i + 1}"]`)
+              if(!tab)
+                continue
 
               if(series) {
                 tab.active = true
@@ -541,8 +543,8 @@
         _isSpcChart: function(values) {
           var isSPC = false;
 
-          if(!values.type)
-            return false;
+          if(!values || !values.type)
+            return isSPC;
 
           if(values.type == 'controlChart')
             isSPC =  true;
