@@ -141,6 +141,10 @@
         <div class="tab-content">
           <template is="dom-if" if="[[_isAvailableOption(values, 'type')]]">
             <label>
+              <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
+            </label>
+            <input type="text" value="{{series.dataKey::change}}"></input>
+            <label>
               <things-i18n-msg msgid="label.type" auto>type</things-i18n-msg>
             </label>
             <select class="select-content" value="{{series.type::change}}">
@@ -200,6 +204,10 @@
         </div>
       </fieldset>
       <fieldset class="same-width">
+        <label>
+          <things-i18n-msg msgid="label.label-data-key" auto>Label Data Key</things-i18n-msg>
+        </label>
+        <input type="text" value="{{values.data.labelDataKey::change}}"></input>
         <legend>
           <things-i18n-msg msgid="label.axes" auto>Axes</things-i18n-msg>
         </legend>

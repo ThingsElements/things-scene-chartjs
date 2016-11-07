@@ -38,7 +38,6 @@ export default class ChartJSWrapper extends RectPath(Component) {
       if(chart) {
         if(chart.options){
           this.convertOptions(chart)
-
         }
 
         this._chart = new SceneChart(context,
@@ -302,11 +301,42 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
     if(after.hasOwnProperty('data')) {
 
-      this.model.data = after.data
+      if(after.data instanceof Array) {
+        let label = this.model.chart.data.labelDataKey
+        let seriesKeys = []
 
-      if(this._chart) {
-        this._chart.config.data.rawData = after.data || {};
-        this._chart.update()
+        for(let i in this.model.chart.data.datasets) {
+          seriesKeys.push(this.model.chart.data.datasets[i].dataKey)
+        }
+
+        let seriesData = []
+        let labelData = []
+
+        let convertedObject = {
+          seriesData: seriesData,
+          labelData: labelData
+        }
+
+        for(let i in after.data) {
+          let currData = after.data[i]
+          labelData.push(currData[label])
+
+          for(let i in seriesKeys) {
+            if(!seriesData[i])
+              seriesData[i] = []
+            seriesData[i].push(currData[seriesKeys[i]])
+          }
+        }
+
+        this.set('data', convertedObject)
+
+      } else {
+        this.model.data = after.data
+
+        if(this._chart) {
+          this._chart.config.data.rawData = after.data || {};
+          this._chart.update()
+        }
       }
     }
 
