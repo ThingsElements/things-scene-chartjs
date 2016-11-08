@@ -47,7 +47,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
       }
 
       if(data) {
-        this._chart.data.rawData = data
+        this._chart.data.rawData = this.convertObject(data)
       }
 
     }
@@ -74,13 +74,76 @@ export default class ChartJSWrapper extends RectPath(Component) {
     context.translate(-left, -top);
 
   }
-
-  get volatile() {
-    return []
-  }
-
+  
   get nature() {
     return NATURE
+  }
+
+  convertObject(dataArray) {
+    if(!dataArray)
+      return null
+
+    if(!(dataArray instanceof Array))
+      return null
+
+    // modeling중 변수 기본값에 대한 처리
+    if(dataArray[0].hasOwnProperty('__field1')) {
+      dataArray = this.toObjectArrayValue(dataArray)
+    }
+
+    let label = this.model.chart.data.labelDataKey
+    let seriesKeys = []
+
+    for(let i in this.model.chart.data.datasets) {
+      seriesKeys.push(this.model.chart.data.datasets[i].dataKey)
+    }
+
+    let seriesData = []
+    let labelData = []
+
+    let convertedObject = {
+      seriesData: seriesData,
+      labelData: labelData
+    }
+
+    for(let i in dataArray) {
+      let currData = dataArray[i]
+      labelData.push(currData[label])
+
+      for(let i in seriesKeys) {
+        if(!seriesData[i])
+          seriesData[i] = []
+        seriesData[i].push(currData[seriesKeys[i]])
+      }
+    }
+
+    return convertedObject
+  }
+
+  toObjectArrayValue(array) {
+    if(!array || array.length === 0)
+      return null
+
+    let indexKeyMap = {}
+    let value = []
+
+    for(let key in array[0]) {
+      indexKeyMap[key] = array[0][key]
+    }
+
+    for(var i = 1; i < array.length; i++) {
+      let object = {}
+      let thisObject = array[i]
+      for(let key in indexKeyMap) {
+        let k = indexKeyMap[key];
+        let v = thisObject[key];
+        object[k] = v
+      }
+
+      value.push(object)
+    }
+
+    return value
   }
 
   convertOptions(chart) {
@@ -302,34 +365,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     if(after.hasOwnProperty('data')) {
 
       if(after.data instanceof Array) {
-        let label = this.model.chart.data.labelDataKey
-        let seriesKeys = []
-
-        for(let i in this.model.chart.data.datasets) {
-          seriesKeys.push(this.model.chart.data.datasets[i].dataKey)
-        }
-
-        let seriesData = []
-        let labelData = []
-
-        let convertedObject = {
-          seriesData: seriesData,
-          labelData: labelData
-        }
-
-        for(let i in after.data) {
-          let currData = after.data[i]
-          labelData.push(currData[label])
-
-          for(let i in seriesKeys) {
-            if(!seriesData[i])
-              seriesData[i] = []
-            seriesData[i].push(currData[seriesKeys[i]])
-          }
-        }
-
-        this.set('data', convertedObject)
-
+        this.set('data', this.convertObject(after.data))
       } else {
         this.model.data = after.data
 

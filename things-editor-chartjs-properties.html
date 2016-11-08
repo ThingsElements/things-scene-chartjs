@@ -220,18 +220,6 @@
         </label>
         <input type="checkbox" checked="{{values.options.yGridLine}}" on-change="onYGridLineChanged" required>
       </fieldset>
-      <fieldset class="same-width">
-          <legend>
-            <things-i18n-msg msgid="label.data" auto>data</things-i18n-msg>
-          </legend>
-          <div data-rule-type="eval">
-            <things-editor-script id="eval-editor"
-                                  theme="ace/theme/monokai"
-                                  mode="ace/mode/javascript"
-                                  value="{{dataString}}">
-            </things-editor-script>
-          </div>
-      </fieldset>
       <template is="dom-if" if="[[_isSpcChart(values)]]">
         <fieldset class="same-width">
           <legend>
@@ -274,45 +262,16 @@
           values: {
             type: Object,
             notify: true
-          },
-          data: {
-            type : Object,
-            notify: true
-          },
-
-          dataString: {
-            type: String,
-            notify: true,
-            value: "{}"
           }
         },
 
         observers: [
           'onModelChanged(model.*)',
           'onSeriesChanged(series.*)',
-          'onCurrentSeriesIndexChanged(currentSeriesIndex)',
-          'onDataChanged(data)',
-          'onDataStringChanged(dataString)'
+          'onCurrentSeriesIndexChanged(currentSeriesIndex)'
         ],
 
         listeners: {
-          'eval-editor.blur': 'onBlurEvalEditor',
-          'eval-editor.editor-ready': 'onEditorReady'
-        },
-
-        onBlurEvalEditor: function(after) {
-          this.set('data', this.$['eval-editor'].value)
-        },
-
-        onEditorReady: function(e) {
-          // event.detail should be a ace-editor
-          e.detail.renderer.setShowGutter(false);
-
-          var data = this.get('data') || {}
-          this.set('dataString', '')
-          this.async(function() {
-            this.set('dataString',JSON.stringify(data, null, '\t'))
-          }, 1)
         },
 
         onModelChanged: function(model) {
@@ -324,22 +283,6 @@
             this.set('currentSeriesIndex', 0);
 
             return;
-          }
-        },
-
-        onDataChanged: function(data) {
-          this.set('dataString', JSON.stringify(data, null, '\t'))
-        },
-
-        onDataStringChanged: function(dataString) {
-
-          var value
-          // var value = this.get('data') || {}
-          try{
-            eval(`value = ${dataString}`)
-          } catch(e) {
-          } finally {
-            this.set('data', value)
           }
         },
 
