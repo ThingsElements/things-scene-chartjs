@@ -36,18 +36,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
       var { chart, data } = this.model
 
       if(chart) {
-        if(chart.options){
-          this.convertOptions(chart)
-        }
-
-        this._chart = new SceneChart(context,
-          JSON.parse(JSON.stringify(chart)),
-          this
-        )
-      }
-
-      if(data) {
-        this._chart.data.rawData = this.convertObject(data)
+        this.initChart(context)
       }
 
     }
@@ -57,6 +46,12 @@ export default class ChartJSWrapper extends RectPath(Component) {
     var self = this;
 
     context.translate(left, top);
+
+    var data = this.get('data')
+
+    if(data) {
+      this._chart.data.rawData = this.convertObject(data)
+    }
 
     if(!this._draw_once) {
       this._chart.reset(width, height, context);
@@ -74,17 +69,40 @@ export default class ChartJSWrapper extends RectPath(Component) {
     context.translate(-left, -top);
 
   }
-  
+
   get nature() {
     return NATURE
+  }
+
+  initChart(context) {
+
+    var {chart} = this.model
+
+    if(chart.options){
+      this.convertOptions(chart)
+    }
+
+    this._chart = new SceneChart(context,
+      JSON.parse(JSON.stringify(chart)),
+      this
+    )
+  }
+
+  destroyChart() {
+    this._chart.destroy()
+    this._chart = null
   }
 
   convertObject(dataArray) {
     if(!dataArray)
       return null
 
-    if(!(dataArray instanceof Array))
+    if(!(dataArray instanceof Array)) {
+      if(dataArray instanceof Object) {
+        return dataArray
+      }
       return null
+    }
 
     // modeling중 변수 기본값에 대한 처리
     if(dataArray[0].hasOwnProperty('__field1')) {
@@ -328,95 +346,23 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
   onchange(after) {
 
+    var isChartChanged = false
+
     if (after.hasOwnProperty('chart')) {
-      this._chart = null;
-      this._draw_once = false;
-
-      var datasets = this.model.chart.data.datasets;
-      if(!this.model.chart.data.rawData) {
-        this.model.chart.data.rawData = {}
-      }
-      if(!this.model.chart.data.rawData.seriesData) {
-        this.model.chart.data.rawData.seriesData = {}
-      }
-
-
-      var seriesData = this.model.chart.data.rawData.seriesData;
-
-      var data = [];
-
-      if(datasets.length > seriesData.length) {
-        for(var i = 0; i < this.model.chart.data.rawData.labelData.length; i++) {
-          data.push(Math.floor(Math.random() * seriesData[0][i] / 2));
-        }
-
-        seriesData.push(data);
-      }
-
-      this.invalidate();
-      return;
+      isChartChanged = true;
+      this.model.chart = JSON.parse(JSON.stringify(after.chart))
     }
-
-    // if(after.width || after.height) {
-    //   this._draw_once = false;
-    //   this.invalidate();
-    // }
 
     if(after.hasOwnProperty('data')) {
-
-      if(after.data instanceof Array) {
-        this.set('data', this.convertObject(after.data))
-      } else {
-        this.model.data = after.data
-
-        if(this._chart) {
-          this._chart.config.data.rawData = after.data || {};
-          this._chart.update()
-        }
+      // this.model.data = after.data
+      if(this._chart) {
+        this._chart.config.data.rawData = after.data || {};
+        this._chart.update()
       }
     }
 
-    for (var key in after) {
-      if (!after.hasOwnProperty(key)) {
-        continue;
-      }
-
-      var lastObj = this.model;
-      var lastChartObj = this;
-      var keySplit = key.split('.');
-      var value = after[key];
-
-      if(typeof value === 'object') {
-        value = JSON.parse(JSON.stringify(value));
-      }
-
-      if(keySplit.length > 0) {
-        var isChartChanged = false;
-        for(var i =0; i<keySplit.length; i++) {
-          var k = keySplit[i]
-
-          if(k === 'chart')
-            isChartChanged = true;
-
-          k = k.replace('#', '')
-
-          if(i === keySplit.length - 1){
-            lastObj[k] = value;
-            lastChartObj[k] = value;
-          }
-
-          lastObj = lastObj[k];
-          lastChartObj = lastChartObj[k] || lastChartObj["_"+k];
-        }
-
-        if(isChartChanged){
-          this._chart = null;
-          this._draw_once = false;
-          this.invalidate();
-        }
-
-      }
-    }
+    if(isChartChanged)
+      this.destroyChart()
 
     this._draw_once = false;
     this.invalidate()
