@@ -57,8 +57,6 @@ function seriesHighlight(chartInstance, seriesData) {
         if( !eval(highlightCondition) )
           return
 
-        console.log(dataset.backgroundColor, highlightColor);
-
         let meta = chartInstance.getDatasetMeta(sIndex)
         meta.data[i]._model.backgroundColor = highlightColor
         meta.data[i]._model.hoverBackgroundColor = highlightColor
