@@ -112,6 +112,8 @@
             <things-i18n-msg msgid="label.stacked" auto>stacked</things-i18n-msg>
           </label>
           <input type="checkbox" checked="{{values.options.stacked}}" on-change="onStackedChanged" required>
+        </template>
+        <template is="dom-if" if="[[_isAvailableOption(values, 'multiAxis')]]">
           <label>
             <things-i18n-msg msgid="label.multi-axis" auto>Multi Axis</things-i18n-msg>
           </label>
@@ -148,14 +150,19 @@
               <option value="line">line</option>
             </select>
           </template>
-          <label>
-            <things-i18n-msg msgid="label.label" auto>label</things-i18n-msg>
-          </label>
-          <input type="text" value="{{series.label::change}}"></input>
-          <label>
-            <things-i18n-msg msgid="label.line-tension" auto>line tension</things-i18n-msg>
-          </label>
-          <input is="things-editor-number-input" number="{{series.lineTension::change}}">
+          <template is="dom-if" if="[[_isAvailableOption(values, 'label')]]">
+            <label>
+              <things-i18n-msg msgid="label.label" auto>label</things-i18n-msg>
+            </label>
+            <input type="text" value="{{series.label::change}}"></input>
+          </template>
+          <template is="dom-if" if="[[_isAvailableOption(values, 'line-tension')]]">
+            <label>
+              <things-i18n-msg msgid="label.line-tension" auto>line tension</things-i18n-msg>
+            </label>
+            <input is="things-editor-number-input" number="{{series.lineTension::change}}">
+          </template>
+          <template is="dom-if" if="[[_isAvailableOption(values, 'border-option')]]">
           <label>
             <things-i18n-msg msgid="label.border-color" auto>border color</things-i18n-msg>
           </label>
@@ -164,6 +171,7 @@
             <things-i18n-msg msgid="label.border-width" auto>border width</things-i18n-msg>
           </label>
           <input is="things-editor-number-input" number="{{series.borderWidth::change}}">
+          </template>
           <label>
             <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
           </label>
@@ -173,29 +181,35 @@
           <template is="dom-if" if="[[!_usingMutiColor(values)]]">
             <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
           </template>
-          <label>
-            <things-i18n-msg msgid="label.point-border-color" auto>point border color</things-i18n-msg>
-          </label>
-          <things-editor-color value="{{series.pointBorderColor::change}}"></things-editor-color>
-          <label>
-            <things-i18n-msg msgid="label.point-border-width" auto>point border width</things-i18n-msg>
-          </label>
-          <input is="things-editor-number-input" number="{{series.pointBorderWidth::change}}">
-          <label>
-            <things-i18n-msg msgid="label.point-bg-color" auto>point BG color</things-i18n-msg>
-          </label>
-          <things-editor-color value="{{series.pointBackgroundColor::change}}"></things-editor-color>
-          <label>
-            <things-i18n-msg msgid="label.fill" auto>fill</things-i18n-msg>
-          </label>
-          <input type="checkbox" checked="{{series.fill}}" on-change="onFillChanged" required>
-          <label>
-            <things-i18n-msg msgid="label.target-axis" auto>target axis</things-i18n-msg>
-          </label>
-          <select class="select-content" value="{{series.yAxisID::change}}">
-            <option value="right">right</option>
-            <option value="left">left</option>
-          </select>
+          <template is="dom-if" if="[[_isAvailableOption(values, 'point-option')]]">
+            <label>
+              <things-i18n-msg msgid="label.point-border-color" auto>point border color</things-i18n-msg>
+            </label>
+            <things-editor-color value="{{series.pointBorderColor::change}}"></things-editor-color>
+            <label>
+              <things-i18n-msg msgid="label.point-border-width" auto>point border width</things-i18n-msg>
+            </label>
+            <input is="things-editor-number-input" number="{{series.pointBorderWidth::change}}">
+            <label>
+              <things-i18n-msg msgid="label.point-bg-color" auto>point BG color</things-i18n-msg>
+            </label>
+            <things-editor-color value="{{series.pointBackgroundColor::change}}"></things-editor-color>
+          </template>
+          <template is="dom-if" if="[[_isAvailableOption(values, 'fill')]]">
+            <label>
+              <things-i18n-msg msgid="label.fill" auto>fill</things-i18n-msg>
+            </label>
+            <input type="checkbox" checked="{{series.fill}}" on-change="onFillChanged" required>
+          </template>
+          <template is="dom-if" if="[[!_isFirstSeries(currentSeriesIndex)]]">
+            <label>
+              <things-i18n-msg msgid="label.target-axis" auto>target axis</things-i18n-msg>
+            </label>
+            <select class="select-content" value="{{series.yAxisID::change}}">
+              <option value="left">left</option>
+              <option value="right">right</option>
+            </select>
+          </template>
         </div>
       </fieldset>
       <fieldset class="same-width">
@@ -257,6 +271,10 @@
           values: {
             type: Object,
             notify: true
+          },
+          series: {
+            type: Object,
+            notify: true
           }
         },
 
@@ -282,7 +300,6 @@
         },
 
         onSeriesChanged: function(change) {
-
           if(!this.values)
             return
 
@@ -316,12 +333,46 @@
 
           }, 10)
 
-          if(!change || change.path === 'series'){
+          if(!change || change.path == 'series'){
             return
           }
 
-          // if(!this.series.seriess)
-          //   this.series.seriess = []
+          // var seriesDefaults
+
+          // if(change.path == 'series.type') {
+          //   // set default values
+          //   switch(change.value) {
+          //     case 'bar' :
+          //       seriesDefaults = {
+          //         type: 'line',
+          //         lineTension: 0,
+          //         borderColor: 'blue',
+          //         borderWidth : 1,
+          //         backgroundColor: 'blue',
+          //         pointBorderColor: 'blue',
+          //         pointBackgroundColor: 'blue',
+          //         fill : true
+          //       }
+          //       break;
+          //     case 'line' :
+          //       seriesDefaults = {
+          //         type: 'line',
+          //         lineTension: 0.4,
+          //         borderColor: 'red',
+          //         borderWidth : 2,
+          //         backgroundColor: 'red',
+          //         pointBorderColor: 'red',
+          //         pointBackgroundColor: 'red',
+          //         fill : false
+          //       }
+          //       break;
+          //     default:
+          //       break;
+          //   }
+
+          //   this.set('series', Object.assign(JSON.parse(JSON.stringify(this.series)), seriesDefaults))
+          //   return
+          // }
 
           var series = this.series
 
@@ -352,34 +403,6 @@
           this.set(keyStr, change.value)
 
           this.changedByChartMember = false;
-
-          // var chart = JSON.parse(JSON.stringify(this.get('values.chart')))
-          //
-          // chart.data.datasets = []
-          //
-          // let datasets = chart.data.datasets
-          //
-          // for(var i in this.values.data.datasets) {
-          //   datasets[i] = JSON.parse(JSON.stringify(this.values.data.datasets[i]));
-          // }
-          //
-          // if(!this.get('values.data.datasets.#'+this.currentSeriesIndex)) {
-          //
-          //   datasets.push({
-          //     data:[]
-          //   });
-          //
-          //   this.set('values.chart', chart)
-          // }
-          //
-          // datasets[this.currentSeriesIndex][change.path.replace('series.', '')] = change.value;
-          //
-          // // this.changedByChartMember = true;
-          //
-          // this.set('values.chart', chart)
-          //
-          // this.onCurrentSeriesIndexChanged(this.get('currentSeriesIndex'))
-          // this.onSeriesChanged();
 
         },
 
@@ -460,13 +483,20 @@
             return false
 
           var availableOptions = {
-            bar : ['multiSeries','type', 'stacked'],
-            line : ['multiSeries','type']
+            bar : ['label', 'multiSeries','type', 'multiAxis', 'stacked'],
+            horizontalBar : ['label', 'multiSeries', 'stacked'],
+            line : ['label', 'multiSeries', 'multiAxis','type', 'line-tension', 'fill', 'border-option', 'point-option'],
+            radar: ['label', 'multiSeries', 'fill', 'border-option', 'point-option']
           }
 
           if(availableOptions[values.type] &&
             availableOptions[values.type].indexOf(optionName) >= 0) {
             return true;
+          }
+
+          if(values.type == 'bar' && values.subType == 'mixed') {
+            if(availableOptions['line'] && availableOptions['line'].indexOf(optionName) >= 0)
+              return true
           }
 
           return false;
@@ -478,6 +508,7 @@
             return false;
 
           switch (values.type) {
+            case 'polarArea':
             case 'pie':
             case 'doughnut':
                 return true;
@@ -514,6 +545,13 @@
           }
 
           this.set("values.options.multiAxis", checked);
+        },
+
+        _isFirstSeries: function(currentSeriesIndex) {
+          if(currentSeriesIndex === 0)
+            return true
+
+          return false
         }
 
       })
