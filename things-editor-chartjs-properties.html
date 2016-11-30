@@ -136,11 +136,11 @@
           </paper-tabs>
         </template>
         <div class="tab-content">
-          <template is="dom-if" if="[[_isAvailableOption(values, 'type')]]">
-            <label>
-              <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
-            </label>
-            <input type="text" value="{{series.dataKey::change}}"></input>
+          <label>
+            <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
+          </label>
+          <input type="text" value="{{series.dataKey::change}}"></input>
+          <template is="dom-if" if="[[_isAvailableOption(series, 'type')]]">
             <label>
               <things-i18n-msg msgid="label.type" auto>type</things-i18n-msg>
             </label>
@@ -150,27 +150,27 @@
               <option value="line">line</option>
             </select>
           </template>
-          <template is="dom-if" if="[[_isAvailableOption(values, 'label')]]">
+          <template is="dom-if" if="[[_isAvailableOption(series, 'label')]]">
             <label>
               <things-i18n-msg msgid="label.label" auto>label</things-i18n-msg>
             </label>
             <input type="text" value="{{series.label::change}}"></input>
           </template>
-          <template is="dom-if" if="[[_isAvailableOption(values, 'line-tension')]]">
+          <template is="dom-if" if="[[_isAvailableOption(series, 'line-tension')]]">
             <label>
               <things-i18n-msg msgid="label.line-tension" auto>line tension</things-i18n-msg>
             </label>
             <input is="things-editor-number-input" number="{{series.lineTension::change}}">
           </template>
-          <template is="dom-if" if="[[_isAvailableOption(values, 'border-option')]]">
-          <label>
-            <things-i18n-msg msgid="label.border-color" auto>border color</things-i18n-msg>
-          </label>
-          <things-editor-color value="{{series.borderColor::change}}"></things-editor-color>
-          <label>
-            <things-i18n-msg msgid="label.border-width" auto>border width</things-i18n-msg>
-          </label>
-          <input is="things-editor-number-input" number="{{series.borderWidth::change}}">
+          <template is="dom-if" if="[[_isAvailableOption(series, 'border-option')]]">
+            <label>
+              <things-i18n-msg msgid="label.border-color" auto>border color</things-i18n-msg>
+            </label>
+            <things-editor-color value="{{series.borderColor::change}}"></things-editor-color>
+            <label>
+              <things-i18n-msg msgid="label.border-width" auto>border width</things-i18n-msg>
+            </label>
+            <input is="things-editor-number-input" number="{{series.borderWidth::change}}">
           </template>
           <label>
             <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
@@ -181,26 +181,28 @@
           <template is="dom-if" if="[[!_usingMutiColor(values)]]">
             <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
           </template>
-          <template is="dom-if" if="[[_isAvailableOption(values, 'point-option')]]">
+          <template is="dom-if" if="[[_isAvailableOption(series, 'point-option')]]">
             <label>
               <things-i18n-msg msgid="label.point-bg-color" auto>point BG color</things-i18n-msg>
             </label>
             <things-editor-color value="{{series.pointBackgroundColor::change}}"></things-editor-color>
           </template>
-          <template is="dom-if" if="[[_isAvailableOption(values, 'fill')]]">
+          <template is="dom-if" if="[[_isAvailableOption(series, 'fill')]]">
             <label>
               <things-i18n-msg msgid="label.fill" auto>fill</things-i18n-msg>
             </label>
             <input type="checkbox" checked="{{series.fill}}" on-change="onFillChanged" required>
           </template>
-          <template is="dom-if" if="[[!_isFirstSeries(currentSeriesIndex)]]">
-            <label>
-              <things-i18n-msg msgid="label.target-axis" auto>target axis</things-i18n-msg>
-            </label>
-            <select class="select-content" value="{{series.yAxisID::change}}">
-              <option value="left">left</option>
-              <option value="right">right</option>
-            </select>
+          <template is="dom-if" if="[[_isAvailableOption(values, 'targetAxis')]]">
+            <template is="dom-if" if="[[!_isFirstSeries(currentSeriesIndex)]]">
+              <label>
+                <things-i18n-msg msgid="label.target-axis" auto>target axis</things-i18n-msg>
+              </label>
+              <select class="select-content" value="{{series.yAxisID::change}}">
+                <option value="left">left</option>
+                <option value="right">right</option>
+              </select>
+            </template>
           </template>
         </div>
       </fieldset>
@@ -475,9 +477,9 @@
             return false
 
           var availableOptions = {
-            bar : ['label', 'multiSeries','type', 'multiAxis', 'stacked'],
-            horizontalBar : ['label', 'multiSeries', 'stacked'],
-            line : ['label', 'multiSeries', 'multiAxis','type', 'line-tension', 'fill', 'border-option', 'point-option'],
+            bar : ['label', 'multiSeries','type', 'multiAxis', 'stacked', 'targetAxis'],
+            horizontalBar : ['label', 'multiSeries', 'stacked', 'targetAxis'],
+            line : ['label', 'multiSeries', 'multiAxis','type', 'line-tension', 'fill', 'border-option', 'point-option', 'targetAxis'],
             radar: ['label', 'multiSeries', 'fill', 'border-option', 'point-option']
           }
 
