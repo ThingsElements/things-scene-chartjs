@@ -50,6 +50,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </things-scene-viewer>
 
       <button id="change">Change Value</button>
+      <button id="change-model">Change Model</button>
       <fieldset>
         <legend>Chart.js properties</legend>
         <things-scene-properties id="properties"
@@ -93,10 +94,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           	}
           ])
         })
+        app.$['change-model'].addEventListener('click', function() {
+          var viewer = app.$.scene
+
+          var selected = app.selected[0]
+          var chartModel = JSON.parse(JSON.stringify(selected.model.chart))
+          chartModel.data.datasets.push({
+            label:'add',
+            backgroundColor: 'red',
+            data: []
+          })
+
+          selected.set('chart', chartModel)
+        })
 
         app.$.properties.addEventListener('change', function(e) {
           console.log('change', e, app.$.properties.model)
         })
+
+        Chart.defaults.global.hover.mode = 'index';
+        // Chart.defaults.global.hover.intersect = false;
 
         app.props = [{
           type: 'number',
@@ -341,11 +358,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   type: 'line',
                   label: 'Line Dataset',
                   yAxisID: 'left',
+                  borderColor: 'red',
+                  fill: false,
                   data: []
                 }, {
                   type: 'bar',
                   label: 'Bar Dataset',
                   yAxisID: 'right',
+                  borderColor: 'blue',
+                  backgroundColor: 'blue',
                   data: []
                 }],
                 rawData : {
@@ -357,6 +378,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
               },
               options: {
+                hover: {
+                  mode: 'index'
+                },
                 multiAxis: true,
                 legend: {
                   display: true,

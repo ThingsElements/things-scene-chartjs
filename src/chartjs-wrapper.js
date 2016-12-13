@@ -2,7 +2,9 @@ import SceneChart from './chart-overload'
 
 var { Component, RectPath } = scene
 
-Chart.defaults.global.defaultFontSize = 10
+// Chart.defaults.global.defaultFontSize = 10
+// Chart.defaults.global.hover.mode = 'index';
+// Chart.defaults.global.hover.intersect = false;
 
 const NATURE = {
   mutable: false,
@@ -89,7 +91,8 @@ export default class ChartJSWrapper extends RectPath(Component) {
   }
 
   destroyChart() {
-    this._chart.destroy()
+    if(this._chart)
+      this._chart.destroy()
     this._chart = null
   }
 
@@ -98,9 +101,14 @@ export default class ChartJSWrapper extends RectPath(Component) {
       return null
 
     if(!(dataArray instanceof Array)) {
+      // is not Array
       if(dataArray instanceof Object) {
         return dataArray
       }
+      return null
+    }
+
+    if(dataArray.length === 0) {
       return null
     }
 
@@ -348,9 +356,20 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
     var isChartChanged = false
 
-    if (after.hasOwnProperty('chart')) {
+    var keys = Object.getOwnPropertyNames(after)
+    var key = keys && keys[0]
+    var keySplit = key.split(".")
+
+    if (after.hasOwnProperty('chart') || key[0] == 'chart') {
       isChartChanged = true;
-      this.model.chart = JSON.parse(JSON.stringify(after.chart))
+    }
+
+    if(keySplit.length > 1) {
+      // for(var i in keySplit) {
+      //   var k = keySplit[i]
+      // }
+
+      delete this.model[key]
     }
 
     if(after.hasOwnProperty('data')) {
@@ -371,8 +390,11 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
   onclick(e) {
     e.chartJSWrapper = this;
-    if(this._chart)
+    if(this._chart){
       this._chart.eventHandler(e)
+      console.log('elements', this._chart.getElementsAtEvent(e));
+      console.log('dataset', this._chart.getDatasetAtEvent(e));
+    }
   }
 
   ondragstart(e) {
