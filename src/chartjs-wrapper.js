@@ -76,6 +76,10 @@ export default class ChartJSWrapper extends RectPath(Component) {
     return NATURE
   }
 
+  get isTextEdit() {
+    return false
+  }
+
   initChart(context) {
 
     var {chart} = this.model
