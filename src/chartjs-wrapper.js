@@ -95,7 +95,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     return NATURE
   }
 
-  get isTextEdit() {
+  get hasTextProperty() {
     return false
   }
 
