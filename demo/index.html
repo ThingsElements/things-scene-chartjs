@@ -238,11 +238,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   borderWidth: 1,
                   dataKey: 'badQty'
                 }],
-                labelDataKey: 'date',
-                rawData: {
-                  seriesData : [[12, 19, 3, 5, 2, 3], [1, 2, 3, 4, 5, 6]],
-                  labelData: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
-                }
+                labelDataKey: 'date'
               },
               options: {
                 stacked: true,
@@ -252,19 +248,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     stacked: true,
                     gridLines: {
                       display: true
+                    },
+                    ticks: {
+                      reverse : true
                     }
                   }],
                   yAxes: [{
                     stacked: true,
                     ticks: {
-                      beginAtZero:true
+                      beginAtZero:true,
+                      callback: function(value, index, values) {
+                        var returnValue = value
+                        if(typeof returnValue == 'number') {
+                          returnValue = returnValue.toLocaleString()
+                        }
+
+                        return returnValue
+                      }
                     }
                   }]
+                },
+                tooltips: {
+                  callbacks: {
+                    label : function(tooltipItem, data) {
+                      return tooltipItem.yLabel.toLocaleString()
+                    }
+                  }
                 },
                 legend: {
                   display : false
                 }
               }
+            },
+            data: {
+              seriesData : [[1200, 1900, 300, 500, 200, 300], [100, 200, 300, 400, 500, 600]],
+              labelData: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
             }
           }, {
             type: 'chartjs',
@@ -290,41 +308,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   label: 'Dataset 3',
                   backgroundColor: 'rgba(255, 159, 64, 0.2)',
                   data: []
-                }],
-                rawData : {
-                  seriesData : [
-                    [{
-                      x: -10,
-                      y: 0
-                    }, {
-                      x: 0,
-                      y: 10
-                    }, {
-                      x: 10,
-                      y: 5
-                    }],
-                    [{
-                      x: -10,
-                      y: 0
-                    }, {
-                      x: 0,
-                      y: -10
-                    }, {
-                      x: 10,
-                      y: -5
-                    }],
-                    [{
-                      x: -10,
-                      y: -10
-                    }, {
-                      x: 0,
-                      y: 10
-                    }, {
-                      x: 10,
-                      y: 5
-                    }]
-                  ]
-                }
+                }]
               },
               options: {
                 legend: {
@@ -341,6 +325,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   }]
                 }
               }
+            },
+            data : {
+              seriesData : [
+                [{
+                  x: -10,
+                  y: 0
+                }, {
+                  x: 0,
+                  y: 10
+                }, {
+                  x: 10,
+                  y: 5
+                }],
+                [{
+                  x: -10,
+                  y: 0
+                }, {
+                  x: 0,
+                  y: -10
+                }, {
+                  x: 10,
+                  y: -5
+                }],
+                [{
+                  x: -10,
+                  y: -10
+                }, {
+                  x: 0,
+                  y: 10
+                }, {
+                  x: 10,
+                  y: 5
+                }]
+              ]
             }
           }, {
             type: 'chartjs',
@@ -368,14 +386,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   borderColor: 'blue',
                   backgroundColor: 'blue',
                   data: []
-                }],
-                rawData : {
-                  seriesData : [
-                    [0, 10, 5, 3, 6],
-                    [100, 10, 60, 30, 50]
-                  ],
-                  labelData : ['a', 'b', 'c', 'd', 'e' ]
-                }
+                }]
               },
               options: {
                 hover: {
@@ -402,6 +413,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   }]
                 }
               }
+            },
+            data : {
+              seriesData : [
+                [0, 10, 5, 3, 6],
+                [100, 10, 60, 30, 50]
+              ],
+              labelData : ['a', 'b', 'c', 'd', 'e' ]
             }
           }, {
             type: 'chartjs',
@@ -422,15 +440,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     "#36A2EB",
                     "#FFCE56"
                   ]
-                }],
-                rawData: {
-                  seriesData: [[300, 50, 100]],
-                  labelData: [
-                    "Red",
-                    "Blue",
-                    "Yellow"
-                  ]
-                }
+                }]
               },
               options: {
                 theme : 'dark',
@@ -442,6 +452,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   animateScale:true
                 }
               }
+            },
+            data: {
+              seriesData: [[300, 50, 100]],
+              labelData: [
+                "Red",
+                "Blue",
+                "Yellow"
+              ]
             }
           }]
         }

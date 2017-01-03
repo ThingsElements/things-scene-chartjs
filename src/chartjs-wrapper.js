@@ -1,4 +1,5 @@
 import SceneChart from './chart-overload'
+import clone from './clone'
 
 var { Component, RectPath } = scene
 
@@ -30,6 +31,12 @@ PIE_IMAGE.src = BASE64_IMAGES.pie
 const SAMPLE_IMAGES = {
   doughnut: DOUGHNUT_IMAGE,
   pie: PIE_IMAGE
+}
+
+const REPLACER = function(key, value) {
+  if(typeof value == 'function') {
+    return value.toString()
+  }
 }
 
 export default class ChartJSWrapper extends RectPath(Component) {
@@ -116,7 +123,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     }
 
     this._chart = new SceneChart(context,
-      JSON.parse(JSON.stringify(chart)),
+      clone(chart),
       this
     )
   }
@@ -208,6 +215,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     this.setMultiAxis(chart)
     this.setFontSize(chart.options)
     this.setTheme(chart.options)
+    this.appendTooltipCallback(chart.options)
   }
 
   setStacked(options) {
@@ -254,7 +262,18 @@ export default class ChartJSWrapper extends RectPath(Component) {
       if(options.scales.yAxes.length === 1) {
         options.scales.yAxes.push({
           position: 'right',
-          id: 'right'
+          id: 'right',
+          ticks: {
+            beginAtZero:true,
+            callback: function(value, index, values) {
+              var returnValue = value
+              if(typeof returnValue == 'number') {
+                returnValue = returnValue.toLocaleString()
+              }
+
+              return returnValue
+            }
+          }
         })
       }
     } else {
@@ -322,6 +341,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
           axis.ticks = {}
 
         axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+        this.appendTickCallback(axis.ticks);
       }
     }
 
@@ -338,6 +358,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
           axis.ticks = {}
 
         axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+        this.appendTickCallback(axis.ticks);
       }
     }
 
@@ -381,6 +402,30 @@ export default class ChartJSWrapper extends RectPath(Component) {
       }
     }
 
+  }
+
+  appendTickCallback(ticks) {
+    ticks.callback = function(value, index, values) {
+      var returnValue = value
+      if(typeof returnValue == 'number') {
+        returnValue = returnValue.toLocaleString()
+      }
+
+      return returnValue
+    }
+  }
+
+  appendTooltipCallback(options) {
+    if(!options)
+      return
+
+    options.tooltips = Object.assign({}, options.tooltips, {
+      callbacks: {
+        label : function(tooltipItem, data) {
+          return tooltipItem.yLabel.toLocaleString()
+        }
+      }
+    })
   }
 
   drawSampleImage(context) {
@@ -450,8 +495,8 @@ export default class ChartJSWrapper extends RectPath(Component) {
     e.chartJSWrapper = this;
     if(this._chart){
       this._chart.eventHandler(e)
-      console.log('elements', this._chart.getElementsAtEvent(e));
-      console.log('dataset', this._chart.getDatasetAtEvent(e));
+      // console.log('elements', this._chart.getElementsAtEvent(e));
+      // console.log('dataset', this._chart.getDatasetAtEvent(e));
     }
   }
 
