@@ -33,12 +33,6 @@ const SAMPLE_IMAGES = {
   pie: PIE_IMAGE
 }
 
-const REPLACER = function(key, value) {
-  if(typeof value == 'function') {
-    return value.toString()
-  }
-}
-
 export default class ChartJSWrapper extends RectPath(Component) {
 
   _draw(context) {
