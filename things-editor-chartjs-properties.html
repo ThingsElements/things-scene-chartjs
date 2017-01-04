@@ -6,6 +6,12 @@
 <link rel="import" href="../../bower_components/things-designer-elements/things-editor-multiple-color.html">
 <link rel="import" href="../../bower_components/things-designer-elements/things-editor-number-input.html">
 
+<link rel="import" href="./things-editor-chartjs-properties-line.html">
+<link rel="import" href="./things-editor-chartjs-properties-bar.html">
+<link rel="import" href="./things-editor-chartjs-properties-mixed.html">
+<link rel="import" href="./things-editor-chartjs-properties-pie.html">
+<link rel="import" href="./things-editor-chartjs-properties-radar.html">
+
 <dom-module id="things-editor-chartjs-properties">
   <template>
     <style>
@@ -75,182 +81,36 @@
       }
     </style>
 
-    <form class="content" method="post">
-      <fieldset class="same-width">
-        <legend>
-          <things-i18n-msg msgid="label.chart" auto>Chart</things-i18n-msg>
-        </legend>
-        <label>
-          <things-i18n-msg msgid="label.theme" auto>theme</things-i18n-msg>
-        </label>
-        <select class="select-content" value="{{values.options.theme::change}}">
-          <option value="dark">dark</option>
-          <option value="light">light</option>
-        </select>
-
-        <div class="merge-column">
-          <label>
-            <things-i18n-msg msgid="label.show-legend" auto>Legend</things-i18n-msg>
-          </label>
-          <input type="checkbox" checked="{{values.options.legend.display::change}}" required>
-        </div>
-        <label>
-          <things-i18n-msg msgid="label.legend-position" auto>Position</things-i18n-msg>
-        </label>
-        <select class="select-content" value="{{values.options.legend.position::change}}">
-          <option value="top">top</option>
-          <option value="right">right</option>
-          <option value="bottom">bottom</option>
-          <option value="left">left</option>
-        </select>
-        <label>
-          <things-i18n-msg msgid="label.font-size" auto>Font Size</things-i18n-msg>
-        </label>
-        <input is="things-editor-number-input" number="{{values.options.fontSize::change}}">
-        <template is="dom-if" if="[[_isAvailableOption(values, 'stacked')]]">
-          <label>
-            <things-i18n-msg msgid="label.stacked" auto>stacked</things-i18n-msg>
-          </label>
-          <input type="checkbox" checked="{{values.options.stacked}}" on-change="onStackedChanged" required>
-        </template>
-        <template is="dom-if" if="[[_isAvailableOption(values, 'multiAxis')]]">
-          <label>
-            <things-i18n-msg msgid="label.multi-axis" auto>Multi Axis</things-i18n-msg>
-          </label>
-          <input type="checkbox" checked="{{values.options.multiAxis}}" on-change="onMultiAxisChanged" required>
-        </template>
-      </fieldset>
-      <fieldset>
-        <legend>
-          <things-i18n-msg msgid="label.series" auto>Series</things-i18n-msg>
-        </legend>
-        <template is="dom-if" if="[[_isAvailableOption(values, 'multiSeries')]]">
-          <paper-tabs selected="{{currentSeriesIndex}}">
-            <paper-tab data-series="1">1</paper-tab>
-            <paper-tab data-series="2">2</paper-tab>
-            <paper-tab data-series="3">3</paper-tab>
-            <paper-tab data-series="4">4</paper-tab>
-            <paper-tab data-series="5">5</paper-tab>
-            <paper-tab data-series="6">6</paper-tab>
-            <paper-tab data-series="7">7</paper-tab>
-          </paper-tabs>
-        </template>
-        <div class="tab-content">
-          <label>
-            <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
-          </label>
-          <input type="text" value="{{series.dataKey::change}}"></input>
-          <template is="dom-if" if="[[_isAvailableOption(series, 'type')]]">
-            <label>
-              <things-i18n-msg msgid="label.type" auto>type</things-i18n-msg>
-            </label>
-            <select class="select-content" value="{{series.type::change}}">
-              <option value=""></option>
-              <option value="bar">bar</option>
-              <option value="line">line</option>
-            </select>
-          </template>
-          <template is="dom-if" if="[[_isAvailableOption(series, 'label')]]">
-            <label>
-              <things-i18n-msg msgid="label.label" auto>label</things-i18n-msg>
-            </label>
-            <input type="text" value="{{series.label::change}}"></input>
-          </template>
-          <template is="dom-if" if="[[_isAvailableOption(series, 'line-tension')]]">
-            <label>
-              <things-i18n-msg msgid="label.line-tension" auto>line tension</things-i18n-msg>
-            </label>
-            <select class="select-content" value="{{series.lineTension::change}}">
-              <option value="0.4">smooth</option>
-              <option value="0">angled</option>
-            </select>
-          </template>
-          <template is="dom-if" if="[[_isAvailableOption(series, 'border-option')]]">
-            <label>
-              <things-i18n-msg msgid="label.border-color" auto>border color</things-i18n-msg>
-            </label>
-            <things-editor-color value="{{series.borderColor::change}}"></things-editor-color>
-            <label>
-              <things-i18n-msg msgid="label.border-width" auto>border width</things-i18n-msg>
-            </label>
-            <input is="things-editor-number-input" number="{{series.borderWidth::change}}">
-          </template>
-          <label>
-            <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
-          </label>
-          <template is="dom-if" if="[[_usingMutiColor(values)]]">
-            <things-editor-multiple-color values="{{series.backgroundColor}}"></things-editor-multiple-color>
-          </template>
-          <template is="dom-if" if="[[!_usingMutiColor(values)]]">
-            <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
-          </template>
-          <template is="dom-if" if="[[_isAvailableOption(series, 'point-option')]]">
-            <label>
-              <things-i18n-msg msgid="label.point-bg-color" auto>point BG color</things-i18n-msg>
-            </label>
-            <things-editor-color value="{{series.pointBackgroundColor::change}}"></things-editor-color>
-          </template>
-          <template is="dom-if" if="[[_isAvailableOption(series, 'fill')]]">
-            <label>
-              <things-i18n-msg msgid="label.fill" auto>fill</things-i18n-msg>
-            </label>
-            <input type="checkbox" checked="{{series.fill}}" on-change="onFillChanged" required>
-          </template>
-          <template is="dom-if" if="[[_isAvailableOption(values, 'targetAxis')]]">
-            <template is="dom-if" if="[[!_isFirstSeries(currentSeriesIndex)]]">
-              <label>
-                <things-i18n-msg msgid="label.target-axis" auto>target axis</things-i18n-msg>
-              </label>
-              <select class="select-content" value="{{series.yAxisID::change}}">
-                <option value="left">left</option>
-                <option value="right">right</option>
-              </select>
-            </template>
-          </template>
-        </div>
-      </fieldset>
-      <fieldset class="same-width">
-        <label>
-          <things-i18n-msg msgid="label.label-data-key" auto>Label Data Key</things-i18n-msg>
-        </label>
-        <input type="text" value="{{values.data.labelDataKey::change}}"></input>
-        <legend>
-          <things-i18n-msg msgid="label.axes" auto>Axes</things-i18n-msg>
-        </legend>
-        <label>
-          <things-i18n-msg msgid="label.x-grid-line" auto>X grid line</things-i18n-msg>
-        </label>
-        <input type="checkbox" checked="{{values.options.xGridLine}}" on-change="onXGridLineChanged" required>
-        <label>
-          <things-i18n-msg msgid="label.y-grid-line" auto>Y grid line</things-i18n-msg>
-        </label>
-        <input type="checkbox" checked="{{values.options.yGridLine}}" on-change="onYGridLineChanged" required>
-      </fieldset>
-      <template is="dom-if" if="[[_isSpcChart(values)]]">
-        <fieldset class="same-width">
-          <legend>
-            <things-i18n-msg msgid="label.spc-option" auto>SPC Option</things-i18n-msg>
-          </legend>
-          <label>
-            <things-i18n-msg msgid="label.ucl/lcl-border-color" auto>UCL/LCL Border Color</things-i18n-msg>
-          </label>
-          <things-editor-color values="{{values.options.spc.limitBorderColor}}" on-change="onControlLimitBorderColorChanged"></things-editor-color>
-          <label>
-            <things-i18n-msg msgid="label.ucl/lcl-border-width" auto>UCL/LCL Border Width</things-i18n-msg>
-          </label>
-          <input type="number" values-as-number="{{values.options.spc.limitBorderWidth}}" on-change="">
-          <label>
-            <things-i18n-msg msgid="label.cl-border-color" auto>CL Border Color</things-i18n-msg>
-          </label>
-          <things-editor-color values="{{values.options.spc.centerLineBorderColor}}" on-change=""></things-editor-color>
-          <label>
-            <things-i18n-msg msgid="label.cl-border-width" auto>CL Border Width</things-i18n-msg>
-          </label>
-          <input type="number" values-as-number="{{values.options.spc.centerLineBorderWidth}}" on-change="">
-
-        </fieldset>
+    <template is="dom-if" if="[[isTypeof(values.type, 'line')]]">
+      <things-editor-chartjs-properties-line model="{{model}}" values="{{values}}" series="{{series}}">
+      </things-editor-chartjs-properties-line>
+    </template>
+    <template is="dom-if" if="[[isTypeof(values.type, 'bar')]]">
+      <template is="dom-if" if="[[isTypeof(values.subType, 'mixed')]]">
+        <things-editor-chartjs-properties-mixed model="{{model}}" values="{{values}}" series="{{series}}">
+        </things-editor-chartjs-properties-mixed>
       </template>
-    </form>
+      <template is="dom-if" if="[[!isTypeof(values.subType, 'mixed')]]">
+        <things-editor-chartjs-properties-bar model="{{model}}" values="{{values}}" series="{{series}}">
+        </things-editor-chartjs-properties-bar>
+      </template>
+    </template>
+    <template is="dom-if" if="[[isTypeof(values.type, 'pie')]]">
+      <things-editor-chartjs-properties-pie model="{{model}}" values="{{values}}" series="{{series}}">
+      </things-editor-chartjs-properties-pie>
+    </template>
+    <template is="dom-if" if="[[isTypeof(values.type, 'doughnut')]]">
+      <things-editor-chartjs-properties-pie model="{{model}}" values="{{values}}" series="{{series}}">
+      </things-editor-chartjs-properties-pie>
+    </template>
+    <template is="dom-if" if="[[isTypeof(values.type, 'polarArea')]]">
+      <things-editor-chartjs-properties-pie model="{{model}}" values="{{values}}" series="{{series}}">
+      </things-editor-chartjs-properties-pie>
+    </template>
+    <template is="dom-if" if="[[isTypeof(values.type, 'radar')]]">
+      <things-editor-chartjs-properties-radar model="{{model}}" values="{{values}}" series="{{series}}">
+      </things-editor-chartjs-properties-radar>
+    </template>
 
   </template>
 
@@ -275,249 +135,9 @@
           }
         },
 
-        observers: [
-          'onModelChanged(model.*)',
-          'onSeriesChanged(series.*)',
-          'onCurrentSeriesIndexChanged(currentSeriesIndex)'
-        ],
-
-        listeners: {
-        },
-
-        onModelChanged: function(model) {
-          if(model.path === 'model' && !this.changedByChartMember) {
-
-            this.set('values', model.value.chart)
-
-            this.set('currentSeriesIndex', null);
-            this.set('currentSeriesIndex', 0);
-
-            return;
-          }
-        },
-
-        onSeriesChanged: function(change) {
-          if(!this.values)
-            return
-
-          var self = this
-
-          setTimeout(function() {
-            var last = -1
-
-            for(var i = 0;i < 7;i++) {
-              var series = self.values.data.datasets[i]
-              var tab = self.querySelector(`paper-tab[data-series="${i + 1}"]`)
-              if(!tab)
-                continue
-
-              if(series) {
-                tab.active = true
-                tab.disabled = false
-                tab.setAttribute('has-set', true)
-
-                last = i
-              } else {
-                tab.active = false
-                tab.removeAttribute('has-set')
-                if(last < i - 1) {
-                  tab.disabled = true
-                } else {
-                  tab.disabled = false
-                }
-              }
-            }
-
-          }, 10)
-
-          if(!change || change.path == 'series'){
-            return
-          }
-
-          var series = this.series
-
-          if(!this.get('values.data.datasets.#'+this.currentSeriesIndex)) {
-
-            var chart = JSON.parse(JSON.stringify(this.get('values')))
-
-            chart.data.datasets = []
-
-            let datasets = chart.data.datasets
-
-            for(var i in this.values.data.datasets) {
-              datasets[i] = JSON.parse(JSON.stringify(this.values.data.datasets[i]));
-            }
-
-            datasets.push({
-              data:[]
-            });
-
-            this.changedByChartMember = true;
-
-            this.set('values', chart)
-
-          }
-
-          var keyStr = 'values.data.datasets.#'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
-
-          this.set(keyStr, change.value)
-
-          this.changedByChartMember = false;
-
-        },
-
-        onCurrentSeriesIndexChanged: function(currentSeriesIndex) {
-          if(!this.values) {
-            this.set('series', null)
-            return
-          }
-
-          if(!this.values.data.datasets)
-            return
-
-          this.set('series', this.values.data.datasets[currentSeriesIndex] || {})
-
-        },
-
-        onFillChanged : function(e) {
-          this.set("series.fill", e.target.checked)
-        },
-
-        onXGridLineChanged : function(e){
-
-          var checked = e.target.checked
-          try {
-            var xAxes = this.get('values.options.scales.xAxes');
-            for (let i in xAxes) {
-              this.set("values.options.scales.xAxes.#"+i+".gridLines.display", checked);
-            }
-
-          } catch(e) {
-          } finally {
-              this.set("values.options.xGridLine", checked);
-          }
-
-        },
-
-        onYGridLineChanged : function(e){
-
-          var checked = e.target.checked
-          try {
-            var yAxes = this.get('values.options.scales.yAxes');
-            for (let i in yAxes) {
-              this.set("values.options.scales.yAxes.#"+i+".gridLines.display", checked);
-            }
-
-          } catch(e) {
-          } finally {
-              this.set("values.options.yGridLine", checked);
-          }
-
-        },
-
-        onDisplayLegendChanged : function(e){
-          var checked = e.target.checked
-          if(!this.get("values.options")) {
-            this.set("values.options", {})
-          }
-
-          if(!this.get("values.options.legend")) {
-            this.set("values.options.legend", {})
-          }
-
-          this.set("values.options.legend.display", checked);
-        },
-
-        onControlLimitBorderColorChanged: function(e) {
-          var value = e.target.value;
-
-          try{
-
-          }catch(e) {
-
-          }
-        },
-
-        _isAvailableOption: function(values, optionName) {
-
-          if(!this.values)
-            return
-
-          var type = values.type || this.values.type
-
-          if(!values || Object.getOwnPropertyNames(values).length === 0)
-            return false
-
-          var availableOptions = {
-            bar : ['label', 'multiSeries','type', 'multiAxis', 'stacked', 'targetAxis'],
-            horizontalBar : ['label', 'multiSeries', 'stacked', 'targetAxis'],
-            line : ['label', 'multiSeries', 'multiAxis','type', 'line-tension', 'fill', 'border-option', 'point-option', 'targetAxis'],
-            radar: ['label', 'multiSeries', 'fill', 'border-option', 'point-option']
-          }
-
-          if(availableOptions[type] &&
-            availableOptions[type].indexOf(optionName) >= 0) {
-            return true;
-          }
-
-          if(type == 'bar' && values.subType == 'mixed') {
-            if(availableOptions['line'] && availableOptions['line'].indexOf(optionName) >= 0)
-              return true
-          }
-
-          return false;
-        },
-
-        _usingMutiColor: function(values) {
-
-          if(!values)
-            return false;
-
-          switch (values.type) {
-            case 'polarArea':
-            case 'pie':
-            case 'doughnut':
-                return true;
-            default:
-              return false;
-          }
-        },
-
-        _isSpcChart: function(values) {
-          var isSPC = false;
-
-          if(!values || !values.type)
-            return isSPC;
-
-          if(values.type == 'controlChart')
-            isSPC =  true;
-
-          return isSPC;
-        },
-
-        onStackedChanged: function(e){
-          var checked = e.target.checked
-          if(!this.get("values.options")) {
-            this.set("values.options", {})
-          }
-
-          this.set("values.options.stacked", checked);
-        },
-
-        onMultiAxisChanged: function(e){
-          var checked = e.target.checked
-          if(!this.get("values.options")) {
-            this.set("values.options", {})
-          }
-
-          this.set("values.options.multiAxis", checked);
-        },
-
-        _isFirstSeries: function(currentSeriesIndex) {
-          if(currentSeriesIndex === 0)
+        isTypeof: function(typeA, typeB) {
+          if(typeA == typeB)
             return true
-
-          return false
         }
 
       })
