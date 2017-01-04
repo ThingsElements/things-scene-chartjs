@@ -112,8 +112,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           console.log('change', e, app.$.properties.model)
         })
 
-        Chart.defaults.global.hover.mode = 'index';
-        // Chart.defaults.global.hover.intersect = false;
+        Chart.defaults.global.tooltips.mode = 'label';
 
         app.props = [{
           type: 'number',
@@ -254,26 +253,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     }
                   }],
                   yAxes: [{
-                    stacked: true,
-                    ticks: {
-                      beginAtZero:true,
-                      callback: function(value, index, values) {
-                        var returnValue = value
-                        if(typeof returnValue == 'number') {
-                          returnValue = returnValue.toLocaleString()
-                        }
-
-                        return returnValue
-                      }
-                    }
+                    stacked: true
                   }]
-                },
-                tooltips: {
-                  callbacks: {
-                    label : function(tooltipItem, data) {
-                      return tooltipItem.yLabel.toLocaleString()
-                    }
-                  }
                 },
                 legend: {
                   display : false
@@ -389,9 +370,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }]
               },
               options: {
-                hover: {
-                  mode: 'index'
-                },
                 multiAxis: true,
                 legend: {
                   display: true,

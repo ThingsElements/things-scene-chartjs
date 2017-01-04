@@ -3,9 +3,8 @@ import clone from './clone'
 
 var { Component, RectPath } = scene
 
-// Chart.defaults.global.defaultFontSize = 10
-// Chart.defaults.global.hover.mode = 'index';
-// Chart.defaults.global.hover.intersect = false;
+Chart.defaults.global.defaultFontSize = 10
+Chart.defaults.global.tooltips.mode = 'label';
 
 const NATURE = {
   mutable: false,
@@ -219,15 +218,15 @@ export default class ChartJSWrapper extends RectPath(Component) {
     var stacked = options.stacked
 
     if(!options.scales)
-      options.scales = {}
+      return
 
-    if(options.scales && options.scales.xAxes){
+    if(options.scales.xAxes){
       for(let axis of options.scales.xAxes) {
         axis.stacked = stacked
       }
     }
 
-    if(options.scales && options.scales.yAxes){
+    if(options.scales.yAxes){
       for(let axis of options.scales.yAxes) {
         axis.stacked = stacked
       }
@@ -245,7 +244,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     var multiAxis = options.multiAxis
 
     if(!options.scales)
-      options.scales = {}
+      return
 
     if(!options.scales.yAxes)
       return
@@ -319,11 +318,13 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
     options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
 
-    if(!options.scales)
-      options.scales = {}
+    var scale = options.scales || options.scale
 
-    if(options.scales && options.scales.xAxes){
-      for(let axis of options.scales.xAxes) {
+    if(!scale)
+      return
+
+    if(scale.xAxes){
+      for(let axis of scale.xAxes) {
         if(!axis.gridLines)
           axis.gridLines = {}
 
@@ -339,8 +340,8 @@ export default class ChartJSWrapper extends RectPath(Component) {
       }
     }
 
-    if(options.scales && options.scales.yAxes){
-      for(let axis of options.scales.yAxes) {
+    if(scale.yAxes){
+      for(let axis of scale.yAxes) {
         if(!axis.gridLines)
           axis.gridLines = {}
 
@@ -375,11 +376,13 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
     options.legend.labels.fontSize = fontSize;
 
-    if(!options.scales)
-      options.scales = {}
+    var scale = options.scales || options.scale
 
-    if(options.scales && options.scales.xAxes){
-      for(let axis of options.scales.xAxes) {
+    if(!scale)
+      return
+
+    if(scale.xAxes){
+      for(let axis of scale.xAxes) {
         if(!axis.ticks)
           axis.ticks = {}
 
@@ -387,8 +390,8 @@ export default class ChartJSWrapper extends RectPath(Component) {
       }
     }
 
-    if(options.scales && options.scales.yAxes){
-      for(let axis of options.scales.yAxes) {
+    if(scale.yAxes){
+      for(let axis of scale.yAxes) {
         if(!axis.ticks)
           axis.ticks = {}
 
@@ -416,7 +419,15 @@ export default class ChartJSWrapper extends RectPath(Component) {
     options.tooltips = Object.assign({}, options.tooltips, {
       callbacks: {
         label : function(tooltipItem, data) {
-          return tooltipItem.yLabel.toLocaleString()
+          var label = data.labels[tooltipItem.index]
+          var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+          var toNumValue = Number(value)
+
+          if(!Number.isNaN(toNumValue)) {
+            value = toNumValue
+          }
+
+          return value.toLocaleString()
         }
       }
     })

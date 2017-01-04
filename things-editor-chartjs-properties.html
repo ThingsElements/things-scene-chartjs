@@ -90,7 +90,7 @@
         <things-editor-chartjs-properties-mixed model="{{model}}" values="{{values}}" series="{{series}}">
         </things-editor-chartjs-properties-mixed>
       </template>
-      <template is="dom-if" if="[[!isTypeof(values.subType, 'mixed')]]">
+      <template is="dom-if" if="[[!values.subType]]">
         <things-editor-chartjs-properties-bar model="{{model}}" values="{{values}}" series="{{series}}">
         </things-editor-chartjs-properties-bar>
       </template>
