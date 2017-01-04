@@ -160,7 +160,10 @@
             <label>
               <things-i18n-msg msgid="label.line-tension" auto>line tension</things-i18n-msg>
             </label>
-            <input is="things-editor-number-input" number="{{series.lineTension::change}}">
+            <select class="select-content" value="{{series.lineTension::change}}">
+              <option value="0.4">smooth</option>
+              <option value="0">angled</option>
+            </select>
           </template>
           <template is="dom-if" if="[[_isAvailableOption(series, 'border-option')]]">
             <label>
@@ -331,43 +334,6 @@
             return
           }
 
-          // var seriesDefaults
-
-          // if(change.path == 'series.type') {
-          //   // set default values
-          //   switch(change.value) {
-          //     case 'bar' :
-          //       seriesDefaults = {
-          //         type: 'line',
-          //         lineTension: 0,
-          //         borderColor: 'blue',
-          //         borderWidth : 1,
-          //         backgroundColor: 'blue',
-          //         pointBorderColor: 'blue',
-          //         pointBackgroundColor: 'blue',
-          //         fill : true
-          //       }
-          //       break;
-          //     case 'line' :
-          //       seriesDefaults = {
-          //         type: 'line',
-          //         lineTension: 0.4,
-          //         borderColor: 'red',
-          //         borderWidth : 2,
-          //         backgroundColor: 'red',
-          //         pointBorderColor: 'red',
-          //         pointBackgroundColor: 'red',
-          //         fill : false
-          //       }
-          //       break;
-          //     default:
-          //       break;
-          //   }
-
-          //   this.set('series', Object.assign(JSON.parse(JSON.stringify(this.series)), seriesDefaults))
-          //   return
-          // }
-
           var series = this.series
 
           if(!this.get('values.data.datasets.#'+this.currentSeriesIndex)) {
@@ -473,6 +439,12 @@
         },
 
         _isAvailableOption: function(values, optionName) {
+
+          if(!this.values)
+            return
+
+          var type = values.type || this.values.type
+
           if(!values || Object.getOwnPropertyNames(values).length === 0)
             return false
 
@@ -483,12 +455,12 @@
             radar: ['label', 'multiSeries', 'fill', 'border-option', 'point-option']
           }
 
-          if(availableOptions[values.type] &&
-            availableOptions[values.type].indexOf(optionName) >= 0) {
+          if(availableOptions[type] &&
+            availableOptions[type].indexOf(optionName) >= 0) {
             return true;
           }
 
-          if(values.type == 'bar' && values.subType == 'mixed') {
+          if(type == 'bar' && values.subType == 'mixed') {
             if(availableOptions['line'] && availableOptions['line'].indexOf(optionName) >= 0)
               return true
           }
