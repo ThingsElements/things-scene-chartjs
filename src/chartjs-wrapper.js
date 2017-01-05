@@ -341,11 +341,12 @@ export default class ChartJSWrapper extends RectPath(Component) {
     }
 
     if(scale.yAxes){
-      for(let axis of scale.yAxes) {
+      for(let index in scale.yAxes) {
+        let axis = scale.yAxes[index]
         if(!axis.gridLines)
           axis.gridLines = {}
 
-        axis.gridLines.display = options.yGridLine
+        axis.gridLines.display = index == 0 ? options.yGridLine : options.y2ndGridLine
         axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
         axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
 
@@ -408,7 +409,8 @@ export default class ChartJSWrapper extends RectPath(Component) {
         returnValue = returnValue.toLocaleString()
       }
 
-      return returnValue
+      if(returnValue)
+        return returnValue
     }
   }
 
@@ -427,7 +429,8 @@ export default class ChartJSWrapper extends RectPath(Component) {
             value = toNumValue
           }
 
-          return value.toLocaleString()
+          if(value)
+            return value.toLocaleString()
         }
       }
     })

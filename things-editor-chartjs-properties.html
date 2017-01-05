@@ -8,6 +8,7 @@
 
 <link rel="import" href="./things-editor-chartjs-properties-line.html">
 <link rel="import" href="./things-editor-chartjs-properties-bar.html">
+<link rel="import" href="./things-editor-chartjs-properties-hbar.html">
 <link rel="import" href="./things-editor-chartjs-properties-mixed.html">
 <link rel="import" href="./things-editor-chartjs-properties-pie.html">
 <link rel="import" href="./things-editor-chartjs-properties-radar.html">
@@ -84,6 +85,10 @@
     <template is="dom-if" if="[[isTypeof(values.type, 'line')]]">
       <things-editor-chartjs-properties-line model="{{model}}" values="{{values}}" series="{{series}}">
       </things-editor-chartjs-properties-line>
+    </template>
+    <template is="dom-if" if="[[isTypeof(values.type, 'horizontalBar')]]">
+      <things-editor-chartjs-properties-hbar model="{{model}}" values="{{values}}" series="{{series}}">
+      </things-editor-chartjs-properties-hbar>
     </template>
     <template is="dom-if" if="[[isTypeof(values.type, 'bar')]]">
       <template is="dom-if" if="[[isTypeof(values.subType, 'mixed')]]">

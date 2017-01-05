@@ -6,7 +6,7 @@
 <link rel="import" href="../../bower_components/things-designer-elements/things-editor-multiple-color.html">
 <link rel="import" href="../../bower_components/things-designer-elements/things-editor-number-input.html">
 
-<dom-module id="things-editor-chartjs-properties-radar">
+<dom-module id="things-editor-chartjs-properties-hbar">
   <template>
     <style>
       :host {
@@ -107,6 +107,10 @@
           <things-i18n-msg msgid="label.font-size" auto>Font Size</things-i18n-msg>
         </label>
         <input is="things-editor-number-input" number="{{values.options.fontSize::change}}">
+        <label>
+          <things-i18n-msg msgid="label.stacked" auto>stacked</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.stacked::change}}" required>
       </fieldset>
       <fieldset>
         <legend>
@@ -129,33 +133,10 @@
             <things-i18n-msg msgid="label.label" auto>label</things-i18n-msg>
           </label>
           <input type="text" value="{{series.label::change}}"></input>
-          <!-- <label>
-            <things-i18n-msg msgid="label.line-tension" auto>line tension</things-i18n-msg>
-          </label>
-          <select class="select-content" value="{{series.lineTension::change}}">
-            <option value="0.4">smooth</option>
-            <option value="0">angled</option>
-          </select> -->
-          <label>
-            <things-i18n-msg msgid="label.border-color" auto>border color</things-i18n-msg>
-          </label>
-          <things-editor-color value="{{series.borderColor::change}}"></things-editor-color>
-          <label>
-            <things-i18n-msg msgid="label.border-width" auto>border width</things-i18n-msg>
-          </label>
-          <input is="things-editor-number-input" number="{{series.borderWidth::change}}">
           <label>
             <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
           </label>
           <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
-          <label>
-            <things-i18n-msg msgid="label.point-bg-color" auto>point BG color</things-i18n-msg>
-          </label>
-          <things-editor-color value="{{series.pointBackgroundColor::change}}"></things-editor-color>
-          <label>
-            <things-i18n-msg msgid="label.fill" auto>fill</things-i18n-msg>
-          </label>
-          <input type="checkbox" checked="{{series.fill::change}}" required>
           <template is="dom-if" if="[[!isOnly(values.data.datasets)]]">
             <paper-icon-button icon="icons:delete" on-tap="onTapRemoveCurrentTab"></paper-icon-button>
           </template>
@@ -169,6 +150,22 @@
           <things-i18n-msg msgid="label.label-data-key" auto>Label Data Key</things-i18n-msg>
         </label>
         <input type="text" value="{{values.data.labelDataKey::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.yMin" auto>Y Min</things-i18n-msg>
+        </label>
+        <input type="number" value="{{values.options.scales.xAxes.0.ticks.min::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.yMax" auto>Y Max</things-i18n-msg>
+        </label>
+        <input type="number" value="{{values.options.scales.xAxes.0.ticks.max::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.x-grid-line" auto>X grid line</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.xGridLine::change}}" required>
+        <label>
+          <things-i18n-msg msgid="label.y-grid-line" auto>Y grid line</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.yGridLine::change}}" required>
       </fieldset>
     </form>
 
@@ -179,7 +176,7 @@
       'use strict';
 
       Polymer({
-        is: 'things-editor-chartjs-properties-radar',
+        is: 'things-editor-chartjs-properties-hbar',
 
         properties: {
           model: {
@@ -231,7 +228,7 @@
 
           var series = this.series
 
-          if(!this.get('values.data.datasets.#'+this.currentSeriesIndex)) {
+          if(!this.get('values.data.datasets.'+this.currentSeriesIndex)) {
 
             var chart = JSON.parse(JSON.stringify(this.get('values')))
 
@@ -253,7 +250,7 @@
 
           }
 
-          var keyStr = 'values.data.datasets.#'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
+          var keyStr = 'values.data.datasets.'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
 
           this.set(keyStr, change.value)
 

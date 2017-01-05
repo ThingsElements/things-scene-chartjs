@@ -110,20 +110,19 @@
         <label>
           <things-i18n-msg msgid="label.multi-axis" auto>Multi Axis</things-i18n-msg>
         </label>
-        <input type="checkbox" checked="{{values.options.multiAxis}}" on-change="onMultiAxisChanged" required>
+        <input type="checkbox" checked="{{values.options.multiAxis::change}}" required>
       </fieldset>
       <fieldset>
         <legend>
           <things-i18n-msg msgid="label.series" auto>Series</things-i18n-msg>
         </legend>
         <paper-tabs selected="{{currentSeriesIndex}}">
-          <paper-tab data-series="1">1</paper-tab>
-          <paper-tab data-series="2">2</paper-tab>
-          <paper-tab data-series="3">3</paper-tab>
-          <paper-tab data-series="4">4</paper-tab>
-          <paper-tab data-series="5">5</paper-tab>
-          <paper-tab data-series="6">6</paper-tab>
-          <paper-tab data-series="7">7</paper-tab>
+          <template is="dom-repeat" items="{{values.data.datasets}}" index-as="index">
+            <paper-tab data-series="[[_computeSeriesTabIndex(index)]]">[[_computeSeriesTabIndex(index)]]</paper-tab>
+          </template>
+          <paper-tab>
+            <paper-icon-button icon="add-circle" on-tap="onTapAddTab"></paper-icon-button>
+          </paper-tab>
         </paper-tabs>
         <div class="tab-content">
           <label>
@@ -168,24 +167,51 @@
             <option value="left">left</option>
             <option value="right">right</option>
           </select>
+          <template is="dom-if" if="[[!isOnly(values.data.datasets)]]">
+            <paper-icon-button icon="icons:delete" on-tap="onTapRemoveCurrentTab"></paper-icon-button>
+          </template>
         </div>
       </fieldset>
       <fieldset class="same-width">
-        <label>
-          <things-i18n-msg msgid="label.label-data-key" auto>Label Data Key</things-i18n-msg>
-        </label>
-        <input type="text" value="{{values.data.labelDataKey::change}}"></input>
         <legend>
           <things-i18n-msg msgid="label.axes" auto>Axes</things-i18n-msg>
         </legend>
         <label>
+          <things-i18n-msg msgid="label.label-data-key" auto>Label Data Key</things-i18n-msg>
+        </label>
+        <input type="text" value="{{values.data.labelDataKey::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.yMin" auto>Y Min</things-i18n-msg>
+        </label>
+        <input type="number" value="{{values.options.scales.yAxes.0.ticks.min::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.yMax" auto>Y Max</things-i18n-msg>
+        </label>
+        <input type="number" value="{{values.options.scales.yAxes.0.ticks.max::change}}"></input>
+        <template is="dom-if" if="[[values.options.multiAxis]]">
+          <label>
+            <things-i18n-msg msgid="label.y2ndMin" auto>Y 2nd Min</things-i18n-msg>
+          </label>
+          <input type="number" value="{{values.options.scales.yAxes.1.ticks.min::change}}"></input>
+          <label>
+            <things-i18n-msg msgid="label.y2ndMax" auto>Y 2nd Max</things-i18n-msg>
+          </label>
+          <input type="number" value="{{values.options.scales.yAxes.1.ticks.max::change}}"></input>
+        </template>
+        <label>
           <things-i18n-msg msgid="label.x-grid-line" auto>X grid line</things-i18n-msg>
         </label>
-        <input type="checkbox" checked="{{values.options.xGridLine}}" on-change="onXGridLineChanged" required>
+        <input type="checkbox" checked="{{values.options.xGridLine::change}}" required>
         <label>
           <things-i18n-msg msgid="label.y-grid-line" auto>Y grid line</things-i18n-msg>
         </label>
-        <input type="checkbox" checked="{{values.options.yGridLine}}" on-change="onYGridLineChanged" required>
+        <input type="checkbox" checked="{{values.options.yGridLine::change}}" required>
+        <template is="dom-if" if="[[values.options.multiAxis]]">
+          <label>
+            <things-i18n-msg msgid="label.y-2nd-grid-line" auto>Y 2nd grid line</things-i18n-msg>
+          </label>
+          <input type="checkbox" checked="{{values.options.y2ndGridLine::change}}" required>
+        </template>
       </fieldset>
     </form>
 
@@ -226,7 +252,7 @@
 
             this.set('values', model.value.chart)
 
-            this.set('currentSeriesIndex', null);
+            this.set('currentSeriesIndex', -1);
             this.set('currentSeriesIndex', 0);
 
             return;
@@ -242,41 +268,13 @@
 
           var self = this
 
-          setTimeout(function() {
-            var last = -1
-
-            for(var i = 0;i < 7;i++) {
-              var series = self.values.data.datasets[i]
-              var tab = self.querySelector(`paper-tab[data-series="${i + 1}"]`)
-              if(!tab)
-                continue
-
-              if(series) {
-                tab.active = true
-                tab.disabled = false
-                tab.setAttribute('has-set', true)
-
-                last = i
-              } else {
-                tab.active = false
-                tab.removeAttribute('has-set')
-                if(last < i - 1) {
-                  tab.disabled = true
-                } else {
-                  tab.disabled = false
-                }
-              }
-            }
-
-          }, 10)
-
           if(!change || change.path == 'series'){
             return
           }
 
           var series = this.series
 
-          if(!this.get('values.data.datasets.#'+this.currentSeriesIndex)) {
+          if(!this.get('values.data.datasets.'+this.currentSeriesIndex)) {
 
             var chart = JSON.parse(JSON.stringify(this.get('values')))
 
@@ -298,7 +296,7 @@
 
           }
 
-          var keyStr = 'values.data.datasets.#'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
+          var keyStr = 'values.data.datasets.'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
 
           this.set(keyStr, change.value)
 
@@ -312,6 +310,9 @@
             return
           }
 
+          if(!this.values.data)
+            return
+
           if(!this.values.data.datasets)
             return
 
@@ -323,44 +324,62 @@
           this.set("series.fill", e.target.checked)
         },
 
-        onXGridLineChanged : function(e){
-
-          var checked = e.target.checked
-          try {
-            var xAxes = this.get('values.options.scales.xAxes');
-            for (let i in xAxes) {
-              this.set("values.options.scales.xAxes.#"+i+".gridLines.display", checked);
-            }
-
-          } catch(e) {
-          } finally {
-              this.set("values.options.xGridLine", checked);
+        onTapAddTab: function(e) {
+          if(!this.values) {
+            return
           }
 
+          if(!this.values.data)
+            return
+
+          if(!this.values.data.datasets)
+            return
+
+          var lastSeriesIndex = this.values.data.datasets.length;
+
+          this.values.data.datasets.push({
+            label: 'new series',
+            data: [],
+            borderWidth: 0,
+            dataKey: '',
+            yAxisID: 'left'
+          })
+
+          this.set('values', JSON.parse(JSON.stringify(this.values)))
         },
 
-        onYGridLineChanged : function(e){
-          var checked = e.target.checked
-          try {
-            var yAxes = this.get('values.options.scales.yAxes');
-            for (let i in yAxes) {
-              this.set("values.options.scales.yAxes.#"+i+".gridLines.display", checked);
-            }
-
-          } catch(e) {
-          } finally {
-              this.set("values.options.yGridLine", checked);
+        onTapRemoveCurrentTab: function(e) {
+          if(!this.values) {
+            return
           }
 
+          if(!this.values.data)
+            return
+
+          if(!this.values.data.datasets)
+            return
+
+          var currIndex = this.currentSeriesIndex
+
+          this.values.data.datasets.splice(currIndex, 1)
+
+          currIndex --
+
+          if(currIndex < 0)
+            currIndex = 0
+
+          this.set('values', JSON.parse(JSON.stringify(this.values)))
+          this.set('currentSeriesIndex', -1)
+          this.set('currentSeriesIndex', currIndex)
         },
 
-        onMultiAxisChanged: function(e){
-          var checked = e.target.checked
-          if(!this.get("values.options")) {
-            this.set("values.options", {})
-          }
+        isOnly: function(datasets) {
+          if(datasets && datasets.length === 1)
+            return true
+        },
 
-          this.set("values.options.multiAxis", checked);
+        _computeSeriesTabIndex: function(index) {
+          return index + 1
         }
 
       })
