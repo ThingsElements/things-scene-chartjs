@@ -162,20 +162,20 @@
         </label>
         <input type="text" value="{{values.data.labelDataKey::change}}"></input>
         <label>
-          <things-i18n-msg msgid="label.yMin" auto>Y Min</things-i18n-msg>
+          <things-i18n-msg msgid="label.y-min" auto>Y Min</things-i18n-msg>
         </label>
         <input type="number" value="{{values.options.scales.yAxes.0.ticks.min::change}}"></input>
         <label>
-          <things-i18n-msg msgid="label.yMax" auto>Y Max</things-i18n-msg>
+          <things-i18n-msg msgid="label.y-max" auto>Y Max</things-i18n-msg>
         </label>
         <input type="number" value="{{values.options.scales.yAxes.0.ticks.max::change}}" on-change="onMinMaxChanged"></input>
         <template is="dom-if" if="[[values.options.multiAxis]]">
           <label>
-            <things-i18n-msg msgid="label.y2ndMin" auto>Y 2nd Min</things-i18n-msg>
+            <things-i18n-msg msgid="label.y-2nd-min" auto>Y 2nd Min</things-i18n-msg>
           </label>
           <input type="number" value="{{values.options.scales.yAxes.1.ticks.min::change}}"></input>
           <label>
-            <things-i18n-msg msgid="label.y2ndMax" auto>Y 2nd Max</things-i18n-msg>
+            <things-i18n-msg msgid="label.y-2nd-max" auto>Y 2nd Max</things-i18n-msg>
           </label>
           <input type="number" value="{{values.options.scales.yAxes.1.ticks.max::change}}"></input>
         </template>
