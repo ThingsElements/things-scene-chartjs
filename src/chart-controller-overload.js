@@ -38,3 +38,5 @@ export default class ChartController extends Chart.Controller {
     changed && this.updateLayout();
   }
 }
+
+Chart.Controller = ChartController;

@@ -1,3 +1,5 @@
+import helpers from './chart-helpers-overload'
+import ChartController from './chart-controller-overload'
 import SceneChart from './chart-overload'
 import clone from './clone'
 
