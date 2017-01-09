@@ -104,7 +104,7 @@
           <option value="left">left</option>
         </select>
         <label>
-          <things-i18n-msg msgid="label.font-size" auto>Font Size</things-i18n-msg>
+          <things-i18n-msg msgid="label.text-size" auto>Text Size</things-i18n-msg>
         </label>
         <input is="things-editor-number-input" number="{{values.options.fontSize::change}}">
         <label>
@@ -170,9 +170,15 @@
           <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
           <template is="dom-if" if="[[_isTypeof(series.type, 'line')]]">
             <label>
+              <things-i18n-msg msgid="label.point-size" auto>point size</things-i18n-msg>
+            </label>
+            <input type="number" value-as-number="{{series.pointRadius::change}}"></things-editor-color>
+            <label>
               <things-i18n-msg msgid="label.point-bg-color" auto>point BG color</things-i18n-msg>
             </label>
             <things-editor-color value="{{series.pointBackgroundColor::change}}"></things-editor-color>
+            <input type="text" value="{{_equalize('series.pointBorderColor', series.borderColor)}}" hidden></input>
+            <input type="text" value="{{_equalize('series.pointBorderWidth', series.borderWidth)}}" hidden></input>
           </template>
           <template is="dom-if" if="[[_isTypeof(series.type, 'line')]]">
             <label>
@@ -194,69 +200,73 @@
       </fieldset>
       <fieldset class="same-width">
         <legend>
-          <things-i18n-msg msgid="label.axes" auto>Axes</things-i18n-msg>
+          <things-i18n-msg msgid="label.x-axes" auto>X Axes</things-i18n-msg>
         </legend>
         <label>
           <things-i18n-msg msgid="label.label-data-key" auto>Label Data Key</things-i18n-msg>
         </label>
         <input type="text" value="{{values.data.labelDataKey::change}}"></input>
         <label>
-          <things-i18n-msg msgid="label.y-min-auto" auto>Y Min Auto</things-i18n-msg>
+          <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.xGridLine::change}}" required>
+        <legend>
+          <things-i18n-msg msgid="label.y-axes" auto>Y Axes</things-i18n-msg>
+        </legend>
+        <label>
+          <things-i18n-msg msgid="label.axis-min-auto" auto>Min Auto</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.autoMin::change}}" required>
         <label>
-          <things-i18n-msg msgid="label.y-max-auto" auto>Y Max Auto</things-i18n-msg>
+          <things-i18n-msg msgid="label.axis-max-auto" auto>Max Auto</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.autoMax::change}}" required>
         <div>
           <template is="dom-if" if="[[!values.options.scales.yAxes.0.ticks.autoMin]]">
             <label>
-              <things-i18n-msg msgid="label.y-min" auto>Y Min</things-i18n-msg>
+              <things-i18n-msg msgid="label.axis-min" auto>Min</things-i18n-msg>
             </label>
             <input type="number" value="{{values.options.scales.yAxes.0.ticks.min::change}}"></input>
           </template>
           <template is="dom-if" if="[[!values.options.scales.yAxes.0.ticks.autoMax]]">
             <label>
-              <things-i18n-msg msgid="label.y-max" auto>Y Max</things-i18n-msg>
+              <things-i18n-msg msgid="label.axis-max" auto>Max</things-i18n-msg>
             </label>
             <input type="number" value="{{values.options.scales.yAxes.0.ticks.max::change}}"></input>
           </template>
         </div>
+        <label>
+          <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.yGridLine::change}}" required>
         <template is="dom-if" if="[[values.options.multiAxis]]">
+          <legend>
+            <things-i18n-msg msgid="label.y-2nd-axes" auto>Y 2nd Axes</things-i18n-msg>
+          </legend>
           <label>
-            <things-i18n-msg msgid="label.y-2nd-min-auto" auto>Y 2nd Min Auto</things-i18n-msg>
+            <things-i18n-msg msgid="label.axis-min-auto" auto>Min Auto</things-i18n-msg>
           </label>
           <input type="checkbox" checked="{{values.options.scales.yAxes.1.ticks.autoMin::change}}" required>
           <label>
-            <things-i18n-msg msgid="label.y-2nd-max-auto" auto>Y Max Auto</things-i18n-msg>
+            <things-i18n-msg msgid="label.axis-max-auto" auto>Max Auto</things-i18n-msg>
           </label>
           <input type="checkbox" checked="{{values.options.scales.yAxes.1.ticks.autoMax::change}}" required>
           <div>
             <template is="dom-if" if="[[!values.options.scales.yAxes.1.ticks.autoMin]]">
               <label>
-                <things-i18n-msg msgid="label.y-2nd-min" auto>Y 2nd Min</things-i18n-msg>
+                <things-i18n-msg msgid="label.axis-min" auto>Min</things-i18n-msg>
               </label>
               <input type="number" value="{{values.options.scales.yAxes.1.ticks.min::change}}"></input>
             </template>
             <template is="dom-if" if="[[!values.options.scales.yAxes.1.ticks.autoMax]]">
               <label>
-                <things-i18n-msg msgid="label.y-2nd-max" auto>Y 2nd Max</things-i18n-msg>
+                <things-i18n-msg msgid="label.axis-max" auto>Max</things-i18n-msg>
               </label>
               <input type="number" value="{{values.options.scales.yAxes.1.ticks.max::change}}"></input>
             </template>
           </div>
-        </template>
-        <label>
-          <things-i18n-msg msgid="label.x-grid-line" auto>X grid line</things-i18n-msg>
-        </label>
-        <input type="checkbox" checked="{{values.options.xGridLine::change}}" required>
-        <label>
-          <things-i18n-msg msgid="label.y-grid-line" auto>Y grid line</things-i18n-msg>
-        </label>
-        <input type="checkbox" checked="{{values.options.yGridLine::change}}" required>
-        <template is="dom-if" if="[[values.options.multiAxis]]">
           <label>
-            <things-i18n-msg msgid="label.y-2nd-grid-line" auto>Y 2nd grid line</things-i18n-msg>
+            <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
           </label>
           <input type="checkbox" checked="{{values.options.y2ndGridLine::change}}" required>
         </template>
@@ -429,6 +439,12 @@
 
         _computeSeriesTabIndex: function(index) {
           return index + 1
+        },
+
+        _equalize: function(a, b) {
+          this.set(a, b)
+
+          return b
         }
 
       })

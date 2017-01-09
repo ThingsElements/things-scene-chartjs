@@ -104,7 +104,7 @@
           <option value="left">left</option>
         </select>
         <label>
-          <things-i18n-msg msgid="label.font-size" auto>Font Size</things-i18n-msg>
+          <things-i18n-msg msgid="label.text-size" auto>Text Size</things-i18n-msg>
         </label>
         <input is="things-editor-number-input" number="{{values.options.fontSize::change}}">
       </fieldset>
@@ -112,16 +112,14 @@
         <legend>
           <things-i18n-msg msgid="label.series" auto>Series</things-i18n-msg>
         </legend>
-        <div class="tab-content">
-          <label>
-            <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
-          </label>
-          <input type="text" value="{{series.dataKey::change}}"></input>
-          <label>
-            <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
-          </label>
-          <things-editor-multiple-color values="{{series.backgroundColor}}"></things-editor-multiple-color>
-        </div>
+        <label>
+          <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
+        </label>
+        <input type="text" value="{{series.dataKey::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
+        </label>
+        <things-editor-multiple-color values="{{series.backgroundColor}}"></things-editor-multiple-color>
       </fieldset>
       <fieldset class="same-width">
         <legend>
