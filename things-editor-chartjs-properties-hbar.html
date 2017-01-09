@@ -1,0 +1,337 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-styles/paper-styles.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+
+<link rel="import" href="../../bower_components/things-designer-elements/things-editor-multiple-color.html">
+<link rel="import" href="../../bower_components/things-designer-elements/things-editor-number-input.html">
+
+<dom-module id="things-editor-chartjs-properties-hbar">
+  <template>
+    <style>
+      :host {
+        @apply(--things-properties-panel);
+      }
+      label{
+        @apply(--things-label);
+      }
+      input{
+        @apply(--things-input);
+      }
+      fieldset{
+        @apply(--things-fieldset);
+      }
+      legend{
+        @apply(--things-fieldset-legend);
+      }
+      select{
+        @apply(--things-select);
+        background:url(/images/bg-input-select.png) 100% 50% no-repeat #fff;
+      }
+       things-editor-script{
+        width:94%;
+        height:300px;
+        margin:0 0 7px 7px;
+        overflow:auto;
+      }
+      paper-tabs{
+        width:229px;height:25px;
+        margin:-5px 0 0 7px;
+        border:1px solid rgba(0,0,0,.2);
+        border-width:1px 1px 0 1px;
+      }
+      paper-tabs::shadow #selectionBar.paper-tabs{background-color:transparent;}
+      paper-tab{
+        background-color:rgba(0,0,0,.2);
+        border:1px solid rgba(0,0,0,.07);
+        border-width:0 1px 0 0;
+        padding:0 5px;
+        color:#fff;
+        font-size:13px;
+      }
+      paper-tab[disabled]{background-color:rgba(0,0,0,.1);}
+      paper-tab:last-child{border-width:0;}
+      paper-tab.iron-selected{
+        background-color:rgba(255,255,255,.5);
+        color:#585858;
+      }
+      .tab-content{
+        background-color:rgba(255,255,255,.5);
+        border:1px solid rgba(0,0,0,.2);
+        border-width:0 1px 1px 1px;
+        margin:0 7px 10px 7px;padding:7px 5px 0 5px;
+      }
+      .tab-content label{
+        width:40%;
+      }
+      .tab-content input{
+        width:52%;
+      }
+      .same-width input[type="checkbox"]{
+        width:15px;
+      }
+      .same-width label{
+        top:0;
+      }
+    </style>
+
+    <form class="content" method="post">
+      <fieldset class="same-width">
+        <legend>
+          <things-i18n-msg msgid="label.chart" auto>Chart</things-i18n-msg>
+        </legend>
+        <label>
+          <things-i18n-msg msgid="label.theme" auto>theme</things-i18n-msg>
+        </label>
+        <select class="select-content" value="{{values.options.theme::change}}">
+          <option value="dark">dark</option>
+          <option value="light">light</option>
+        </select>
+
+        <div class="merge-column">
+          <label>
+            <things-i18n-msg msgid="label.show-legend" auto>Legend</things-i18n-msg>
+          </label>
+          <input type="checkbox" checked="{{values.options.legend.display::change}}" required>
+        </div>
+        <label>
+          <things-i18n-msg msgid="label.legend-position" auto>Position</things-i18n-msg>
+        </label>
+        <select class="select-content" value="{{values.options.legend.position::change}}">
+          <option value="top">top</option>
+          <option value="right">right</option>
+          <option value="bottom">bottom</option>
+          <option value="left">left</option>
+        </select>
+        <label>
+          <things-i18n-msg msgid="label.font-size" auto>Font Size</things-i18n-msg>
+        </label>
+        <input is="things-editor-number-input" number="{{values.options.fontSize::change}}">
+        <label>
+          <things-i18n-msg msgid="label.stacked" auto>stacked</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.stacked::change}}" required>
+      </fieldset>
+      <fieldset>
+        <legend>
+          <things-i18n-msg msgid="label.series" auto>Series</things-i18n-msg>
+        </legend>
+        <paper-tabs selected="{{currentSeriesIndex}}">
+          <template is="dom-repeat" items="{{values.data.datasets}}" index-as="index">
+            <paper-tab data-series="[[_computeSeriesTabIndex(index)]]">[[_computeSeriesTabIndex(index)]]</paper-tab>
+          </template>
+          <paper-tab>
+            <paper-icon-button icon="add-circle" on-tap="onTapAddTab"></paper-icon-button>
+          </paper-tab>
+        </paper-tabs>
+        <div class="tab-content">
+          <label>
+            <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
+          </label>
+          <input type="text" value="{{series.dataKey::change}}"></input>
+          <label>
+            <things-i18n-msg msgid="label.label" auto>label</things-i18n-msg>
+          </label>
+          <input type="text" value="{{series.label::change}}"></input>
+          <label>
+            <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
+          </label>
+          <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
+          <template is="dom-if" if="[[!isOnly(values.data.datasets)]]">
+            <paper-icon-button icon="icons:delete" on-tap="onTapRemoveCurrentTab"></paper-icon-button>
+          </template>
+        </div>
+      </fieldset>
+      <fieldset class="same-width">
+        <legend>
+          <things-i18n-msg msgid="label.axes" auto>Axes</things-i18n-msg>
+        </legend>
+        <label>
+          <things-i18n-msg msgid="label.label-data-key" auto>Label Data Key</things-i18n-msg>
+        </label>
+        <input type="text" value="{{values.data.labelDataKey::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.y-min" auto>Y Min</things-i18n-msg>
+        </label>
+        <input type="number" value="{{values.options.scales.xAxes.0.ticks.min::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.y-max" auto>Y Max</things-i18n-msg>
+        </label>
+        <input type="number" value="{{values.options.scales.xAxes.0.ticks.max::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.x-grid-line" auto>X grid line</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.xGridLine::change}}" required>
+        <label>
+          <things-i18n-msg msgid="label.y-grid-line" auto>Y grid line</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.yGridLine::change}}" required>
+      </fieldset>
+    </form>
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'things-editor-chartjs-properties-hbar',
+
+        properties: {
+          model: {
+            notify: true
+          },
+          values: {
+            type: Object,
+            notify: true
+          },
+          series: {
+            type: Object,
+            notify: true
+          }
+        },
+
+        observers: [
+          'onModelChanged(model.*)',
+          'onSeriesChanged(series.*)',
+          'onCurrentSeriesIndexChanged(currentSeriesIndex)'
+        ],
+
+        listeners: {
+        },
+
+        onModelChanged: function(model) {
+          if(model.path === 'model' && !this.changedByChartMember) {
+
+            this.set('values', model.value.chart)
+
+            this.set('currentSeriesIndex', -1);
+            this.set('currentSeriesIndex', 0);
+
+            return;
+          }
+        },
+
+        onSeriesChanged: function(change) {
+          if(!this.values)
+            return
+
+          if(!this.values.data)
+            return
+
+          var self = this
+
+          if(!change || change.path == 'series'){
+            return
+          }
+
+          var series = this.series
+
+          if(!this.get('values.data.datasets.'+this.currentSeriesIndex)) {
+
+            var chart = JSON.parse(JSON.stringify(this.get('values')))
+
+            chart.data.datasets = []
+
+            let datasets = chart.data.datasets
+
+            for(var i in this.values.data.datasets) {
+              datasets[i] = JSON.parse(JSON.stringify(this.values.data.datasets[i]));
+            }
+
+            datasets.push({
+              data:[]
+            });
+
+            this.changedByChartMember = true;
+
+            this.set('values', chart)
+
+          }
+
+          var keyStr = 'values.data.datasets.'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
+
+          this.set(keyStr, change.value)
+
+          this.changedByChartMember = false;
+
+        },
+
+        onCurrentSeriesIndexChanged: function(currentSeriesIndex) {
+          if(!this.values) {
+            this.set('series', null)
+            return
+          }
+
+          if(!this.values.data.datasets)
+            return
+
+          this.set('series', this.values.data.datasets[currentSeriesIndex] || {})
+
+        },
+
+        onTapAddTab: function(e) {
+          if(!this.values) {
+            return
+          }
+
+          if(!this.values.data)
+            return
+
+          if(!this.values.data.datasets)
+            return
+
+          var lastSeriesIndex = this.values.data.datasets.length;
+
+          this.values.data.datasets.push({
+            label: 'new series',
+            data: [],
+            borderWidth: 0,
+            dataKey: '',
+            yAxisID: 'left'
+          })
+
+          this.set('values', JSON.parse(JSON.stringify(this.values)))
+        },
+
+        onTapRemoveCurrentTab: function(e) {
+          if(!this.values) {
+            return
+          }
+
+          if(!this.values.data)
+            return
+
+          if(!this.values.data.datasets)
+            return
+
+          var currIndex = this.currentSeriesIndex
+
+          this.values.data.datasets.splice(currIndex, 1)
+
+          currIndex --
+
+          if(currIndex < 0)
+            currIndex = 0
+
+          this.set('values', JSON.parse(JSON.stringify(this.values)))
+          this.set('currentSeriesIndex', -1)
+          this.set('currentSeriesIndex', currIndex)
+        },
+
+        isOnly: function(datasets) {
+          if(datasets && datasets.length === 1)
+            return true
+        },
+
+        _computeSeriesTabIndex: function(index) {
+          return index + 1
+        }
+
+      })
+
+    })();
+
+  </script>
+</dom-module>

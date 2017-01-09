@@ -13,13 +13,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>things-scene-chartjs Demo</title>
-    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
 
-    <link rel="import" href="../../things-scene-viewer/things-scene-viewer.html">
-    <link rel="import" href="../../things-scene-viewer/things-scene-layer.html">
-    <link rel="import" href="../../things-scene-viewer/things-scene-handler.html">
-    <link rel="import" href="../../things-designer-elements/elements.html">
-    <link rel="import" href="../../things-scene-modeler/things-scene-properties.html">
+    <link rel="import" href="../bower_components/things-scene-viewer/things-scene-viewer.html">
+    <link rel="import" href="../bower_components/things-scene-viewer/things-scene-layer.html">
+    <link rel="import" href="../bower_components/things-scene-viewer/things-scene-handler.html">
+    <link rel="import" href="../bower_components/things-designer-elements/elements.html">
+    <link rel="import" href="../bower_components/things-scene-modeler/things-scene-properties.html">
 
     <link rel="import" href="./things-scene-chartjs.html">
 
@@ -50,6 +50,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </things-scene-viewer>
 
       <button id="change">Change Value</button>
+      <button id="change-model">Change Model</button>
       <fieldset>
         <legend>Chart.js properties</legend>
         <things-scene-properties id="properties"
@@ -93,10 +94,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           	}
           ])
         })
+        app.$['change-model'].addEventListener('click', function() {
+          var viewer = app.$.scene
+
+          var selected = app.selected[0]
+          var chartModel = JSON.parse(JSON.stringify(selected.model.chart))
+          chartModel.data.datasets.push({
+            label:'add',
+            backgroundColor: 'red',
+            data: []
+          })
+
+          selected.set('chart', chartModel)
+        })
 
         app.$.properties.addEventListener('change', function(e) {
           console.log('change', e, app.$.properties.model)
         })
+
+        Chart.defaults.global.tooltips.mode = 'label';
 
         app.props = [{
           type: 'number',
@@ -221,11 +237,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   borderWidth: 1,
                   dataKey: 'badQty'
                 }],
-                labelDataKey: 'date',
-                rawData: {
-                  seriesData : [[12, 19, 3, 5, 2, 3], [1, 2, 3, 4, 5, 6]],
-                  labelData: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
-                }
+                labelDataKey: 'date'
               },
               options: {
                 stacked: true,
@@ -235,19 +247,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     stacked: true,
                     gridLines: {
                       display: true
+                    },
+                    ticks: {
+                      reverse : true
                     }
                   }],
                   yAxes: [{
-                    stacked: true,
-                    ticks: {
-                      beginAtZero:true
-                    }
+                    stacked: true
                   }]
                 },
                 legend: {
                   display : false
                 }
               }
+            },
+            data: {
+              seriesData : [[1200, 1900, 300, 500, 200, 300], [100, 200, 300, 400, 500, 600]],
+              labelData: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
             }
           }, {
             type: 'chartjs',
@@ -273,41 +289,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   label: 'Dataset 3',
                   backgroundColor: 'rgba(255, 159, 64, 0.2)',
                   data: []
-                }],
-                rawData : {
-                  seriesData : [
-                    [{
-                      x: -10,
-                      y: 0
-                    }, {
-                      x: 0,
-                      y: 10
-                    }, {
-                      x: 10,
-                      y: 5
-                    }],
-                    [{
-                      x: -10,
-                      y: 0
-                    }, {
-                      x: 0,
-                      y: -10
-                    }, {
-                      x: 10,
-                      y: -5
-                    }],
-                    [{
-                      x: -10,
-                      y: -10
-                    }, {
-                      x: 0,
-                      y: 10
-                    }, {
-                      x: 10,
-                      y: 5
-                    }]
-                  ]
-                }
+                }]
               },
               options: {
                 legend: {
@@ -324,6 +306,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   }]
                 }
               }
+            },
+            data : {
+              seriesData : [
+                [{
+                  x: -10,
+                  y: 0
+                }, {
+                  x: 0,
+                  y: 10
+                }, {
+                  x: 10,
+                  y: 5
+                }],
+                [{
+                  x: -10,
+                  y: 0
+                }, {
+                  x: 0,
+                  y: -10
+                }, {
+                  x: 10,
+                  y: -5
+                }],
+                [{
+                  x: -10,
+                  y: -10
+                }, {
+                  x: 0,
+                  y: 10
+                }, {
+                  x: 10,
+                  y: 5
+                }]
+              ]
             }
           }, {
             type: 'chartjs',
@@ -341,20 +357,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   type: 'line',
                   label: 'Line Dataset',
                   yAxisID: 'left',
+                  borderColor: 'red',
+                  fill: false,
                   data: []
                 }, {
                   type: 'bar',
                   label: 'Bar Dataset',
                   yAxisID: 'right',
+                  borderColor: 'blue',
+                  backgroundColor: 'blue',
                   data: []
-                }],
-                rawData : {
-                  seriesData : [
-                    [0, 10, 5, 3, 6],
-                    [100, 10, 60, 30, 50]
-                  ],
-                  labelData : ['a', 'b', 'c', 'd', 'e' ]
-                }
+                }]
               },
               options: {
                 multiAxis: true,
@@ -378,6 +391,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   }]
                 }
               }
+            },
+            data : {
+              seriesData : [
+                [0, 10, 5, 3, 6],
+                [100, 10, 60, 30, 50]
+              ],
+              labelData : ['a', 'b', 'c', 'd', 'e' ]
             }
           }, {
             type: 'chartjs',
@@ -398,15 +418,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     "#36A2EB",
                     "#FFCE56"
                   ]
-                }],
-                rawData: {
-                  seriesData: [[300, 50, 100]],
-                  labelData: [
-                    "Red",
-                    "Blue",
-                    "Yellow"
-                  ]
-                }
+                }]
               },
               options: {
                 theme : 'dark',
@@ -418,6 +430,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   animateScale:true
                 }
               }
+            },
+            data: {
+              seriesData: [[300, 50, 100]],
+              labelData: [
+                "Red",
+                "Blue",
+                "Yellow"
+              ]
             }
           }]
         }
