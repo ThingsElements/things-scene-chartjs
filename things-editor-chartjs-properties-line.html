@@ -185,22 +185,46 @@
         </label>
         <input type="text" value="{{values.data.labelDataKey::change}}"></input>
         <label>
-          <things-i18n-msg msgid="label.y-min" auto>Y Min</things-i18n-msg>
+          <things-i18n-msg msgid="label.y-min-auto" auto>Y Min Auto</things-i18n-msg>
         </label>
-        <input type="number" value="{{values.options.scales.yAxes.0.ticks.min::change}}"></input>
+        <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.autoMin::change}}" required>
         <label>
-          <things-i18n-msg msgid="label.y-max" auto>Y Max</things-i18n-msg>
+          <things-i18n-msg msgid="label.y-max-auto" auto>Y Max Auto</things-i18n-msg>
         </label>
-        <input type="number" value="{{values.options.scales.yAxes.0.ticks.max::change}}"></input>
+        <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.autoMax::change}}" required>
+        <template is="dom-if" if="[[!values.options.scales.yAxes.0.ticks.autoMin]]">
+          <label>
+            <things-i18n-msg msgid="label.y-min" auto>Y Min</things-i18n-msg>
+          </label>
+          <input type="number" value="{{values.options.scales.yAxes.0.ticks.min::change}}"></input>
+        </template>
+        <template is="dom-if" if="[[!values.options.scales.yAxes.0.ticks.autoMax]]">
+          <label>
+            <things-i18n-msg msgid="label.y-max" auto>Y Max</things-i18n-msg>
+          </label>
+          <input type="number" value="{{values.options.scales.yAxes.0.ticks.max::change}}"></input>
+        </template>
         <template is="dom-if" if="[[values.options.multiAxis]]">
           <label>
-            <things-i18n-msg msgid="label.y-2nd-min" auto>Y 2nd Min</things-i18n-msg>
+            <things-i18n-msg msgid="label.y-2nd-min-auto" auto>Y 2nd Min Auto</things-i18n-msg>
           </label>
-          <input type="number" value="{{values.options.scales.yAxes.1.ticks.min::change}}"></input>
+          <input type="checkbox" checked="{{values.options.scales.yAxes.1.ticks.autoMin::change}}" required>
           <label>
-            <things-i18n-msg msgid="label.y-2nd-max" auto>Y 2nd Max</things-i18n-msg>
+            <things-i18n-msg msgid="label.y-2nd-max-auto" auto>Y Max Auto</things-i18n-msg>
           </label>
-          <input type="number" value="{{values.options.scales.yAxes.1.ticks.max::change}}"></input>
+          <input type="checkbox" checked="{{values.options.scales.yAxes.1.ticks.autoMax::change}}" required>
+          <template is="dom-if" if="[[!values.options.scales.yAxes.1.ticks.autoMin]]">
+            <label>
+              <things-i18n-msg msgid="label.y-2nd-min" auto>Y 2nd Min</things-i18n-msg>
+            </label>
+            <input type="number" value="{{values.options.scales.yAxes.1.ticks.min::change}}"></input>
+          </template>
+          <template is="dom-if" if="[[!values.options.scales.yAxes.1.ticks.autoMax]]">
+            <label>
+              <things-i18n-msg msgid="label.y-2nd-max" auto>Y 2nd Max</things-i18n-msg>
+            </label>
+            <input type="number" value="{{values.options.scales.yAxes.1.ticks.max::change}}"></input>
+          </template>
         </template>
         <label>
           <things-i18n-msg msgid="label.x-grid-line" auto>X grid line</things-i18n-msg>
