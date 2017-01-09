@@ -149,7 +149,9 @@
             <option value="right">right</option>
           </select>
           <template is="dom-if" if="[[!isOnly(values.data.datasets)]]">
-            <paper-icon-button icon="icons:delete" on-tap="onTapRemoveCurrentTab"></paper-icon-button>
+            <paper-button on-tap="onTapRemoveCurrentTab">
+              <iron-icon icon="icons:delete"></iron-icon>Remove Tab
+            </paper-button>
           </template>
         </div>
       </fieldset>
