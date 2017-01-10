@@ -153,6 +153,20 @@
           </label>
           <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
           <label>
+            <things-i18n-msg msgid="label.point-shape" auto>point shape</things-i18n-msg>
+          </label>
+          <select class="select-content" value="{{series.pointStyle::change}}">
+            <option value="circle">circle</option>
+            <option value="triangle">triangle</option>
+            <option value="rect">rect</option>
+            <option value="rectRot">diamond</option>
+            <option value="cross">cross</option>
+            <option value="crossRot">X</option>
+            <option value="star">star</option>
+            <option value="line">Line</option>
+            <option value="dash">Dash</option>
+          </select>
+          <label>
             <things-i18n-msg msgid="label.point-size" auto>point size</things-i18n-msg>
           </label>
           <input type="number" value-as-number="{{series.pointRadius::change}}"></things-editor-color>
