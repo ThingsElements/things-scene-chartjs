@@ -381,6 +381,11 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
     var scale = options.scales || options.scale
 
+    if(!options.tooltips)
+      options.tooltips = {}
+
+    options.tooltips.titleFontSize = options.tooltips.bodyFontSize = options.tooltips.footerFontSize = fontSize;
+
     if(!scale)
       return
 
