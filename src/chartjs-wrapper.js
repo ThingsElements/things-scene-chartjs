@@ -366,7 +366,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     if(!options)
       return
 
-    var fontSize = options.fontSize
+    var fontSize = options.defaultFontSize
 
     let darkColor = "#000"
     let lightColor = "#fff"

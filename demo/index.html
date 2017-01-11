@@ -224,11 +224,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   backgroundColor: 'rgba(255, 99, 132, 0.2)',
                   borderColor:'rgba(255,99,132,1)',
                   borderWidth: 1,
-                  dataKey: 'inQty',
-                  highlight: {
-                    color: 'rgba(255,255,255,1)',
-                    condition: 'data > 15'
-                  }
+                  dataKey: 'inQty'
+                  // ,
+                  // highlight: {
+                  //   color: 'rgba(255,255,255,1)',
+                  //   condition: 'data > 15'
+                  // }
                 }, {
                   label: '# of Votes 2',
                   data: [],
@@ -240,6 +241,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 labelDataKey: 'date'
               },
               options: {
+                // displayValue: true,
+                displayValue: true,
+                displayValuePosition: 'middle',
                 stacked: true,
                 scales: {
                   xAxes: [{
@@ -262,7 +266,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
             },
             data: {
-              seriesData : [[1200, 1900, 300, 500, 200, 300], [100, 200, 300, 400, 500, 600]],
+              seriesData : [[1200, 1900, 300, 500, 200, 300], [100, -200, 300, 400, 500, 600]],
               labelData: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
             }
           }, {
@@ -421,6 +425,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }]
               },
               options: {
+                showPercentage: true,
                 theme : 'dark',
                 legend: {
                   display: true,
