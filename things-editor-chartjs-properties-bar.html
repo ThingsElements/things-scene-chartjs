@@ -115,23 +115,32 @@
           <things-i18n-msg msgid="label.multi-axis" auto>Multi Axis</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.multiAxis::change}}" required>
-        <label>
-          <things-i18n-msg msgid="label.display-value" auto>Display Value</things-i18n-msg>
-        </label>
-        <input type="checkbox" checked="{{values.options.displayValue::change}}" required>
+        <div>
+          <label>
+            <things-i18n-msg msgid="label.display-value" auto>Display Value</things-i18n-msg>
+          </label>
+          <input type="checkbox" checked="{{values.options.displayValue::change}}" required>
+        </div>
         <template is="dom-if" if="[[values.options.displayValue]]">
-          <label>
-            <things-i18n-msg msgid="label.display-value-color" auto>Display Value Color</things-i18n-msg>
-          </label>
-          <things-editor-color value="{{values.options.defaultFontColor::change}}"></things-editor-color>
-          <label>
-            <things-i18n-msg msgid="label.display-value-position" auto>Display Value Position</things-i18n-msg>
-          </label>
-          <select class="select-content" value="{{values.options.displayValuePosition::change}}">
-            <option value="top">Top</option>
-            <option value="middle">Middle</option>
-            <option value="bottom">Bottom</option>
-          </select>
+          <legend>
+            <things-i18n-msg msgid="label.display-value" auto>Display Value</things-i18n-msg>
+          </legend>
+          <div>
+            <label>
+              <things-i18n-msg msgid="label.color" auto>Color</things-i18n-msg>
+            </label>
+            <things-editor-color value="{{values.options.defaultFontColor::change}}"></things-editor-color>
+          </div>
+          <div>
+            <label>
+              <things-i18n-msg msgid="label.position" auto>Position</things-i18n-msg>
+            </label>
+            <select class="select-content" value="{{values.options.displayValuePosition::change}}">
+              <option value="top">Top</option>
+              <option value="middle">Middle</option>
+              <option value="bottom">Bottom</option>
+            </select>
+          </div>
         </template>
       </fieldset>
       <fieldset>
@@ -178,9 +187,13 @@
           <things-i18n-msg msgid="label.x-axes" auto>X Axes</things-i18n-msg>
         </legend>
         <label>
-          <things-i18n-msg msgid="label.label-data-key" auto>Label Data Key</things-i18n-msg>
+          <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
         </label>
         <input type="text" value="{{values.data.labelDataKey::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.bar-thickness" auto>Bar Thickness</things-i18n-msg>
+        </label>
+        <input type="number" value-as-number="{{values.options.scales.xAxes.0.barThickness::change}}"></input>
         <label>
           <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
         </label>

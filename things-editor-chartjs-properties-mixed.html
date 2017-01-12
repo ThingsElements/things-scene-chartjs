@@ -219,9 +219,13 @@
           <things-i18n-msg msgid="label.x-axes" auto>X Axes</things-i18n-msg>
         </legend>
         <label>
-          <things-i18n-msg msgid="label.label-data-key" auto>Label Data Key</things-i18n-msg>
+          <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
         </label>
         <input type="text" value="{{values.data.labelDataKey::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.bar-thickness" auto>Bar Thickness</things-i18n-msg>
+        </label>
+        <input type="number" value-as-number="{{values.options.scales.xAxes.0.barThickness::change}}"></input>
         <label>
           <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
         </label>
