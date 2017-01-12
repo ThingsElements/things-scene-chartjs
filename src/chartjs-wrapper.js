@@ -6,7 +6,8 @@ import clone from './clone'
 var { Component, RectPath } = scene
 
 Chart.defaults.global.defaultFontSize = 10
-Chart.defaults.global.tooltips.mode = 'label';
+Chart.defaults.global.hover.mode = 'index';
+Chart.defaults.global.tooltips.mode = 'index';
 Chart.defaults.global.tooltips.position = 'nearest';
 
 const NATURE = {

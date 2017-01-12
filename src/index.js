@@ -86,7 +86,8 @@ function _drawValues(chartInstance){
         var fontFamily = chartInstance.config.options.defaultFontFamily;
         ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
         // Just naively convert to string for now
-        var dataString = dataset.data[index].toLocaleString();
+        var data = dataset.data[index]
+        var dataString = data ? data.toLocaleString() : data;
         // Make sure alignment settings are correct
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
