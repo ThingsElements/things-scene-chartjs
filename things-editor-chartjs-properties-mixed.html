@@ -115,6 +115,23 @@
           <things-i18n-msg msgid="label.multi-axis" auto>Multi Axis</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.multiAxis::change}}" required>
+        <legend>
+          <things-i18n-msg msgid="label.display-value" auto>Display Value</things-i18n-msg>
+        </legend>
+        <div>
+          <label>
+            <things-i18n-msg msgid="label.display-value" auto>Display Value</things-i18n-msg>
+          </label>
+          <input type="checkbox" checked="{{values.options.displayValue::change}}" required>
+        </div>
+        <template is="dom-if" if="[[values.options.displayValue]]">
+          <div>
+            <label>
+              <things-i18n-msg msgid="label.color" auto>Color</things-i18n-msg>
+            </label>
+            <things-editor-color value="{{values.options.defaultFontColor::change}}"></things-editor-color>
+          </div>
+        </template>
       </fieldset>
       <fieldset>
         <legend>

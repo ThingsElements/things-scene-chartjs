@@ -87,7 +87,6 @@
           <option value="dark">dark</option>
           <option value="light">light</option>
         </select>
-
         <div class="merge-column">
           <label>
             <things-i18n-msg msgid="label.show-legend" auto>Legend</things-i18n-msg>
@@ -107,6 +106,23 @@
           <things-i18n-msg msgid="label.text-size" auto>Text Size</things-i18n-msg>
         </label>
         <input is="things-editor-number-input" number="{{values.options.defaultFontSize::change}}">
+        <legend>
+          <things-i18n-msg msgid="label.display-value" auto>Display Value</things-i18n-msg>
+        </legend>
+        <div>
+          <label>
+            <things-i18n-msg msgid="label.display-value" auto>Display Value</things-i18n-msg>
+          </label>
+          <input type="checkbox" checked="{{values.options.displayValue::change}}" required>
+        </div>
+        <template is="dom-if" if="[[values.options.displayValue]]">
+          <div>
+            <label>
+              <things-i18n-msg msgid="label.color" auto>Color</things-i18n-msg>
+            </label>
+            <things-editor-color value="{{values.options.defaultFontColor::change}}"></things-editor-color>
+          </div>
+        </template>
       </fieldset>
       <fieldset>
         <legend>

@@ -7,6 +7,7 @@ var { Component, RectPath } = scene
 
 Chart.defaults.global.defaultFontSize = 10
 Chart.defaults.global.tooltips.mode = 'label';
+Chart.defaults.global.tooltips.position = 'nearest';
 
 const NATURE = {
   mutable: false,
