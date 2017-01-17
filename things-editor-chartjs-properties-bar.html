@@ -301,6 +301,8 @@
 
             this.async(function() {
               this.set('values', model.value.chart);
+              if(model.value.chart && model.value.chart.data && model.value.chart.datasets)
+                this.set('series', model.value.chart.data.datasets[0]);
               this.set('currentSeriesIndex', 0);
             });
 
