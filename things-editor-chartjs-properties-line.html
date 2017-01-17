@@ -220,9 +220,13 @@
         </label>
         <input type="text" value="{{values.data.labelDataKey::change}}"></input>
         <label>
-          <things-i18n-msg msgid="label.grid-line" auto>X grid line</things-i18n-msg>
+          <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.xGridLine::change}}" required>
+        <label>
+          <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.display::change}}" required>
         <legend>
           <things-i18n-msg msgid="label.y-axes" auto>Y Axes</things-i18n-msg>
         </legend>
@@ -249,9 +253,13 @@
           </template>
         </div>
         <label>
-          <things-i18n-msg msgid="label.grid-line" auto>Y grid line</things-i18n-msg>
+          <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.yGridLine::change}}" required>
+        <label>
+          <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.display::change}}" required>
         <template is="dom-if" if="[[values.options.multiAxis]]">
           <legend>
             <things-i18n-msg msgid="label.y-2nd-axes" auto>Y 2nd Axes</things-i18n-msg>
@@ -282,6 +290,10 @@
             <things-i18n-msg msgid="label.grid-line" auto>Y 2nd grid line</things-i18n-msg>
           </label>
           <input type="checkbox" checked="{{values.options.y2ndGridLine::change}}" required>
+          <label>
+            <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
+          </label>
+          <input type="checkbox" checked="{{values.options.scales.yAxes.1.ticks.display::change}}" required>
         </template>
       </fieldset>
     </form>
@@ -321,10 +333,10 @@
         onModelChanged: function(model) {
           if(model.path === 'model' && !this.changedByChartMember) {
 
-            this.set('values', model.value.chart)
-
-            this.set('currentSeriesIndex', -1);
-            this.set('currentSeriesIndex', 0);
+            this.async(function() {
+              this.set('values', model.value.chart);
+              this.set('currentSeriesIndex', 0);
+            });
 
             return;
           }
@@ -440,7 +452,6 @@
             currIndex = 0
 
           this.set('values', JSON.parse(JSON.stringify(this.values)))
-          this.set('currentSeriesIndex', -1)
           this.set('currentSeriesIndex', currIndex)
         },
 

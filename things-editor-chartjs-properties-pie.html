@@ -163,8 +163,7 @@
             notify: true
           },
           values: {
-            type: Object,
-            notify: true
+            type: Object
           },
           series: {
             type: Object,
@@ -174,8 +173,7 @@
 
         observers: [
           'onModelChanged(model.*)',
-          'onSeriesChanged(series.*)',
-          'onCurrentSeriesIndexChanged(currentSeriesIndex)'
+          'onSeriesChanged(series.*)'
         ],
 
         listeners: {
@@ -184,10 +182,10 @@
         onModelChanged: function(model) {
           if(model.path === 'model' && !this.changedByChartMember) {
 
-            this.set('values', model.value.chart)
-
-            this.set('currentSeriesIndex', null);
-            this.set('currentSeriesIndex', 0);
+            this.async(function() {
+              this.set('values', model.value.chart);
+              this.set('series', model.value.chart.data.datasets[0])
+            });
 
             return;
           }
@@ -202,80 +200,19 @@
 
           var self = this
 
-          setTimeout(function() {
-            var last = -1
-
-            for(var i = 0;i < 7;i++) {
-              var series = self.values.data.datasets[i]
-              var tab = self.querySelector(`paper-tab[data-series="${i + 1}"]`)
-              if(!tab)
-                continue
-
-              if(series) {
-                tab.active = true
-                tab.disabled = false
-                tab.setAttribute('has-set', true)
-
-                last = i
-              } else {
-                tab.active = false
-                tab.removeAttribute('has-set')
-                if(last < i - 1) {
-                  tab.disabled = true
-                } else {
-                  tab.disabled = false
-                }
-              }
-            }
-
-          }, 10)
-
           if(!change || change.path == 'series'){
             return
           }
 
           var series = this.series
 
-          if(!this.get('values.data.datasets.#'+this.currentSeriesIndex)) {
+          this.changedByChartMember = true;
 
-            var chart = JSON.parse(JSON.stringify(this.get('values')))
-
-            chart.data.datasets = []
-
-            let datasets = chart.data.datasets
-
-            for(var i in this.values.data.datasets) {
-              datasets[i] = JSON.parse(JSON.stringify(this.values.data.datasets[i]));
-            }
-
-            datasets.push({
-              data:[]
-            });
-
-            this.changedByChartMember = true;
-
-            this.set('values', chart)
-
-          }
-
-          var keyStr = 'values.data.datasets.#'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
+          var keyStr = 'values.data.datasets.0.' + change.path.replace('series.', '');
 
           this.set(keyStr, change.value)
 
           this.changedByChartMember = false;
-
-        },
-
-        onCurrentSeriesIndexChanged: function(currentSeriesIndex) {
-          if(!this.values) {
-            this.set('series', null)
-            return
-          }
-
-          if(!this.values.data.datasets)
-            return
-
-          this.set('series', this.values.data.datasets[currentSeriesIndex] || {})
 
         }
       })

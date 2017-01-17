@@ -177,6 +177,10 @@
           <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.xGridLine::change}}" required>
+        <label>
+          <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.display::change}}" required>
         <legend>
           <things-i18n-msg msgid="label.x-axes" auto>X Axes</things-i18n-msg>
         </legend>
@@ -206,6 +210,10 @@
           <things-i18n-msg msgid="label.grid-line" auto>Grid line</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.yGridLine::change}}" required>
+        <label>
+          <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
+        </label>
+        <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.display::change}}" required>
       </fieldset>
     </form>
 
@@ -223,8 +231,7 @@
             notify: true
           },
           values: {
-            type: Object,
-            notify: true
+            type: Object
           },
           series: {
             type: Object,
@@ -244,10 +251,10 @@
         onModelChanged: function(model) {
           if(model.path === 'model' && !this.changedByChartMember) {
 
-            this.set('values', model.value.chart)
-
-            this.set('currentSeriesIndex', -1);
-            this.set('currentSeriesIndex', 0);
+            this.async(function() {
+              this.set('values', model.value.chart)
+              this.set('currentSeriesIndex', 0);
+            })
 
             return;
           }
@@ -333,6 +340,9 @@
           })
 
           this.set('values', JSON.parse(JSON.stringify(this.values)))
+
+          this.set('currentSeriesIndex', 0)
+          this.set('currentSeriesIndex', lastSeriesIndex)
         },
 
         onTapRemoveCurrentTab: function(e) {
@@ -356,7 +366,7 @@
             currIndex = 0
 
           this.set('values', JSON.parse(JSON.stringify(this.values)))
-          this.set('currentSeriesIndex', -1)
+          this.set('currentSeriesIndex', 0)
           this.set('currentSeriesIndex', currIndex)
         },
 

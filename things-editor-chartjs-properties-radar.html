@@ -210,8 +210,7 @@
             notify: true
           },
           values: {
-            type: Object,
-            notify: true
+            type: Object
           },
           series: {
             type: Object,
@@ -231,10 +230,10 @@
         onModelChanged: function(model) {
           if(model.path === 'model' && !this.changedByChartMember) {
 
-            this.set('values', model.value.chart)
-
-            this.set('currentSeriesIndex', -1);
-            this.set('currentSeriesIndex', 0);
+            this.async(function() {
+              this.set('values', model.value.chart);
+              this.set('currentSeriesIndex', 0);
+            });
 
             return;
           }
@@ -255,7 +254,7 @@
 
           var series = this.series
 
-          if(!this.get('values.data.datasets.#'+this.currentSeriesIndex)) {
+          if(!this.get('values.data.datasets.'+this.currentSeriesIndex)) {
 
             var chart = JSON.parse(JSON.stringify(this.get('values')))
 
@@ -277,7 +276,7 @@
 
           }
 
-          var keyStr = 'values.data.datasets.#'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
+          var keyStr = 'values.data.datasets.'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
 
           this.set(keyStr, change.value)
 
@@ -320,6 +319,9 @@
           })
 
           this.set('values', JSON.parse(JSON.stringify(this.values)))
+
+          this.set('currentSeriesIndex', 0)
+          this.set('currentSeriesIndex', lastSeriesIndex)
         },
 
         onTapRemoveCurrentTab: function(e) {
@@ -343,7 +345,7 @@
             currIndex = 0
 
           this.set('values', JSON.parse(JSON.stringify(this.values)))
-          this.set('currentSeriesIndex', -1)
+          this.set('currentSeriesIndex', 0)
           this.set('currentSeriesIndex', currIndex)
         },
 

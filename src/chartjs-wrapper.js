@@ -9,6 +9,7 @@ Chart.defaults.global.defaultFontSize = 10
 Chart.defaults.global.hover.mode = 'index';
 Chart.defaults.global.tooltips.mode = 'index';
 Chart.defaults.global.tooltips.position = 'nearest';
+Chart.defaults.bar.scales.xAxes[0].barPercentage = 0.95;
 
 const NATURE = {
   mutable: false,
