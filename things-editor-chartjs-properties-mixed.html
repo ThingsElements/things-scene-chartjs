@@ -90,25 +90,27 @@
 
         <div class="merge-column">
           <label>
-            <things-i18n-msg msgid="label.show-legend" auto>Legend</things-i18n-msg>
+            <things-i18n-msg msgid="label.legend" auto>Legend</things-i18n-msg>
           </label>
           <input type="checkbox" checked="{{values.options.legend.display::change}}" required>
         </div>
-        <label>
-          <things-i18n-msg msgid="label.legend-position" auto>Position</things-i18n-msg>
-        </label>
-        <select class="select-content" value="{{values.options.legend.position::change}}">
-          <option value="top">top</option>
-          <option value="right">right</option>
-          <option value="bottom">bottom</option>
-          <option value="left">left</option>
-        </select>
+        <template is="dom-if" if="[[values.options.legend.display]]">
+          <label>
+            <things-i18n-msg msgid="label.position" auto>Position</things-i18n-msg>
+          </label>
+          <select class="select-content" value="{{values.options.legend.position::change}}">
+            <option value="top">top</option>
+            <option value="right">right</option>
+            <option value="bottom">bottom</option>
+            <option value="left">left</option>
+          </select>
+        </template>
         <label>
           <things-i18n-msg msgid="label.text-size" auto>Text Size</things-i18n-msg>
         </label>
         <input is="things-editor-number-input" number="{{values.options.defaultFontSize::change}}">
         <label>
-          <things-i18n-msg msgid="label.stacked" auto>stacked</things-i18n-msg>
+          <things-i18n-msg msgid="label.stacked" auto>Stacked</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.stacked::change}}" required>
         <label>
@@ -116,11 +118,11 @@
         </label>
         <input type="checkbox" checked="{{values.options.multiAxis::change}}" required>
         <legend>
-          <things-i18n-msg msgid="label.display-value" auto>Display Value</things-i18n-msg>
+          <things-i18n-msg msgid="label.value" auto>Value</things-i18n-msg>
         </legend>
         <div>
           <label>
-            <things-i18n-msg msgid="label.display-value" auto>Display Value</things-i18n-msg>
+            <things-i18n-msg msgid="label.display" auto>Display</things-i18n-msg>
           </label>
           <input type="checkbox" checked="{{values.options.displayValue::change}}" required>
         </div>
@@ -240,7 +242,7 @@
         </label>
         <input type="text" value="{{values.data.labelDataKey::change}}"></input>
         <label>
-          <things-i18n-msg msgid="label.bar-thickness" auto>Bar Thickness</things-i18n-msg>
+          <things-i18n-msg msgid="label.thickness" auto>Thickness</things-i18n-msg>
         </label>
         <input type="number" value-as-number="{{values.options.scales.xAxes.0.barThickness::change}}"></input>
         <label>
