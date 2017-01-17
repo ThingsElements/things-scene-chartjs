@@ -459,7 +459,7 @@
           })
 
           this.set('values', JSON.parse(JSON.stringify(this.values)))
-          this.set('currentSeriesIndex', 0)
+          this.set('currentSeriesIndex', -1)
           this.set('currentSeriesIndex', lastSeriesIndex)
         },
 
@@ -484,7 +484,7 @@
             currIndex = 0
 
           this.set('values', JSON.parse(JSON.stringify(this.values)))
-          this.set('currentSeriesIndex', 0)
+          this.set('currentSeriesIndex', -1)
           this.set('currentSeriesIndex', currIndex)
         },
 

@@ -435,6 +435,8 @@
           })
 
           this.set('values', JSON.parse(JSON.stringify(this.values)))
+          this.set('currentSeriesIndex', -1)
+          this.set('currentSeriesIndex', lastSeriesIndex)
         },
 
         onTapRemoveCurrentTab: function(e) {
@@ -458,6 +460,7 @@
             currIndex = 0
 
           this.set('values', JSON.parse(JSON.stringify(this.values)))
+          this.set('currentSeriesIndex', -1)
           this.set('currentSeriesIndex', currIndex)
         },
 
