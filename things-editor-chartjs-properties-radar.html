@@ -180,6 +180,14 @@
             <things-i18n-msg msgid="label.fill" auto>fill</things-i18n-msg>
           </label>
           <input type="checkbox" checked="{{series.fill::change}}" required>
+          <label>
+            <things-i18n-msg msgid="label.value-prefix" auto>Value Prefix</things-i18n-msg>
+          </label>
+          <input type="text" value="{{series.valuePrefix::change}}"></input>
+          <label>
+            <things-i18n-msg msgid="label.value-suffix" auto>Value suffix</things-i18n-msg>
+          </label>
+          <input type="text" value="{{series.valueSuffix::change}}"></input>
           <template is="dom-if" if="[[!isOnly(values.data.datasets)]]">
             <paper-button on-tap="onTapRemoveCurrentTab">
               <iron-icon icon="icons:delete"></iron-icon>Remove Tab

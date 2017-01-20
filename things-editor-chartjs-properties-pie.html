@@ -139,6 +139,14 @@
           <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
         </label>
         <things-editor-multiple-color values="{{series.backgroundColor}}"></things-editor-multiple-color>
+        <label>
+          <things-i18n-msg msgid="label.value-prefix" auto>Value Prefix</things-i18n-msg>
+        </label>
+        <input type="text" value="{{series.valuePrefix::change}}"></input>
+        <label>
+          <things-i18n-msg msgid="label.value-suffix" auto>Value suffix</things-i18n-msg>
+        </label>
+        <input type="text" value="{{series.valueSuffix::change}}"></input>
       </fieldset>
       <fieldset class="same-width">
         <legend>

@@ -460,7 +460,12 @@ export default class ChartJSWrapper extends RectPath(Component) {
           }
 
           if(value)
-            return value.toLocaleString()
+            value = value.toLocaleString()
+
+          var prefix = data.datasets[tooltipItem.datasetIndex].valuePrefix || "";
+          var suffix = data.datasets[tooltipItem.datasetIndex].valueSuffix || "";
+
+          return prefix + value + suffix
         }
       }
     })
