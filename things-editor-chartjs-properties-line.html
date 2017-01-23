@@ -188,13 +188,14 @@
           <label>
             <things-i18n-msg msgid="label.point-size" auto>point size</things-i18n-msg>
           </label>
-          <input type="number" value-as-number="{{series.pointRadius::change}}"></things-editor-color>
+          <input type="number" value-as-number="{{series.pointRadius::change}}"></input>
+          <input type="number" value-as-number="[[_equalize('series.pointHoverRadius', series.pointRadius)]]" hidden></input>
           <label>
             <things-i18n-msg msgid="label.point-bg-color" auto>point BG color</things-i18n-msg>
           </label>
           <things-editor-color value="{{series.pointBackgroundColor::change}}"></things-editor-color>
-          <input type="text" value="{{_equalize('series.pointBorderColor', series.borderColor)}}" hidden></input>
-          <input type="text" value="{{_equalize('series.pointBorderWidth', series.borderWidth)}}" hidden></input>
+          <input type="text" value="[[_equalize('series.pointBorderColor', series.borderColor)]]" hidden></input>
+          <input type="number" value-as-number="[[_equalize('series.pointBorderWidth', series.borderWidth)]]" hidden></input>
           <label>
             <things-i18n-msg msgid="label.fill" auto>fill</things-i18n-msg>
           </label>
@@ -413,7 +414,9 @@
           if(!this.values.data.datasets)
             return
 
-          this.set('series', this.values.data.datasets[currentSeriesIndex] || {})
+          this._seriesIndexChanged = true;
+          this.set('series', this.values.data.datasets[currentSeriesIndex] || {});
+          this._seriesIndexChanged = false;
 
         },
 
@@ -482,6 +485,9 @@
         },
 
         _equalize: function(a, b) {
+          if(this._seriesIndexChanged)
+            return
+
           this.set(a, b)
 
           return b

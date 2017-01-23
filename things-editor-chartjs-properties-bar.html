@@ -160,6 +160,8 @@
             <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
           </label>
           <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
+          <input type="text" value="[[_equalize('series.borderColor', series.backgroundColor)]]" hidden></input>
+          <input type="number" value-as-number="[[_equalize('series.borderWidth', 0)]]"></input>
           <label>
             <things-i18n-msg msgid="label.target-axis" auto>target axis</things-i18n-msg>
           </label>
@@ -378,7 +380,9 @@
           if(!this.values.data.datasets)
             return
 
-          this.set('series', this.values.data.datasets[currentSeriesIndex] || {})
+          this._seriesIndexChanged = true;
+          this.set('series', this.values.data.datasets[currentSeriesIndex] || {});
+          this._seriesIndexChanged = false;
 
         },
 
@@ -441,6 +445,15 @@
 
         _computeSeriesTabIndex: function(index) {
           return index + 1
+        },
+
+        _equalize: function(a, b) {
+          if(this._seriesIndexChanged)
+            return
+
+          this.set(a, b)
+
+          return b
         }
 
       })
