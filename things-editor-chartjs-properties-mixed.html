@@ -361,6 +361,7 @@
 
         observers: [
           'onModelChanged(model.*)',
+          'onValuesChanged(values)',
           'onSeriesChanged(series.*)',
           'onCurrentSeriesIndexChanged(currentSeriesIndex)'
         ],
@@ -382,6 +383,10 @@
 
             return;
           }
+        },
+
+        onValuesChanged: function(values) {
+          this.set('model.chart', values);
         },
 
         onSeriesChanged: function(change) {
