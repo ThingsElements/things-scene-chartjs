@@ -183,7 +183,6 @@
 
         observers: [
           'onModelChanged(model.*)',
-          'onValuesChanged(values)',
           'onSeriesChanged(series.*)'
         ],
 
@@ -200,10 +199,6 @@
 
             return;
           }
-        },
-
-        onValuesChanged: function(values) {
-          this.set('model.chart', values);
         },
 
         onSeriesChanged: function(change) {
