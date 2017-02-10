@@ -73,7 +73,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     if(data) {
       this._chart.data.rawData = this.convertObject(data)
     } else {
-      this.drawSampleImage(context)
+      this._drawSampleImage(context)
     }
 
     context.translate(left, top);
@@ -116,8 +116,8 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
     var {chart} = this.model
 
-    if(chart.options){
-      this.convertOptions(chart)
+    if(chart){
+      this.convertConfigure(chart)
     }
 
     this._chart = new SceneChart(context,
@@ -208,231 +208,205 @@ export default class ChartJSWrapper extends RectPath(Component) {
     return value
   }
 
-  convertOptions(chart) {
-    this.setStacked(chart.options)
-    this.setMultiAxis(chart)
-    this.setFontSize(chart.options)
-    this.setTheme(chart.options)
-    this.appendTooltipCallback(chart.options)
-  }
+  convertConfigure(chart) {
 
-  setStacked(options) {
-    if(!options)
-      return
-
-    var stacked = options.stacked
-
-    if(!options.scales)
-      return
-
-    if(options.scales.xAxes){
-      for(let axis of options.scales.xAxes) {
-        axis.stacked = stacked
-      }
-    }
-
-    if(options.scales.yAxes){
-      for(let axis of options.scales.yAxes) {
-        axis.stacked = stacked
-      }
-    }
-  }
-
-  setMultiAxis(chart) {
     if(!chart)
       return
 
-    var options = chart.options
-    if(!options)
-      return
+    var data = chart.data || {};
+    var datasets = data.datasets || [];
+    var options = chart.options || {};
+    var scales = options.scales || {};
+    var xAxes
+    var yAxes
+    var scale
+    var legend = options.legend || {};
+    var tooltips = options.tooltips = options.tooltips || {};
 
-    var multiAxis = options.multiAxis
+    var multiAxis = options.multiAxis;
+    var stacked = options.stacked;
+    var fontSize = options.defaultFontSize;
+    var theme = options.theme;
 
-    if(!options.scales)
-      return
+    // setup series configure
+    for (let i in datasets) {
+      let series = datasets[i];
+      this._setSeriesConfigures(series);
 
-    if(!options.scales.yAxes)
-      return
-
-    var datasets = chart.data.datasets
-    if(multiAxis){
-
-      if(options.scales.yAxes.length === 1) {
-        options.scales.yAxes.push({
-          position: 'right',
-          id: 'right',
-          ticks: {
-            beginAtZero:true,
-            callback: function(value, index, values) {
-              var returnValue = value
-              if(typeof returnValue == 'number') {
-                returnValue = returnValue.toLocaleString()
-              }
-
-              return returnValue
-            }
-          }
-        })
+      if(!multiAxis) {
+        if(series.yAxisID == 'right')
+          series.yAxisID = 'left'
       }
-    } else {
-      if(datasets) {
-        for(let dataset of datasets) {
-          if(dataset.yAxisID == 'right')
-            dataset.yAxisID = 'left'
+
+    }
+
+    // setup options
+    // 1. setup scales
+    switch (chart.type) {
+      case 'line':
+      case 'bar':
+      case 'horizontalBar':
+        xAxes = scales.xAxes || [];
+        yAxes = scales.yAxes || [];
+
+        // 1-1. setup xAxes
+        for (let i in xAxes) {
+          let axis = xAxes[i];
+          this._setStacked(axis, stacked);
+          this._setScalesFontSize(axis, fontSize);
+          this._setScalesAutoMinMax(axis);
+          this._setScalesTheme(axis, theme);
+          this._appendTickCallback(axis.ticks);
+
+          axis.gridLines.display = options.xGridLine
+        }
+
+        // 1-2. setup yAxes
+        if(!multiAxis) {
+          if(options.scales.yAxes.length > 1) {
+            yAxes.splice(0,1);
+          }
+        }
+
+        for (let i in yAxes) {
+          let axis = yAxes[i];
+
+          if(yAxes.length === 1 && multiAxis) {
+            this._setMultiAxis(yAxes);
+          }
+          this._setStacked(axis, stacked);
+          this._setScalesFontSize(axis, fontSize);
+          this._setScalesAutoMinMax(axis);
+          this._setScalesTheme(axis, theme);
+          this._appendTickCallback(axis.ticks);
+
+          axis.gridLines.display = options.yGridLine
+        }
+
+        break;
+      case 'pie':
+      case 'doughnut':
+        break;
+      default:
+        scale = options.scale || {};
+        break;
+    }
+
+    // 2. setup legend
+    legend.labels = legend.labels ? legend.labels : {};
+    legend.labels.fontSize = fontSize;
+    this._setLegendTheme(legend, theme);
+
+
+    // 3. setup tooltips
+    tooltips.titleFontSize = tooltips.bodyFontSize = tooltips.footerFontSize = fontSize;
+    this._setTooltipCallback(tooltips)
+  }
+
+  _setStacked(axis, stacked) {
+    axis.stacked = stacked;
+  }
+
+  _setMultiAxis(yAxes) {
+    yAxes.push({
+      position: 'right',
+      id: 'right',
+      ticks: {
+        beginAtZero: false,
+        callback: function(value, index, values) {
+          var returnValue = value
+          if(typeof returnValue == 'number') {
+            returnValue = returnValue.toLocaleString()
+          }
+
+          return returnValue
         }
       }
+    })
+  }
 
-      if(options.scales.yAxes.length > 1) {
-        options.scales.yAxes = [options.scales.yAxes[0]]
-      }
+  _setScalesFontSize(axis, fontSize) {
+    axis.ticks = axis.ticks ? axis.ticks : {};
+    axis.ticks.fontSize = fontSize;
+  }
+
+  _setScalesAutoMinMax(axis) {
+    axis.ticks = axis.ticks ? axis.ticks : {};
+
+    let autoMin = axis.ticks.autoMin;
+    let autoMax = axis.ticks.autoMax;
+
+    if(autoMin === true) {
+      delete axis.ticks.min;
+    }
+    if(autoMax === true) {
+      delete axis.ticks.max;
     }
   }
 
-  setTheme(options) {
-    if(!options)
-      return
+  _setScalesTheme(axis, theme) {
+    var baseColor = this._getBaseColorFromTheme(theme);
 
-    var theme = options.theme
+    axis.gridLines = axis.gridLines ? axis.gridLines : {};
+    axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
+    axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
 
-    let darkColor = "#000"
-    let lightColor = "#fff"
+    axis.ticks = axis.ticks ? axis.ticks : {};
+    axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
+  }
+
+  _setLegendTheme(legend, theme) {
+    var baseColor = this._getBaseColorFromTheme(theme);
+
+    legend.labels = legend.labels ? legend.labels : {};
+    legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
+
+  }
+
+  _getBaseColorFromTheme(theme) {
+    let darkColor = "#000";
+    let lightColor = "#fff";
 
     var baseColor;
 
     switch(theme) {
       case 'light' :
-        baseColor = lightColor
+        baseColor = lightColor;
         break;
       case 'dark' :
       default:
-        baseColor = darkColor
+        baseColor = darkColor;
         break;
     }
 
-    baseColor = tinycolor(baseColor)
+    baseColor = tinycolor(baseColor);
 
-    var isDark = baseColor.isDark();
+    return baseColor;
+  }
 
-    var operatorFunction = isDark ? "brighten" : "darken"
+  _setSeriesConfigures(series) {
 
-    if(!options.legend)
-      options.legend = {}
+    var type = series.type;
 
-    if(!options.legend.labels)
-      options.legend.labels = {}
-
-    options.legend.labels.fontColor = baseColor.clone().setAlpha(.5).toString();
-
-    var scale = options.scales || options.scale
-
-    if(!scale)
-      return
-
-    if(scale.xAxes){
-      for(let axis of scale.xAxes) {
-        if(!axis.gridLines)
-          axis.gridLines = {}
-
-        axis.gridLines.display = options.xGridLine
-        axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
-        axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
-
-        if(!axis.ticks)
-          axis.ticks = {}
-
-        axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
-        this.appendTickCallback(axis.ticks);
-      }
-    }
-
-    if(scale.yAxes){
-      for(let index in scale.yAxes) {
-        let axis = scale.yAxes[index]
-        if(!axis.gridLines)
-          axis.gridLines = {}
-
-        axis.gridLines.display = index == 0 ? options.yGridLine : options.y2ndGridLine
-        axis.gridLines.zeroLineColor = baseColor.clone().setAlpha(.5).toString();
-        axis.gridLines.color = baseColor.clone().setAlpha(.1).toString();
-
-        if(!axis.ticks)
-          axis.ticks = {}
-
-        axis.ticks.fontColor = baseColor.clone().setAlpha(.5).toString();
-        this.appendTickCallback(axis.ticks);
-      }
+    switch (type) {
+      case 'bar':
+      case 'horizontalBar':
+        series.borderColor = series.backgroundColor;
+        series.borderWidth = 0;
+        break;
+      case 'line':
+      case 'radar':
+        series.pointBorderColor = series.borderColor;
+        series.pointBorderWidth = series.borderWidth;
+        series.pointHoverRadius = series.pointRadius;
+        break;
+      default:
+        break;
     }
 
   }
 
-  setFontSize(options) {
-    if(!options)
-      return
-
-    var fontSize = options.defaultFontSize
-
-    let darkColor = "#000"
-    let lightColor = "#fff"
-
-    if(!options.legend)
-      options.legend = {}
-
-    if(!options.legend.labels)
-      options.legend.labels = {}
-
-    options.legend.labels.fontSize = fontSize;
-
-    var scale = options.scales || options.scale
-
-    if(!options.tooltips)
-      options.tooltips = {}
-
-    options.tooltips.titleFontSize = options.tooltips.bodyFontSize = options.tooltips.footerFontSize = fontSize;
-
-    if(!scale)
-      return
-
-    if(scale.xAxes){
-      for(let axis of scale.xAxes) {
-        if(!axis.ticks)
-          axis.ticks = {}
-
-        let autoMin = axis.ticks.autoMin
-        let autoMax = axis.ticks.autoMax
-
-        if(autoMin === true) {
-          delete axis.ticks.min
-        }
-        if(autoMax === true) {
-          delete axis.ticks.max
-        }
-
-        axis.ticks.fontSize = fontSize
-      }
-    }
-
-    if(scale.yAxes){
-      for(let axis of scale.yAxes) {
-        if(!axis.ticks)
-          axis.ticks = {}
-
-        let autoMin = axis.ticks.autoMin
-        let autoMax = axis.ticks.autoMax
-
-        if(autoMin === true) {
-          delete axis.ticks.min
-        }
-        if(autoMax === true) {
-          delete axis.ticks.max
-        }
-
-        axis.ticks.fontSize = fontSize;
-      }
-    }
-
-  }
-
-  appendTickCallback(ticks) {
+  _appendTickCallback(ticks) {
     ticks.callback = function(value, index, values) {
       var returnValue = value
       if(typeof returnValue == 'number') {
@@ -444,34 +418,29 @@ export default class ChartJSWrapper extends RectPath(Component) {
     }
   }
 
-  appendTooltipCallback(options) {
-    if(!options)
-      return
+  _setTooltipCallback(tooltips) {
+    tooltips.callbacks = {
+      label : function(tooltipItem, data) {
+        var label = data.labels[tooltipItem.index]
+        var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+        var toNumValue = Number(value)
 
-    options.tooltips = Object.assign({}, options.tooltips, {
-      callbacks: {
-        label : function(tooltipItem, data) {
-          var label = data.labels[tooltipItem.index]
-          var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
-          var toNumValue = Number(value)
-
-          if(!Number.isNaN(toNumValue)) {
-            value = toNumValue
-          }
-
-          if(value)
-            value = value.toLocaleString()
-
-          var prefix = data.datasets[tooltipItem.datasetIndex].valuePrefix || "";
-          var suffix = data.datasets[tooltipItem.datasetIndex].valueSuffix || "";
-
-          return prefix + value + suffix
+        if(!Number.isNaN(toNumValue)) {
+          value = toNumValue
         }
+
+        if(value)
+          value = value.toLocaleString()
+
+        var prefix = data.datasets[tooltipItem.datasetIndex].valuePrefix || "";
+        var suffix = data.datasets[tooltipItem.datasetIndex].valueSuffix || "";
+
+        return prefix + value + suffix
       }
-    })
+    }
   }
 
-  drawSampleImage(context) {
+  _drawSampleImage(context) {
 
     var sampleImage = this.sampleImage
 

@@ -83,37 +83,31 @@
     </style>
 
     <template is="dom-if" if="[[isTypeof(values.type, 'line')]]">
-      <things-editor-chartjs-properties-line model="{{model}}" values="{{values}}" series="{{series}}">
-      </things-editor-chartjs-properties-line>
+      <things-editor-chartjs-properties-mixed values="{{values}}">
+      </things-editor-chartjs-properties-mixed>
     </template>
     <template is="dom-if" if="[[isTypeof(values.type, 'horizontalBar')]]">
-      <things-editor-chartjs-properties-hbar model="{{model}}" values="{{values}}" series="{{series}}">
+      <things-editor-chartjs-properties-hbar values="{{values}}">
       </things-editor-chartjs-properties-hbar>
     </template>
     <template is="dom-if" if="[[isTypeof(values.type, 'bar')]]">
-      <template is="dom-if" if="[[isTypeof(values.subType, 'mixed')]]">
-        <things-editor-chartjs-properties-mixed model="{{model}}" values="{{values}}" series="{{series}}">
-        </things-editor-chartjs-properties-mixed>
-      </template>
-      <template is="dom-if" if="[[!values.subType]]">
-        <things-editor-chartjs-properties-bar model="{{model}}" values="{{values}}" series="{{series}}">
-        </things-editor-chartjs-properties-bar>
-      </template>
+      <things-editor-chartjs-properties-mixed values="{{values}}">
+      </things-editor-chartjs-properties-mixed>
     </template>
     <template is="dom-if" if="[[isTypeof(values.type, 'pie')]]">
-      <things-editor-chartjs-properties-pie model="{{model}}" values="{{values}}" series="{{series}}">
+      <things-editor-chartjs-properties-pie values="{{values}}">
       </things-editor-chartjs-properties-pie>
     </template>
     <template is="dom-if" if="[[isTypeof(values.type, 'doughnut')]]">
-      <things-editor-chartjs-properties-pie model="{{model}}" values="{{values}}" series="{{series}}">
+      <things-editor-chartjs-properties-pie values="{{values}}">
       </things-editor-chartjs-properties-pie>
     </template>
     <template is="dom-if" if="[[isTypeof(values.type, 'polarArea')]]">
-      <things-editor-chartjs-properties-pie model="{{model}}" values="{{values}}" series="{{series}}">
+      <things-editor-chartjs-properties-pie values="{{values}}">
       </things-editor-chartjs-properties-pie>
     </template>
     <template is="dom-if" if="[[isTypeof(values.type, 'radar')]]">
-      <things-editor-chartjs-properties-radar model="{{model}}" values="{{values}}" series="{{series}}">
+      <things-editor-chartjs-properties-radar values="{{values}}">
       </things-editor-chartjs-properties-radar>
     </template>
 
@@ -127,15 +121,7 @@
         is: 'things-editor-chartjs-properties',
 
         properties: {
-          model: {
-            notify: true
-          },
           values: {
-            type: Object,
-            notify: true
-          },
-          series: {
-            type: Object,
             notify: true
           }
         },

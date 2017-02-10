@@ -92,7 +92,7 @@
           <label>
             <things-i18n-msg msgid="label.legend" auto>Legend</things-i18n-msg>
           </label>
-          <input type="checkbox" checked="{{values.options.legend.display::change}}" required>
+          <input type="checkbox" checked="{{values.options.legend.display::change}}" required></input>
         </div>
         <template is="dom-if" if="[[values.options.legend.display]]">
           <label>
@@ -108,11 +108,11 @@
         <label>
           <things-i18n-msg msgid="label.text-size" auto>Text Size</things-i18n-msg>
         </label>
-        <input is="things-editor-number-input" number="{{values.options.defaultFontSize::change}}">
+        <input is="things-editor-number-input" number="{{values.options.defaultFontSize::change}}"></input>
         <label>
-          <things-i18n-msg msgid="label.stacked" auto>stacked</things-i18n-msg>
+          <things-i18n-msg msgid="label.stacked" auto>Stacked</things-i18n-msg>
         </label>
-        <input type="checkbox" checked="{{values.options.stacked::change}}" required>
+        <input type="checkbox" checked="{{values.options.stacked::change}}" required></input>
         <legend>
           <things-i18n-msg msgid="label.value" auto>Value</things-i18n-msg>
         </legend>
@@ -120,7 +120,7 @@
           <label>
             <things-i18n-msg msgid="label.display" auto>Display</things-i18n-msg>
           </label>
-          <input type="checkbox" checked="{{values.options.displayValue::change}}" required>
+          <input type="checkbox" checked="{{values.options.displayValue::change}}" required></input>
         </div>
         <template is="dom-if" if="[[values.options.displayValue]]">
           <div>
@@ -156,8 +156,6 @@
             <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
           </label>
           <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
-          <input type="text" value="[[_equalize('series.borderColor', series.backgroundColor)]]" hidden></input>
-          <input type="number" value-as-number="[[_equalize('series.borderWidth', 0)]]" hidden></input>
           <label>
             <things-i18n-msg msgid="label.value-prefix" auto>Value Prefix</things-i18n-msg>
           </label>
@@ -188,22 +186,22 @@
         <label>
           <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
         </label>
-        <input type="checkbox" checked="{{values.options.xGridLine::change}}" required>
+        <input type="checkbox" checked="{{values.options.xGridLine::change}}" required></input>
         <label>
           <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
         </label>
-        <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.display::change}}" required>
+        <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.display::change}}" required></input>
         <legend>
           <things-i18n-msg msgid="label.x-axes" auto>X Axes</things-i18n-msg>
         </legend>
         <label>
           <things-i18n-msg msgid="label.axis-min-auto" auto>Min Auto</things-i18n-msg>
         </label>
-        <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.autoMin::change}}" required>
+        <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.autoMin::change}}" required></input>
         <label>
           <things-i18n-msg msgid="label.axis-max-auto" auto>Max Auto</things-i18n-msg>
         </label>
-        <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.autoMax::change}}" required>
+        <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.autoMax::change}}" required></input>
         <div>
           <template is="dom-if" if="[[!values.options.scales.xAxes.0.ticks.autoMin]]">
             <label>
@@ -219,13 +217,13 @@
           </template>
         </div>
         <label>
-          <things-i18n-msg msgid="label.grid-line" auto>Grid line</things-i18n-msg>
+          <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
         </label>
-        <input type="checkbox" checked="{{values.options.yGridLine::change}}" required>
+        <input type="checkbox" checked="{{values.options.yGridLine::change}}" required></input>
         <label>
           <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
         </label>
-        <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.display::change}}" required>
+        <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.display::change}}" required></input>
       </fieldset>
     </form>
 
@@ -239,112 +237,70 @@
         is: 'things-editor-chartjs-properties-hbar',
 
         properties: {
-          model: {
-            notify: true
-          },
           values: {
-            type: Object
+            type: Object,
+            notify: true
           },
           series: {
             type: Object,
-            notify: true
+            value: {}
+          },
+          currentSeriesIndex: {
+            type: Number,
+            value: -1
+          },
+          _changedBySelf: {
+            type: Boolean,
+            value: false
           }
         },
 
         observers: [
-          'onModelChanged(model.*)',
-          'onSeriesChanged(series.*)',
+          'onValuesChanged(values.*)',
           'onCurrentSeriesIndexChanged(currentSeriesIndex)'
         ],
 
-        listeners: {
-        },
+        onValuesChanged: function(values) {
 
-        onModelChanged: function(model) {
-          if(model.path === 'model' && !this.changedByChartMember) {
-
-            this.async(function() {
-              this.set('values', model.value.chart);
-              if(model.value.chart && model.value.chart.data && model.value.chart.datasets)
-                this.set('series', model.value.chart.data.datasets[0]);
-
-              this.set('currentSeriesIndex', -1);
-              this.set('currentSeriesIndex', 0);
-            })
-
-            return;
-          }
-        },
-
-        onSeriesChanged: function(change) {
-          if(!this.values)
-            return
-
-          if(!this.values.data)
-            return
-
-          var self = this
-
-          if(!change || change.path == 'series'){
-            return
-          }
-
-          var series = this.series
-
-          if(!this.get('values.data.datasets.'+this.currentSeriesIndex)) {
-
-            var chart = JSON.parse(JSON.stringify(this.get('values')))
-
-            chart.data.datasets = []
-
-            let datasets = chart.data.datasets
-
-            for(var i in this.values.data.datasets) {
-              datasets[i] = JSON.parse(JSON.stringify(this.values.data.datasets[i]));
+          if(values.path == 'values') {
+            if(this._changedBySelf) {
+              // values가 바뀌었으므로 path를 다시 link한다.
+              this.unlinkPaths('series')
+              this.set('series', this.values.data.datasets[this.currentSeriesIndex])
+              this.linkPaths('series', 'values.data.datasets.' + this.currentSeriesIndex)
+              return
             }
 
-            datasets.push({
-              data:[]
-            });
-
-            this.changedByChartMember = true;
-
-            this.set('values', chart)
-
+            // values가 바뀌면 datasets[0]을 선택한다.
+              this.set('currentSeriesIndex', -1);
+              this.set('currentSeriesIndex', 0);
+            return;
           }
 
-          var keyStr = 'values.data.datasets.'+ this.currentSeriesIndex + '.' + change.path.replace('series.', '');
-
-          this.set(keyStr, change.value)
-
-          this.changedByChartMember = false;
+          // values 하위의 무언가가 변경되면 values를 deep clone하여 다시 set.
+          this._changedBySelf = true
+          this.set('values', Object.assign({}, values.base))
+          this._changedBySelf = false
 
         },
 
         onCurrentSeriesIndexChanged: function(currentSeriesIndex) {
-          if(!this.values) {
-            this.set('series', null)
-            return
-          }
-
-          if(!this.values.data.datasets)
+          if(currentSeriesIndex < 0)
             return
 
-          this._seriesIndexChanged = true;
-          this.set('series', this.values.data.datasets[currentSeriesIndex] || {});
-          this._seriesIndexChanged = false;
+          // currentSeriesIndex가 바뀌면 series와 datasets[currentSeriesIndex]의 path를 link
+          this.unlinkPaths('series')
+          this.set('series', {})
 
+          if(!this.get('values.data.datasets'))
+            return
+
+          this.set('series', this.values.data.datasets[currentSeriesIndex])
+          this.linkPaths('series', 'values.data.datasets.' + currentSeriesIndex)
         },
 
         onTapAddTab: function(e) {
-          if(!this.values) {
-            return
-          }
-
-          if(!this.values.data)
-            return
-
-          if(!this.values.data.datasets)
+          if(!this.get('values.data.datasets'))
             return
 
           var lastSeriesIndex = this.values.data.datasets.length;
@@ -357,34 +313,32 @@
             yAxisID: 'left'
           })
 
-          this.set('values', JSON.parse(JSON.stringify(this.values)))
+          this.notifySplices('values.data.datasets', [
+            { index: lastSeriesIndex, removed: [], addedCount: 1, object: this.values.data.datasets, type: 'splice' }
+          ]);
 
-          this.set('currentSeriesIndex', 0)
+          this.set('currentSeriesIndex', -1)
           this.set('currentSeriesIndex', lastSeriesIndex)
         },
 
         onTapRemoveCurrentTab: function(e) {
-          if(!this.values) {
-            return
-          }
 
-          if(!this.values.data)
+          if(!this.get('values.data.datasets'))
             return
 
-          if(!this.values.data.datasets)
-            return
+          var currIndex = this.currentSeriesIndex;
+          var removed = this.values.data.datasets.splice(currIndex, 1);
 
-          var currIndex = this.currentSeriesIndex
-
-          this.values.data.datasets.splice(currIndex, 1)
+          this.notifySplices('values.data.datasets', [
+            { index: currIndex, removed: removed, addedCount: 0, object: this.values.data.datasets, type: 'splice' }
+          ]);
 
           currIndex --
 
           if(currIndex < 0)
             currIndex = 0
 
-          this.set('values', JSON.parse(JSON.stringify(this.values)))
-          this.set('currentSeriesIndex', 0)
+          this.set('currentSeriesIndex', -1)
           this.set('currentSeriesIndex', currIndex)
         },
 
@@ -395,15 +349,6 @@
 
         _computeSeriesTabIndex: function(index) {
           return index + 1
-        },
-
-        _equalize: function(a, b) {
-          if(this._seriesIndexChanged)
-            return
-
-          this.set(a, b)
-
-          return b
         }
 
       })

@@ -92,7 +92,7 @@
           <label>
             <things-i18n-msg msgid="label.legend" auto>Legend</things-i18n-msg>
           </label>
-          <input type="checkbox" checked="{{values.options.legend.display::change}}" required>
+          <input type="checkbox" checked="{{values.options.legend.display::change}}" required></input>
         </div>
         <template is="dom-if" if="[[values.options.legend.display]]">
           <label>
@@ -108,7 +108,7 @@
         <label>
           <things-i18n-msg msgid="label.text-size" auto>Text Size</things-i18n-msg>
         </label>
-        <input is="things-editor-number-input" number="{{values.options.defaultFontSize::change}}">
+        <input is="things-editor-number-input" number="{{values.options.defaultFontSize::change}}"></input>
         <legend>
           <things-i18n-msg msgid="label.value" auto>Value</things-i18n-msg>
         </legend>
@@ -116,7 +116,7 @@
           <label>
             <things-i18n-msg msgid="label.display" auto>Display</things-i18n-msg>
           </label>
-          <input type="checkbox" checked="{{values.options.displayValue::change}}" required>
+          <input type="checkbox" checked="{{values.options.displayValue::change}}" required></input>
         </div>
         <template is="dom-if" if="[[values.options.displayValue]]">
           <div>
@@ -169,60 +169,32 @@
         is: 'things-editor-chartjs-properties-pie',
 
         properties: {
-          model: {
-            notify: true
-          },
           values: {
-            type: Object
+            type: Object,
+            notify: true
           },
           series: {
             type: Object,
-            notify: true
+            value: {}
           }
         },
 
         observers: [
-          'onModelChanged(model.*)',
-          'onSeriesChanged(series.*)'
+          'onValuesChanged(values.*)'
         ],
 
-        listeners: {
-        },
+        onValuesChanged: function(values) {
 
-        onModelChanged: function(model) {
-          if(model.path === 'model' && !this.changedByChartMember) {
-
-            this.async(function() {
-              this.set('values', model.value.chart);
-              this.set('series', model.value.chart.data.datasets[0])
-            });
-
+          if(values.path == 'values') {
+            // values가 바뀌었으므로 path를 다시 link한다.
+            this.unlinkPaths('series')
+            this.set('series', this.values.data.datasets[0])
+            this.linkPaths('series', 'values.data.datasets.0')
             return;
           }
-        },
 
-        onSeriesChanged: function(change) {
-          if(!this.values)
-            return
-
-          if(!this.values.data)
-            return
-
-          var self = this
-
-          if(!change || change.path == 'series'){
-            return
-          }
-
-          var series = this.series
-
-          this.changedByChartMember = true;
-
-          var keyStr = 'values.data.datasets.0.' + change.path.replace('series.', '');
-
-          this.set(keyStr, change.value)
-
-          this.changedByChartMember = false;
+          // values 하위의 무언가가 변경되면 values를 deep clone하여 다시 set.
+          this.set('values', Object.assign({}, values.base))
 
         }
       })
