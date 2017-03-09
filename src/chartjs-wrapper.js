@@ -267,7 +267,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
         // 1-2. setup yAxes
         if(!multiAxis) {
           if(options.scales.yAxes.length > 1) {
-            yAxes.splice(0,1);
+            yAxes.splice(1,1);
           }
         }
 
