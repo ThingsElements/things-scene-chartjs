@@ -152,14 +152,16 @@
             <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
           </label>
           <input type="text" value="{{series.dataKey::change}}"></input>
-          <label>
-            <things-i18n-msg msgid="label.type" auto>type</things-i18n-msg>
-          </label>
-          <select class="select-content" value="{{series.type::change}}">
-            <option value=""></option>
-            <option value="bar">bar</option>
-            <option value="line">line</option>
-          </select>
+          <template is="dom-if" if="[[_isTypeof(values.type, 'bar')]]">
+            <label>
+              <things-i18n-msg msgid="label.type" auto>type</things-i18n-msg>
+            </label>
+            <select class="select-content" value="{{series.type::change}}">
+              <option value=""></option>
+              <option value="bar">bar</option>
+              <option value="line">line</option>
+            </select>
+          </template>
           <label>
             <things-i18n-msg msgid="label.label" auto>label</things-i18n-msg>
           </label>
