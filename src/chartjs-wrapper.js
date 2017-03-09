@@ -173,9 +173,12 @@ export default class ChartJSWrapper extends RectPath(Component) {
       labelData.push(currData[label])
 
       for(let i in seriesKeys) {
+        if(!seriesKeys[i])
+          continue;
+
         if(!seriesData[i])
           seriesData[i] = []
-        seriesData[i].push(currData[seriesKeys[i]])
+        seriesData[i].push(currData[seriesKeys[i]] || NaN)
       }
     }
 
