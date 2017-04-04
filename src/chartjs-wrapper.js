@@ -178,7 +178,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
         if(!seriesData[i])
           seriesData[i] = []
-        seriesData[i].push(currData[seriesKeys[i]] || NaN)
+        seriesData[i].push(currData[seriesKeys[i]] == undefined ? NaN : currData[seriesKeys[i]])
       }
     }
 
