@@ -283,7 +283,11 @@ export default class ChartJSWrapper extends RectPath(Component) {
           this._setScalesTheme(axis, theme);
           this._appendTickCallback(axis.ticks);
 
-          axis.gridLines.display = options.yGridLine
+          if(i == 0)
+            axis.gridLines.display = options.yGridLine
+          
+          if(i == 1)
+            axis.gridLines.display = options.y2ndGridLine
         }
 
         break;
@@ -389,7 +393,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
   _setSeriesConfigures(series) {
 
-    var type = series.type;
+    var type = series.type || this.model.chart.type || 'line';
 
     switch (type) {
       case 'bar':

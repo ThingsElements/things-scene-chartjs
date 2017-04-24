@@ -414,15 +414,33 @@
             return
 
           var lastSeriesIndex = this.values.data.datasets.length;
+          var chartType = this.values.type;
 
-          this.values.data.datasets.push({
-            label: 'new series',
-            data: [],
-            borderWidth: 0,
-            dataKey: '',
-            yAxisID: 'left',
-            fill: false
-          })
+          var addSeriesOption;
+          if(chartType == 'line') {
+            addSeriesOption = {
+              label: 'new series',
+              type: 'line',
+              data: [],
+              borderWidth: 4,
+              borderPointRadius: 4,
+              dataKey: '',
+              yAxisID: 'left',
+              fill: false
+            }
+          } else {
+            addSeriesOption = {
+              label: 'new series',
+              type: 'bar',
+              data: [],
+              borderWidth: 0,
+              dataKey: '',
+              yAxisID: 'left'
+            }
+          }
+          
+
+          this.values.data.datasets.push(addSeriesOption)
 
           this.notifySplices('values.data.datasets', [
             { index: lastSeriesIndex, removed: [], addedCount: 1, object: this.values.data.datasets, type: 'splice' }
