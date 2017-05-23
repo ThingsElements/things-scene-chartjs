@@ -1839,30 +1839,10 @@ var ChartController = function (_Chart$Controller) {
       console.log('boxes', this.boxes);
       console.log('context', context);
 
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.boxes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var box = _step.value;
-
-          console.log('box', box);
-          box.ctx = context;
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
+      for (var i = 0; i < this.boxes.length; i++) {
+        var box = this.boxes[i];
+        console.log('box', box);
+        box.ctx = context;
       }
 
       console.log('changed', changed);
