@@ -1836,16 +1836,11 @@ var ChartController = function (_Chart$Controller) {
 
       this.chart.ctx = context;
 
-      console.log('boxes', this.boxes);
-      console.log('context', context);
-
       for (var i = 0; i < this.boxes.length; i++) {
         var box = this.boxes[i];
-        console.log('box', box);
         box.ctx = context;
       }
 
-      console.log('changed', changed);
       changed && this.updateLayout();
     }
   }]);
@@ -2858,7 +2853,7 @@ function _drawValues(chartInstance) {
         ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
         // Just naively convert to string for now
         var data = dataset.data[index];
-        if (data && !Number.isNaN(Number(data))) data = Number(data);
+        if (data && !isNaN(Number(data))) data = Number(data);
 
         var dataString = data ? data.toLocaleString() : data;
         var prefix = dataset.valuePrefix || "";

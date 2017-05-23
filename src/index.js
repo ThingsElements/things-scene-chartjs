@@ -87,7 +87,7 @@ function _drawValues(chartInstance){
         ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
         // Just naively convert to string for now
         var data = dataset.data[index]
-        if(data && !Number.isNaN(Number(data)))
+        if(data && !isNaN(Number(data)))
           data = Number(data);
 
         var dataString = data ? data.toLocaleString() : data;

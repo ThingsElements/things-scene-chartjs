@@ -31,16 +31,11 @@ export default class ChartController extends Chart.Controller {
 
     this.chart.ctx = context;
 
-    console.log('boxes', this.boxes);
-    console.log('context', context);
-
     for(let i = 0;i < this.boxes.length;i++) {
       let box = this.boxes[i];
-      console.log('box', box);
       box.ctx = context;
     }
 
-    console.log('changed', changed);
     changed && this.updateLayout();
   }
 }
