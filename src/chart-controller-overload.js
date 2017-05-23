@@ -31,6 +31,9 @@ export default class ChartController extends Chart.Controller {
 
     this.chart.ctx = context;
 
+    console.log('boxes', this.boxes);
+    console.log('context', context);
+    
     for (let box of this.boxes) {
       box.ctx = context;
     }

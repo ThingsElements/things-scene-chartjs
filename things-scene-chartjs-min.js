@@ -1836,6 +1836,9 @@ var ChartController = function (_Chart$Controller) {
 
       this.chart.ctx = context;
 
+      console.log('boxes', this.boxes);
+      console.log('context', context);
+
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
