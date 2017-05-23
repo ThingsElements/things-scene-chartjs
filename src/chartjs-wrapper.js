@@ -285,7 +285,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
           if(i == 0)
             axis.gridLines.display = options.yGridLine
-          
+
           if(i == 1)
             axis.gridLines.display = options.y2ndGridLine
         }
@@ -432,7 +432,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
         var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
         var toNumValue = Number(value)
 
-        if(!Number.isNaN(toNumValue)) {
+        if(!isNaN(toNumValue)) {
           value = toNumValue
         }
 

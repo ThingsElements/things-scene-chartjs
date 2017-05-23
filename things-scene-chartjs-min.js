@@ -2373,7 +2373,7 @@ var ChartJSWrapper = function (_RectPath) {
           var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
           var toNumValue = Number(value);
 
-          if (!Number.isNaN(toNumValue)) {
+          if (!isNaN(toNumValue)) {
             value = toNumValue;
           }
 
