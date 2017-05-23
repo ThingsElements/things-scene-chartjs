@@ -1847,6 +1847,7 @@ var ChartController = function (_Chart$Controller) {
         for (var _iterator = this.boxes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var box = _step.value;
 
+          console.log('box', box);
           box.ctx = context;
         }
       } catch (err) {
@@ -1864,6 +1865,7 @@ var ChartController = function (_Chart$Controller) {
         }
       }
 
+      console.log('changed', changed);
       changed && this.updateLayout();
     }
   }]);
