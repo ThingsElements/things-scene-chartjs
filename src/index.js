@@ -73,6 +73,9 @@ function _drawValues(chartInstance){
   var ctx = chartInstance.chart.ctx;
 
   chartInstance.data.datasets.forEach(function (dataset, i) {
+    // if(!dataset.displayValue)
+    //   return
+
     var meta = chartInstance.getDatasetMeta(i);
     if (!meta.hidden) {
       meta.data.forEach(function(element, index) {
@@ -100,6 +103,10 @@ function _drawValues(chartInstance){
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         var position = element.getCenterPoint()
+
+        // 라인일 경우는 레이블 위치를 라인의 포인트 위로 올린다.
+        if(dataset.type == 'line')
+          position.y = position.y - (dataset.pointRadius + 8 || 10)
 
         ctx.fillText(dataString, position.x, position.y);
       });

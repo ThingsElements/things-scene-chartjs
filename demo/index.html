@@ -32,8 +32,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     things-scene-viewer {
       display: block;
-      width: 640px;
-      height: 480px;
+      width: 1640px;
+      height: 580px;
     }
     </style>
   </head>
@@ -67,7 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </fieldset>
 
     </template>
-    <canvas id="chartCanvas" width="300" height="300">
+    <canvas id="chartCanvas" width="1500" height="1500">
     </canvas>
     <script>
       window.addEventListener('WebComponentsReady', function(e) {
@@ -167,6 +167,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           name: 'chart.data.datasets.0.pointBorderWidth',
           property: 'number'
         }, {
+          type: 'number',
+          label: 'Point Radius',
+          name: 'chart.data.datasets.0.pointRadius',
+          property: 'number'
+        }, {
           type: 'checkbox',
           label: 'Fill',
           name: 'chart.data.datasets.0.fill',
@@ -203,331 +208,342 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           property: 'checkbox'
         }]
 
-        // app.model = {
-        //   width: 500,
-        //   height: 500,
-        //   components: [{
-        //     type: 'chartjs',
-        //     top: 200,
-        //     left: 300,
-        //     width: 200,
-        //     height: 200,
-        //     fontColor: '#FF0000',
-        //     lineWidth: 5,
-        //     chart: {
-        //       type: 'bar',
-        //       data: {
-        //         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        //         datasets: [{
-        //           label: '# of Votes',
-        //           data: [],
-        //           backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        //           borderColor:'rgba(255,99,132,1)',
-        //           borderWidth: 1,
-        //           dataKey: 'inQty'
-        //           // ,
-        //           // highlight: {
-        //           //   color: 'rgba(255,255,255,1)',
-        //           //   condition: 'data > 15'
-        //           // }
-        //         }, {
-        //           label: '# of Votes 2',
-        //           data: [],
-        //           backgroundColor: 'rgba(255, 159, 64, 1)',
-        //           borderColor: 'rgba(255, 159, 64, 1)',
-        //           borderWidth: 1,
-        //           dataKey: 'badQty'
-        //         }],
-        //         labelDataKey: 'date'
-        //       },
-        //       options: {
-        //         // displayValue: true,
-        //         displayValue: true,
-        //         stacked: true,
-        //         scales: {
-        //           xAxes: [{
-        //             type: 'category',
-        //             stacked: true,
-        //             gridLines: {
-        //               display: true
-        //             },
-        //             ticks: {
-        //               reverse : true
-        //             }
-        //           }],
-        //           yAxes: [{
-        //             stacked: true
-        //           }]
-        //         },
-        //         legend: {
-        //           display : true
-        //         }
-        //       }
-        //     },
-        //     data: {
-        //       seriesData : [[1200, 1900, 300, 500, 200, 300], [100, -200, 300, 400, 500, 600]],
-        //       labelData: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
-        //     }
-        //   }, {
-        //     type: 'chartjs',
-        //     top: 400,
-        //     left: 300,
-        //     width: 200,
-        //     height: 200,
-        //     fontColor: '#FF0000',
-        //     lineWidth: 5,
-        //     chart: {
-        //       type: 'horizontalBar',
-        //       data: {
-        //         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        //         datasets: [{
-        //           label: '# of Votes',
-        //           data: [],
-        //           backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        //           borderColor:'rgba(255,99,132,1)',
-        //           borderWidth: 1,
-        //           dataKey: 'inQty'
-        //           // ,
-        //           // highlight: {
-        //           //   color: 'rgba(255,255,255,1)',
-        //           //   condition: 'data > 15'
-        //           // }
-        //         }, {
-        //           label: '# of Votes 2',
-        //           data: [],
-        //           backgroundColor: 'rgba(255, 159, 64, 1)',
-        //           borderColor: 'rgba(255, 159, 64, 1)',
-        //           borderWidth: 1,
-        //           dataKey: 'badQty'
-        //         }],
-        //         labelDataKey: 'date'
-        //       },
-        //       options: {
-        //         // displayValue: true,
-        //         displayValue: true,
-        //         stacked: true,
-        //         scales: {
-        //           yAxes: [{
-        //             // stacked: true,
-        //             gridLines: {
-        //               display: true
-        //             }
-        //           }],
-        //           xAxes: [{
-        //             // stacked: true,
-        //             ticks: {
-        //               beginAtZero: true
-        //             }
-        //           }]
-        //         },
-        //         legend: {
-        //           display : true
-        //         }
-        //       }
-        //     },
-        //     data: {
-        //       seriesData : [[1200, 1900, 300, 500, 200, 300], [100, -200, 300, 400, 500, 600]],
-        //       labelData: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
-        //     }
-        //   }, {
-        //     type: 'chartjs',
-        //     top: 0,
-        //     left: 0,
-        //     width: 200,
-        //     height: 200,
-        //     fontColor: '#FF0000',
-        //     lineWidth: 5,
-        //     chart: {
-        //       type: 'line',
-        //       /* series options */
-        //       data: {
-        //         datasets: [{
-        //           label: 'Scatter Dataset',
-        //           backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        //           data: []
-        //         }, {
-        //           label: 'Dataset 2',
-        //           backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        //           data: []
-        //         }, {
-        //           label: 'Dataset 3',
-        //           backgroundColor: 'rgba(255, 159, 64, 0.2)',
-        //           data: []
-        //         }]
-        //       },
-        //       options: {
-        //         legend: {
-        //           display: true,
-        //           position: 'top'
-        //         },
-        //         scales: {
-        //           xAxes: [{
-        //             type: 'linear',
-        //             position: 'bottom',
-        //             gridLines: {
-        //               display: true
-        //             }
-        //           }]
-        //         }
-        //       }
-        //     },
-        //     data : {
-        //       seriesData : [
-        //         [{
-        //           x: -10,
-        //           y: 0
-        //         }, {
-        //           x: 0,
-        //           y: 10
-        //         }, {
-        //           x: 10,
-        //           y: 5
-        //         }],
-        //         [{
-        //           x: -10,
-        //           y: 0
-        //         }, {
-        //           x: 0,
-        //           y: -10
-        //         }, {
-        //           x: 10,
-        //           y: -5
-        //         }],
-        //         [{
-        //           x: -10,
-        //           y: -10
-        //         }, {
-        //           x: 0,
-        //           y: 10
-        //         }, {
-        //           x: 10,
-        //           y: 5
-        //         }]
-        //       ]
-        //     }
-        //   }, {
-        //     type: 'chartjs',
-        //     top: 200,
-        //     left: 0,
-        //     width: 200,
-        //     height: 200,
-        //     fontColor: '#FF0000',
-        //     lineWidth: 5,
-        //     chart: {
-        //       type: 'bar',
-        //       data: {
-        //         labels: [],
-        //         datasets: [{
-        //           type: 'line',
-        //           label: 'Line Dataset',
-        //           yAxisID: 'left',
-        //           borderColor: 'red',
-        //           fill: false,
-        //           data: []
-        //         }, {
-        //           type: 'bar',
-        //           label: 'Bar Dataset',
-        //           yAxisID: 'right',
-        //           borderColor: 'blue',
-        //           backgroundColor: 'blue',
-        //           data: []
-        //         }]
-        //       },
-        //       options: {
-        //         displayValue: true,
-        //         multiAxis: true,
-        //         legend: {
-        //           display: true,
-        //           position: 'top'
-        //         },
-        //         scales: {
-        //           xAxes: [{
-        //             position: 'bottom',
-        //             gridLines: {
-        //               display: true
-        //             }
-        //           }],
-        //           yAxes: [{
-        //             position: 'left',
-        //             id: 'left'
-        //           }, {
-        //             position: 'right',
-        //             id: 'right'
-        //           }]
-        //         }
-        //       }
-        //     },
-        //     data : {
-        //       seriesData : [
-        //         [0, 10, 5, 3, 6],
-        //         [100, 10, 60, 30, 50]
-        //       ],
-        //       labelData : ['a', 'b', 'c', 'd', 'e' ]
-        //     }
-        //   }, {
-        //     type: 'chartjs',
-        //     top: 0,
-        //     left: 300,
-        //     width: 200,
-        //     height: 200,
-        //     fontColor: '#FF0000',
-        //     lineWidth: 5,
-        //     chart: {
-        //       type: 'doughnut',
-        //       data: {
-        //         labels: [],
-        //         datasets: [{
-        //           data: [],
-        //           backgroundColor: [
-        //             "#FF6384",
-        //             "#36A2EB",
-        //             "#FFCE56"
-        //           ]
-        //         }]
-        //       },
-        //       options: {
-        //         displayValue: true,
-        //         theme : 'dark',
-        //         legend: {
-        //           display: true,
-        //           position: 'top'
-        //         },
-        //         animation:{
-        //           animateScale:true
-        //         }
-        //       }
-        //     },
-        //     data: {
-        //       seriesData: [[300, 50, 100]],
-        //       labelData: [
-        //         "Red",
-        //         "Blue",
-        //         "Yellow"
-        //       ]
-        //     }
-        //   }]
-        // }
-        var chartCanvas = document.getElementById("chartCanvas");
-        var ctx = chartCanvas.getContext("2d");
-
-        var myChart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: ['Item 1', 'Item 2', 'Item 3'],
-            datasets: [
+        app.model = {
+          width: 1500,
+          height: 1500,
+          components: [{
+            // type: 'chartjs',
+            // top: 200,
+            // left: 300,
+            // width: 200,
+            // height: 200,
+            // fontColor: '#FF0000',
+            // lineWidth: 5,
+            // chart: {
+            //   type: 'bar',
+            //   data: {
+            //     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            //     datasets: [{
+            //       label: '# of Votes',
+            //       data: [],
+            //       backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            //       borderColor:'rgba(255,99,132,1)',
+            //       borderWidth: 1,
+            //       dataKey: 'inQty'
+            //       // ,
+            //       // highlight: {
+            //       //   color: 'rgba(255,255,255,1)',
+            //       //   condition: 'data > 15'
+            //       // }
+            //     }, {
+            //       label: '# of Votes 2',
+            //       data: [],
+            //       backgroundColor: 'rgba(255, 159, 64, 1)',
+            //       borderColor: 'rgba(255, 159, 64, 1)',
+            //       borderWidth: 1,
+            //       dataKey: 'badQty'
+            //     }],
+            //     labelDataKey: 'date'
+            //   },
+            //   options: {
+            //     // displayValue: true,
+            //     displayValue: true,
+            //     stacked: true,
+            //     scales: {
+            //       xAxes: [{
+            //         type: 'category',
+            //         stacked: true,
+            //         gridLines: {
+            //           display: true
+            //         },
+            //         ticks: {
+            //           reverse : true
+            //         }
+            //       }],
+            //       yAxes: [{
+            //         stacked: true
+            //       }]
+            //     },
+            //     legend: {
+            //       display : true
+            //     }
+            //   }
+            // },
+            // data: {
+            //   seriesData : [[1200, 1900, 300, 500, 200, 300], [100, -200, 300, 400, 500, 600]],
+            //   labelData: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
+            // }
+          // }, {
+          //   type: 'chartjs',
+          //   top: 400,
+          //   left: 300,
+          //   width: 200,
+          //   height: 200,
+          //   fontColor: '#FF0000',
+          //   lineWidth: 5,
+          //   chart: {
+          //     type: 'horizontalBar',
+          //     data: {
+          //       labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          //       datasets: [{
+          //         label: '# of Votes',
+          //         data: [],
+          //         backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          //         borderColor:'rgba(255,99,132,1)',
+          //         borderWidth: 1,
+          //         dataKey: 'inQty'
+          //         // ,
+          //         // highlight: {
+          //         //   color: 'rgba(255,255,255,1)',
+          //         //   condition: 'data > 15'
+          //         // }
+          //       }, {
+          //         label: '# of Votes 2',
+          //         data: [],
+          //         backgroundColor: 'rgba(255, 159, 64, 1)',
+          //         borderColor: 'rgba(255, 159, 64, 1)',
+          //         borderWidth: 1,
+          //         dataKey: 'badQty'
+          //       }],
+          //       labelDataKey: 'date'
+          //     },
+          //     options: {
+          //       // displayValue: true,
+          //       displayValue: true,
+          //       stacked: true,
+          //       scales: {
+          //         yAxes: [{
+          //           // stacked: true,
+          //           gridLines: {
+          //             display: true
+          //           }
+          //         }],
+          //         xAxes: [{
+          //           // stacked: true,
+          //           ticks: {
+          //             beginAtZero: true
+          //           }
+          //         }]
+          //       },
+          //       legend: {
+          //         display : true
+          //       }
+          //     }
+          //   },
+          //   data: {
+          //     seriesData : [[1200, 1900, 300, 500, 200, 300], [100, -200, 300, 400, 500, 600]],
+          //     labelData: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
+          //   }
+          }, {
+            "type": "chartjs",
+            "top": 86,
+            "left": 368,
+            "width": 615,
+            "height": 408,
+            "lineWidth": 5,
+            "alpha": 1,
+            "chart": {
+              "type": "bar",
+              "data": {
+                "labels": [],
+                "datasets": [
+                  {
+                    "label": "값",
+                    "type": "line",
+                    "data": [],
+                    "backgroundColor": "rgb(66, 110, 164)",
+                    "borderColor": "rgb(66, 110, 164)",
+                    "borderWidth": 0,
+                    "dataKey": "value",
+                    "yAxisID": "left",
+                    "fill": false,
+                    "lineTension": "0",
+                    "pointBorderColor": "rgb(66, 110, 164)",
+                    "pointBorderWidth": 0,
+                    pointRadius: 4
+                  },
+                  {
+                    "label": "값 2",
+                    "data": [],
+                    "borderWidth": 0,
+                    "dataKey": "value2",
+                    "yAxisID": "right",
+                    "borderColor": "rgb(253, 12, 12)",
+                    "backgroundColor": "rgb(253, 12, 12)",
+                    "type": "bar"
+                  }
+                ],
+                "labelDataKey": "date"
+              },
+              "options": {
+                "theme": "dark",
+                "legend": {
+                  "display": true,
+                  "position": "top",
+                  "labels": {
+                    "fontColor": "rgba(0, 0, 0, 0.5)"
+                  }
+                },
+                "scales": {
+                  "xAxes": [
+                    {
+                      "gridLines": {
+                        "zeroLineColor": "rgba(0, 0, 0, 0.5)",
+                        "color": "rgba(0, 0, 0, 0.1)"
+                      },
+                      "ticks": {
+                        "fontColor": "rgba(0, 0, 0, 0.5)"
+                      },
+                      "stacked": false
+                    }
+                  ],
+                  "yAxes": [
+                    {
+                      "id": "left",
+                      "position": "left",
+                      "gridLines": {
+                        "zeroLineColor": "rgba(0, 0, 0, 0.5)",
+                        "color": "rgba(0, 0, 0, 0.1)"
+                      },
+                      "ticks": {
+                        "autoMin": true,
+                        "autoMax": true,
+                        "fontColor": "rgba(0, 0, 0, 0.5)"
+                      },
+                      "stacked": false
+                    },
+                    {
+                      "position": "right",
+                      "id": "right",
+                      "ticks": {
+                        "beginAtZero": true,
+                        "fontColor": "rgba(0, 0, 0, 0.5)"
+                      },
+                      "gridLines": {
+                        "zeroLineColor": "rgba(0, 0, 0, 0.5)",
+                        "color": "rgba(0, 0, 0, 0.1)"
+                      },
+                      "stacked": false
+                    }
+                  ]
+                },
+                "tooltips": {
+                  "callbacks": {}
+                },
+                "stacked": false,
+                "multiAxis": true,
+                "displayValue": true,
+                "defaultFontColor": "rgb(21, 10, 10)"
+              }
+            },
+            "rotation": 0,
+            "id": "chart",
+            "data": [
               {
-                type: 'bar',
-                label: 'Bar Component',
-                data: [10, 20, 30],
+                "__field1": "date",
+                "__field2": "value",
+                "__field3": "value2"
               },
               {
-                type: 'line',
-                label: 'Line Component',
-                data: [30, 20, 10],
+                "__field1": "2017-02-01",
+                "__field2": "812",
+                "__field3": "58"
+              },
+              {
+                "__field1": "2017-02-02",
+                "__field2": "925",
+                "__field3": "71"
+              },
+              {
+                "__field1": "2017-02-03",
+                "__field2": "722",
+                "__field3": "94"
+              },
+              {
+                "__field1": "2017-02-04",
+                "__field2": "",
+                "__field3": ""
+              },
+              {
+                "__field1": "2017-02-05",
+                "__field2": "633",
+                "__field3": "94"
+              },
+              {
+                "__field1": "2017-02-06",
+                "__field2": "631",
+                "__field3": "74"
+              },
+              {
+                "__field1": "2017-02-07",
+                "__field2": "",
+                "__field3": "27"
               }
             ]
-          }
-        });
+          // }, {
+          //   type: 'chartjs',
+          //   top: 0,
+          //   left: 300,
+          //   width: 200,
+          //   height: 200,
+          //   fontColor: '#FF0000',
+          //   lineWidth: 5,
+          //   chart: {
+          //     type: 'doughnut',
+          //     data: {
+          //       labels: [],
+          //       datasets: [{
+          //         data: [],
+          //         backgroundColor: [
+          //           "#FF6384",
+          //           "#36A2EB",
+          //           "#FFCE56"
+          //         ]
+          //       }]
+          //     },
+          //     options: {
+          //       displayValue: true,
+          //       theme : 'dark',
+          //       legend: {
+          //         display: true,
+          //         position: 'top'
+          //       },
+          //       animation:{
+          //         animateScale:true
+          //       }
+          //     }
+          //   },
+          //   data: {
+          //     seriesData: [[300, 50, 100]],
+          //     labelData: [
+          //       "Red",
+          //       "Blue",
+          //       "Yellow"
+          //     ]
+          //   }
+          }]
+        }
+        // var chartCanvas = document.getElementById("chartCanvas");
+        // var ctx = chartCanvas.getContext("2d");
+        //
+        // var myChart = new Chart(ctx, {
+        //   type: 'bar',
+        //   data: {
+        //     labels: ['Item 1', 'Item 2', 'Item 3'],
+        //     datasets: [
+        //       {
+        //         type: 'bar',
+        //         label: 'Bar Component',
+        //         data: [10, 20, 30],
+        //       },
+        //       {
+        //         type: 'line',
+        //         label: 'Line Component',
+        //         data: [30, 20, 10],
+        //       }
+        //     ]
+        //   }
+        // });
       });
 
     </script>
