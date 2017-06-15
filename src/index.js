@@ -79,9 +79,6 @@ function _drawValues(chartInstance){
     var meta = chartInstance.getDatasetMeta(i);
     if (!meta.hidden) {
       meta.data.forEach(function(element, index) {
-        console.log(dataset.data[index]);
-
-        // TODO 텍스트 그리면 안됨
         if(element.hidden || dataset.data[index] == "" || dataset.data[index] == undefined || isNaN(dataset.data[index]))
           return
 
