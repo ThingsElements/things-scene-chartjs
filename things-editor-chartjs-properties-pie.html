@@ -147,19 +147,20 @@
           <things-i18n-msg msgid="label.value-suffix" auto>Value suffix</things-i18n-msg>
         </label>
         <input type="text" value="{{series.valueSuffix::change}}"></input>
-        <label>
-          <things-i18n-msg msgid="label.display" auto>Display</things-i18n-msg>
-        </label>
-        <input type="checkbox" checked="{{series.displayValue::change}}" required></input>
-      </div>
+        <div>
+          <label>
+          <things-i18n-msg msgid="label.value-display" auto>Value Display</things-i18n-msg>
+          </label>
+          <input type="checkbox" checked="{{series.displayValue::change}}" required></input>
+        </div>
       <template is="dom-if" if="[[series.displayValue]]">
         <div>
           <label>
-            <things-i18n-msg msgid="label.color" auto>Color</things-i18n-msg>
+            <things-i18n-msg msgid="label.font-color" auto>Font Color</things-i18n-msg>
           </label>
           <things-editor-color value="{{series.defaultFontColor::change}}"></things-editor-color>
           <label>
-            <things-i18n-msg msgid="label.font-size" auto>Size</things-i18n-msg>
+            <things-i18n-msg msgid="label.font-size" auto>Font Size</things-i18n-msg>
           </label>
           <input is="things-editor-number-input" number="{{series.defaultFontSize::change}}"></input>
         </div>
