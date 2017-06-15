@@ -108,23 +108,6 @@
           <things-i18n-msg msgid="label.text-size" auto>Text Size</things-i18n-msg>
         </label>
         <input is="things-editor-number-input" number="{{values.options.defaultFontSize::change}}"></input>
-        <legend>
-          <things-i18n-msg msgid="label.value" auto>Value</things-i18n-msg>
-        </legend>
-        <div>
-          <label>
-            <things-i18n-msg msgid="label.display" auto>Display</things-i18n-msg>
-          </label>
-          <input type="checkbox" checked="{{values.options.displayValue::change}}" required></input>
-        </div>
-        <template is="dom-if" if="[[values.options.displayValue]]">
-          <div>
-            <label>
-              <things-i18n-msg msgid="label.color" auto>Color</things-i18n-msg>
-            </label>
-            <things-editor-color value="{{values.options.defaultFontColor::change}}"></things-editor-color>
-          </div>
-        </template>
       </fieldset>
       <fieldset>
         <legend>
@@ -198,6 +181,8 @@
                 <things-i18n-msg msgid="label.font-color" auto>Font Color</things-i18n-msg>
               </label>
               <things-editor-color value="{{series.defaultFontColor::change}}"></things-editor-color>
+            </div>
+            <div>
               <label>
                 <things-i18n-msg msgid="label.font-size" auto>Font Size</things-i18n-msg>
               </label>
