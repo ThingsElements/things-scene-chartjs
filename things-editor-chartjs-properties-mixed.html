@@ -117,23 +117,6 @@
           <things-i18n-msg msgid="label.multi-axis" auto>Multi Axis</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.multiAxis::change}}" required></input>
-        <legend>
-          <things-i18n-msg msgid="label.value" auto>Value</things-i18n-msg>
-        </legend>
-        <div>
-          <label>
-            <things-i18n-msg msgid="label.display" auto>Display</things-i18n-msg>
-          </label>
-          <input type="checkbox" checked="{{values.options.displayValue::change}}" required></input>
-        </div>
-        <template is="dom-if" if="[[values.options.displayValue]]">
-          <div>
-            <label>
-              <things-i18n-msg msgid="label.color" auto>Color</things-i18n-msg>
-            </label>
-            <things-editor-color value="{{values.options.defaultFontColor::change}}"></things-editor-color>
-          </div>
-        </template>
       </fieldset>
       <fieldset>
         <legend>
@@ -234,6 +217,24 @@
             <things-i18n-msg msgid="label.value-suffix" auto>Value suffix</things-i18n-msg>
           </label>
           <input type="text" value="{{series.valueSuffix::change}}"></input>
+          <div>
+            <label>
+              <things-i18n-msg msgid="label.display" auto>Display</things-i18n-msg>
+            </label>
+            <input type="checkbox" checked="{{series.displayValue::change}}" required></input>
+          </div>
+          <template is="dom-if" if="[[series.displayValue]]">
+            <div>
+              <label>
+                <things-i18n-msg msgid="label.color" auto>Color</things-i18n-msg>
+              </label>
+              <things-editor-color value="{{series.defaultFontColor::change}}"></things-editor-color>
+              <label>
+                <things-i18n-msg msgid="label.font-size" auto>Size</things-i18n-msg>
+              </label>
+              <input is="things-editor-number-input" number="{{series.defaultFontSize::change}}"></input>
+            </div>
+          </template>
           <template is="dom-if" if="[[!isOnly(values.data.datasets)]]">
             <paper-button on-tap="onTapRemoveCurrentTab">
               <iron-icon icon="icons:delete"></iron-icon>Remove Tab

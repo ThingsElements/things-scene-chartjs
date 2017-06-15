@@ -73,20 +73,22 @@ function _drawValues(chartInstance){
   var ctx = chartInstance.chart.ctx;
 
   chartInstance.data.datasets.forEach(function (dataset, i) {
-    // if(!dataset.displayValue)
-    //   return
+    // 값 표시가 체크되어 있지 않으면 스킵
+    if(!dataset.displayValue)
+      return
 
     var meta = chartInstance.getDatasetMeta(i);
     if (!meta.hidden) {
       meta.data.forEach(function(element, index) {
+        // 데이터셋이 히든이거나 해당값이 빈값이면 스킵
         if(element.hidden || dataset.data[index] == "" || dataset.data[index] == undefined || isNaN(dataset.data[index]))
           return
 
         // Draw the text in black, with the specified font
-        ctx.fillStyle = chartInstance.config.options.defaultFontColor;
-        var fontSize = chartInstance.config.options.defaultFontSize;
+        ctx.fillStyle = dataset.defaultFontColor || '#000000';
+        var fontSize = dataset.defaultFontSize || 11;
         var fontStyle = 'normal';
-        var fontFamily = chartInstance.config.options.defaultFontFamily;
+        var fontFamily = dataset.defaultFontFamily;
         ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
         // Just naively convert to string for now
         var data = dataset.data[index]
@@ -147,8 +149,6 @@ Chart.plugins.register({
   },
 
 	afterDatasetsDraw: function (chartInstance, easing) {
-    if(!chartInstance.config.options.displayValue)
-      return
 
     _drawValues(chartInstance)
   }
