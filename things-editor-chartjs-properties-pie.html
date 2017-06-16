@@ -199,6 +199,7 @@
             this.unlinkPaths('series')
             this.set('series', this.values.data.datasets[0])
             this.linkPaths('series', 'values.data.datasets.0')
+            this._valueChanging = false
             return;
           }
 
