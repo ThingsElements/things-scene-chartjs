@@ -241,6 +241,9 @@
         ],
 
         onValuesChanged: function(values) {
+          if(this._valueChanging)
+            return
+          this._valueChanging = true
 
           if(values.path == 'values') {
             if(this._changedBySelf) {
@@ -261,7 +264,7 @@
           this._changedBySelf = true
           this.set('values', Object.assign({}, values.base))
           this._changedBySelf = false
-
+          this._valueChanging = false
         },
 
         onCurrentSeriesIndexChanged: function(currentSeriesIndex) {
