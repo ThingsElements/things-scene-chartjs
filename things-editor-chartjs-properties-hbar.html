@@ -345,6 +345,8 @@
 
           this.set('currentSeriesIndex', -1)
           this.set('currentSeriesIndex', lastSeriesIndex)
+
+          this.fire('change')
         },
 
         onTapRemoveCurrentTab: function(e) {
@@ -366,6 +368,8 @@
 
           this.set('currentSeriesIndex', -1)
           this.set('currentSeriesIndex', currIndex)
+
+          this.fire('change')
         },
 
         isOnly: function(datasets) {
