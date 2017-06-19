@@ -269,10 +269,6 @@
         },
 
         onCurrentSeriesIndexChanged: function(currentSeriesIndex) {
-          if(this._seriesIndexChanging)
-            return
-          this._seriesIndexChanging = true
-
           if(currentSeriesIndex < 0)
             return
 
@@ -285,7 +281,6 @@
 
           this.set('series', this.values.data.datasets[currentSeriesIndex])
           this.linkPaths('series', 'values.data.datasets.' + currentSeriesIndex)
-          this._seriesIndexChanging = false
         },
 
         onTapAddTab: function(e) {

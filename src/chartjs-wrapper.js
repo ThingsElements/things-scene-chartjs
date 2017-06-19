@@ -422,9 +422,11 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
   _appendTickCallback(ticks) {
     ticks.callback = function(value, index, values) {
-      var returnValue = value
-      if(typeof returnValue == 'number') {
+      var returnValue = Number(value)
+      if(!Number.isNaN(returnValue)) {
         returnValue = returnValue.toLocaleString()
+      } else {
+        returnValue = value
       }
 
       if(returnValue)

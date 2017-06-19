@@ -140,8 +140,7 @@
               <things-i18n-msg msgid="label.type" auto>type</things-i18n-msg>
             </label>
             <select class="select-content" value="{{series.type::change}}">
-              <option value=""></option>
-              <option value="bar">bar</option>
+              <option value="bar" selected>bar</option>
               <option value="line">line</option>
             </select>
           </template>
@@ -403,10 +402,6 @@
         },
 
         onCurrentSeriesIndexChanged: function(currentSeriesIndex) {
-          if(this._seriesIndexChanging)
-            return
-          this._seriesIndexChanging = true
-
           if(currentSeriesIndex < 0)
             return
 
@@ -419,7 +414,6 @@
 
           this.set('series', this.values.data.datasets[currentSeriesIndex])
           this.linkPaths('series', 'values.data.datasets.' + currentSeriesIndex)
-          this._seriesIndexChanging = false
         },
 
         _isTypeof: function(seriesType, type) {
