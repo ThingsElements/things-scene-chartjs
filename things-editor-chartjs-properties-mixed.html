@@ -374,9 +374,9 @@
         ],
 
         onValuesChanged: function(values) {
-          if(this._valueChanging)
-            return
-          this._valueChanging = true
+          // if(this._valueChanging)
+          //   return
+          // this._valueChanging = true
 
           if(values.path == 'values') {
             if(this._changedBySelf) {
@@ -390,7 +390,7 @@
             // values가 바뀌면 datasets[0]을 선택한다.
             this.set('currentSeriesIndex', -1);
             this.set('currentSeriesIndex', 0);
-            this._valueChanging = false
+            // this._valueChanging = false
             return;
           }
 
@@ -398,7 +398,7 @@
           this._changedBySelf = true
           this.set('values', Object.assign({}, values.base))
           this._changedBySelf = false
-          this._valueChanging = false
+          // this._valueChanging = false
         },
 
         onCurrentSeriesIndexChanged: function(currentSeriesIndex) {

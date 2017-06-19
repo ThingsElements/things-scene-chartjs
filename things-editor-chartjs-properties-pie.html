@@ -190,9 +190,9 @@
         ],
 
         onValuesChanged: function(values) {
-          if(this._valueChanging)
-            return
-          this._valueChanging = true
+          // if(this._valueChanging)
+          //   return
+          // this._valueChanging = true
 
           if(values.path == 'values') {
             // values가 바뀌었으므로 path를 다시 link한다.
@@ -205,7 +205,7 @@
 
           // values 하위의 무언가가 변경되면 values를 deep clone하여 다시 set.
           this.set('values', Object.assign({}, values.base))
-          this._valueChanging = false
+          // this._valueChanging = false
         }
       })
 
