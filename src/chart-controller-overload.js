@@ -1,3 +1,6 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
 import helpers from './chart-helpers-overload'
 
 export default class ChartController extends Chart.Controller {

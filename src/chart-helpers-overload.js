@@ -1,3 +1,6 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
 function noop() {}
 
 var helpers = Chart.helpers;

@@ -1,6 +1,6 @@
 {
   "name": "things-scene-chartjs",
-  "version": "2.0.23",
+  "version": "2.0.24",
   "authors": [
     "Hatio Lab. <heartyoh@hatiolab.com>"
   ],
@@ -12,7 +12,7 @@
     "seed"
   ],
   "main": "things-scene-chartjs.html",
-  "license": "http://polymer.github.io/LICENSE.txt",
+  "license": "http://things-scene.hatiolab.com/EULA/",
   "homepage": "https://github.com/<USERNAME>/seed-element/",
   "ignore": [
     "/.*",

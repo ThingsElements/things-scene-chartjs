@@ -1,3 +1,7 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
+
 // function updateSeriesDatas(chartInstance) {
 //   let seriesData = chartInstance.data.rawData.seriesData;
 //   let chartId = chartInstance.id;
