@@ -111,10 +111,6 @@ Copyright © HatioLab Inc. All rights reserved.
           </select>
         </template>
         <label>
-          <things-i18n-msg msgid="label.text-size" auto>Text Size</things-i18n-msg>
-        </label>
-        <input is="things-editor-number-input" number="{{values.options.defaultFontSize::change}}"></input>
-        <label>
           <things-i18n-msg msgid="label.stacked" auto>Stacked</things-i18n-msg>
         </label>
         <input type="checkbox" checked="{{values.options.stacked::change}}" required></input>
@@ -255,6 +251,10 @@ Copyright © HatioLab Inc. All rights reserved.
         </label>
         <input type="text" value="{{values.data.labelDataKey::change}}"></input>
         <label>
+          <things-i18n-msg msgid="label.title" auto>Title</things-i18n-msg>
+        </label>
+        <input type="text" value="{{values.options.scales.xAxes.0.axisTitle::change}}"></input>
+        <label>
           <things-i18n-msg msgid="label.thickness" auto>Thickness</things-i18n-msg>
         </label>
         <input type="number" value-as-number="{{values.options.scales.xAxes.0.barThickness::change}}"></input>
@@ -269,6 +269,10 @@ Copyright © HatioLab Inc. All rights reserved.
         <legend>
           <things-i18n-msg msgid="label.y-axes" auto>Y Axes</things-i18n-msg>
         </legend>
+         <label>
+          <things-i18n-msg msgid="label.title" auto>Title</things-i18n-msg>
+        </label>
+        <input type="text" value="{{values.options.scales.yAxes.0.axisTitle::change}}"></input>
         <label>
           <things-i18n-msg msgid="label.axis-min-auto" auto>Min Auto</things-i18n-msg>
         </label>
@@ -307,6 +311,10 @@ Copyright © HatioLab Inc. All rights reserved.
           <legend>
             <things-i18n-msg msgid="label.y-2nd-axes" auto>Y 2nd Axes</things-i18n-msg>
           </legend>
+           <label>
+            <things-i18n-msg msgid="label.title" auto>Title</things-i18n-msg>
+          </label>
+          <input type="text" value="{{values.options.scales.yAxes.1.axisTitle::change}}"></input>
           <label>
             <things-i18n-msg msgid="label.axis-min-auto" auto>Min Auto</things-i18n-msg>
           </label>

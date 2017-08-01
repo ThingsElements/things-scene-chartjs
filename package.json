@@ -1,6 +1,6 @@
 {
   "name": "things-scene-chartjs",
-  "version": "2.0.0",
+  "version": "2.0.25",
   "description": "An element providing a starting point for your own reusable Polymer elements.",
   "main": "index.js",
   "directories": {
@@ -38,6 +38,8 @@
     "watchify": "^3.3.1"
   },
   "dependencies": {
-    "bower-npm-resolver": "^0.4.0"
-  }
+    "bower-npm-resolver": "^0.4.0",
+    "dezalgo": "^1.0.3"
+  },
+  "false": {}
 }

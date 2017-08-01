@@ -238,8 +238,12 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
     var multiAxis = options.multiAxis;
     var stacked = options.stacked;
-    var fontSize = options.defaultFontSize;
+    var fontSize = this.model.fontSize || options.defaultFontSize;
+    var fontFamily = this.model.fontFamily || options.defaultFontFamily;
     var theme = options.theme;
+
+    // backward compatible
+    this._configureBackwardsCompatible(chart.type, options);
 
     // setup series configure
     for (let i in datasets) {
@@ -267,7 +271,9 @@ export default class ChartJSWrapper extends RectPath(Component) {
           let axis = xAxes[i];
           this._setStacked(axis, stacked);
           this._setScalesFontSize(axis, fontSize);
+          this._setScalesFontFamily(axis, fontFamily);
           this._setScalesAutoMinMax(axis);
+          this._setAxisTitle(axis);
           this._setScalesTheme(axis, theme);
           this._appendTickCallback(axis.ticks);
 
@@ -275,21 +281,17 @@ export default class ChartJSWrapper extends RectPath(Component) {
         }
 
         // 1-2. setup yAxes
-        if(!multiAxis) {
-          if(options.scales.yAxes.length > 1) {
-            yAxes.splice(1,1);
-          }
-        }
-
         for (let i in yAxes) {
           let axis = yAxes[i];
 
-          if(yAxes.length === 1 && multiAxis) {
-            this._setMultiAxis(yAxes);
+          if(i == 1) {
+            this._setMultiAxis(axis, multiAxis);
           }
           this._setStacked(axis, stacked);
           this._setScalesFontSize(axis, fontSize);
+          this._setScalesFontFamily(axis, fontFamily);
           this._setScalesAutoMinMax(axis);
+          this._setAxisTitle(axis);
           this._setScalesTheme(axis, theme);
           this._appendTickCallback(axis.ticks);
 
@@ -312,39 +314,87 @@ export default class ChartJSWrapper extends RectPath(Component) {
     // 2. setup legend
     legend.labels = legend.labels ? legend.labels : {};
     legend.labels.fontSize = fontSize;
+    legend.labels.fontFamily = fontFamily;
     this._setLegendTheme(legend, theme);
 
 
     // 3. setup tooltips
     tooltips.titleFontSize = tooltips.bodyFontSize = tooltips.footerFontSize = fontSize;
+    tooltips.titleFontFamily = tooltips.bodyFontFamily = tooltips.footerFontFamily = fontFamily;
     this._setTooltipCallback(tooltips)
+  }
+
+  _configureBackwardsCompatible(type, options) {
+    switch (type) {
+      case 'horizontalBar':
+        if (!options.scales)
+          options.scales = {}
+        break;
+      case 'line':
+      case 'bar':
+        if (!options.scales)
+          options.scales = {}
+        if (!options.scales.yAxes)
+          options.scales.yAxes = []
+
+        if (options.scales.yAxes.length === 1) {
+          let yAxes = options.scales.yAxes
+          yAxes.push({
+            position: 'right',
+            id: 'right',
+            display: options.multiAxis || false,
+            gridLines: {
+              display: yAxes[0] && yAxes[0].gridLines && yAxes[0].gridLines.display || false
+            },
+            ticks: {
+              beginAtZero: false,
+              callback: function(value, index, values) {
+                var returnValue = value
+                if(typeof returnValue == 'number') {
+                  returnValue = returnValue.toLocaleString()
+                }
+
+                return returnValue
+              }
+            }
+          })
+        }
+
+
+        break;
+      case 'pie':
+      case 'doughnut':
+        break;
+      default:
+      if (!options.scale)
+          options.scale = {}
+
+        break;
+    }
   }
 
   _setStacked(axis, stacked) {
     axis.stacked = stacked;
   }
 
-  _setMultiAxis(yAxes) {
-    yAxes.push({
-      position: 'right',
-      id: 'right',
-      ticks: {
-        beginAtZero: false,
-        callback: function(value, index, values) {
-          var returnValue = value
-          if(typeof returnValue == 'number') {
-            returnValue = returnValue.toLocaleString()
-          }
+  _setMultiAxis(axis, multiAxis) {
+    axis.display = multiAxis;
+  }
 
-          return returnValue
-        }
-      }
-    })
+  _setAxisTitle(axis) {
+    if (!axis.scaleLabel) axis.scaleLabel = {};
+    axis.scaleLabel.labelString = axis.axisTitle;
+    axis.scaleLabel.display = axis.axisTitle ? true : false;
   }
 
   _setScalesFontSize(axis, fontSize) {
     axis.ticks = axis.ticks ? axis.ticks : {};
     axis.ticks.fontSize = fontSize;
+  }
+
+  _setScalesFontFamily(axis, fontFamily) {
+    axis.ticks = axis.ticks ? axis.ticks : {};
+    axis.ticks.fontFamily = fontFamily;
   }
 
   _setScalesAutoMinMax(axis) {
@@ -494,15 +544,11 @@ export default class ChartJSWrapper extends RectPath(Component) {
     var key = keys && keys[0]
     var keySplit = key.split(".")
 
-    if (after.hasOwnProperty('chart') || key[0] == 'chart') {
+    if (after.hasOwnProperty('chart') || key[0] == 'chart' || after.hasOwnProperty('fontSize') || after.hasOwnProperty('fontFamily')) {
       isChartChanged = true;
     }
 
     if(keySplit.length > 1) {
-      // for(var i in keySplit) {
-      //   var k = keySplit[i]
-      // }
-
       delete this.model[key]
     }
 
