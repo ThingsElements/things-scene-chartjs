@@ -182,8 +182,8 @@ export default class ChartJSWrapper extends RectPath(Component) {
         if(!seriesData[i])
           seriesData[i] = []
 
-        // 값이 빈값일 경우엔 차트를 그리지 않음
-        if(currData[seriesKeys[i]] == "" || currData[seriesKeys[i]] == undefined){
+        // 값이 NaN 경우엔 차트를 그리지 않음
+        if(Number(currData[seriesKeys[i]]) == NaN){
           currData[seriesKeys[i]] = NaN
         }
 
