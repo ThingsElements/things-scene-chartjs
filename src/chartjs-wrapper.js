@@ -239,7 +239,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     var multiAxis = options.multiAxis;
     var stacked = options.stacked;
     var fontSize = this.model.fontSize || options.defaultFontSize;
-    var fontFamily = this.model.fontFamily || options.defaultFontFamily;
+    var fontFamily = options.defaultFontFamily = this.model.fontFamily;
     var theme = options.theme;
 
     // backward compatible

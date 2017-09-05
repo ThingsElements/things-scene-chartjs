@@ -92,7 +92,7 @@ function _drawValues(chartInstance){
         ctx.fillStyle = dataset.defaultFontColor || '#000000';
         var fontSize = dataset.defaultFontSize || 11;
         var fontStyle = 'normal';
-        var fontFamily = dataset.defaultFontFamily;
+        var fontFamily = chartInstance.options.defaultFontFamily;
         ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
         // Just naively convert to string for now
         var data = dataset.data[index]
