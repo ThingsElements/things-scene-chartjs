@@ -4,10 +4,10 @@
 import helpers from './chart-helpers-overload'
 import SceneChart from './chart-overload'
 import clone from './clone'
-import a from '../bower_components/TinyColor'
+
+require('../bower_components/TinyColor');
 
 var { Component, RectPath } = scene
-var aa = a
 
 Chart.defaults.global.defaultFontSize = 10
 Chart.defaults.global.hover.mode = 'index';
