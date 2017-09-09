@@ -4,6 +4,7 @@
 import helpers from './chart-helpers-overload'
 import SceneChart from './chart-overload'
 import clone from './clone'
+import '../bower_components/TinyColor'
 
 var { Component, RectPath } = scene
 
@@ -456,7 +457,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
         break;
     }
 
-    // baseColor = color(baseColor);
+    baseColor = tinycolor(baseColor);
 
     return baseColor;
   }

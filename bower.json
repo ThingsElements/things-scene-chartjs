@@ -20,7 +20,8 @@
   ],
   "dependencies": {
     "things-scene-core": "ThingsElements/things-scene-core#^2.0.0",
-    "Chart.js": "chartjs/Chart.js#^2.6.0"
+    "Chart.js": "chartjs/Chart.js#^2.6.0",
+    "TinyColor": "bgrins/TinyColor"
   },
   "devDependencies": {
     "polymer": "Polymer/polymer#^1.2.0",
