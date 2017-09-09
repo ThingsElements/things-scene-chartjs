@@ -1,3 +1,4 @@
+import Chart from '../bower_components/Chart.js/src/chart'
 import helpers from './chart-helpers-overload'
 
 /*

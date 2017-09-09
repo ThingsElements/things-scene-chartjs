@@ -39,8 +39,6 @@
   },
   "dependencies": {
     "bower-npm-resolver": "^0.4.0",
-    "dezalgo": "^1.0.3",
-    "things-scene-core": "ThingsElements/things-scene-core",
-    "chart.js": "^2.6.0"
+    "dezalgo": "^1.0.3"
   }
 }
