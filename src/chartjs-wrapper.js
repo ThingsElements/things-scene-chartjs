@@ -4,8 +4,7 @@
 import helpers from './chart-helpers-overload'
 import SceneChart from './chart-overload'
 import clone from './clone'
-
-require('../bower_components/TinyColor');
+import tinycolor from '../bower_components/TinyColor'
 
 var { Component, RectPath } = scene
 
