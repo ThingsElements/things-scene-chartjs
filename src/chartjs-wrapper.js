@@ -2,7 +2,6 @@
  * Copyright © HatioLab Inc. All rights reserved.
  */
 import helpers from './chart-helpers-overload'
-import ChartController from './chart-controller-overload'
 import SceneChart from './chart-overload'
 import clone from './clone'
 
@@ -11,8 +10,19 @@ var { Component, RectPath } = scene
 Chart.defaults.global.defaultFontSize = 10
 Chart.defaults.global.hover.mode = 'index';
 Chart.defaults.global.tooltips.mode = 'index';
-Chart.defaults.global.tooltips.position = 'nearest';
+// Chart.defaults.global.tooltips.position = 'nearest';
 Chart.defaults.bar.scales.xAxes[0].barPercentage = 0.95;
+
+var old = Chart.Legend.prototype.handleEvent;
+Chart.Legend.prototype.handleEvent = function(e) {
+  if(e.chartJSWrapper) {
+    var { x, y } = Chart.helpers.getRelativePosition(e, e.chartJSWrapper._chart);
+    e.x = x;
+    e.y = y
+  }
+
+  return old.call(this, e);
+}
 
 const NATURE = {
   mutable: false,
