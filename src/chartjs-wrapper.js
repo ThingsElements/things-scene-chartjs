@@ -444,7 +444,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     let darkColor = "#000";
     let lightColor = "#fff";
 
-    var baseColor;
+    var baseColor = darkColor;
 
     switch(theme) {
       case 'light' :
@@ -456,7 +456,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
         break;
     }
 
-    baseColor = tinycolor(baseColor);
+    // baseColor = color(baseColor);
 
     return baseColor;
   }
