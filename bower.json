@@ -16,7 +16,8 @@
   "homepage": "https://github.com/<USERNAME>/seed-element/",
   "ignore": [
     "/.*",
-    "/test/"
+    "/test/",
+    "/src/",
   ],
   "dependencies": {
     "things-scene-core": "ThingsElements/things-scene-core#^2.0.0",
