@@ -17,7 +17,7 @@
   "ignore": [
     "/.*",
     "/test/",
-    "/src/",
+    "/src/"
   ],
   "dependencies": {
     "things-scene-core": "ThingsElements/things-scene-core#^2.0.0",
