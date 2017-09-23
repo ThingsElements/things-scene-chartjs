@@ -42,6 +42,11 @@ const SAMPLE_IMAGES = {
 
 export default class ChartJSWrapper extends RectPath(Component) {
 
+  dispose() {
+    super.dispose()
+    this.destroyChart()
+  }
+
   _draw(context) {
 
     var {

@@ -34,7 +34,7 @@
     "chai": "^3.4.1",
     "mocha": "^2.3.4",
     "should": "^8.0.2",
-    "uglifyjs": "^2.4.10",
+    "uglify-js": "^3.0.17",
     "watchify": "^3.3.1"
   },
   "dependencies": {
