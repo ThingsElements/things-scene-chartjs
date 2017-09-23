@@ -13,13 +13,16 @@ export default class ChartController extends Chart.Controller {
   }
 
   resize() {}
-  destroy() {}
-  clear() {}
+  destroy() {
+    delete this._component
+    super.destroy()
+  }
+  // clear() {}
 
   draw(ease) {
     if(arguments.length > 1) {
       this.__ease__ = ease;
-      this._component.invalidate()
+      this._component && this._component.invalidate()
       return;
     }
 
