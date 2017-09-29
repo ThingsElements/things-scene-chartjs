@@ -17,7 +17,7 @@ export default class ChartController extends Chart.Controller {
     delete this._component
     super.destroy()
   }
-  // clear() {}
+  clear() {}
 
   draw(ease) {
     if(arguments.length > 1) {
