@@ -30,6 +30,10 @@ export default class ChartController extends Chart.Controller {
   }
 
   reset(width, height, context) {
+    // 특정 사이즈 이하가 될 경우 오류가 발생하는 문제를 회피하기 위함.
+    if (width < 100 || height < 100)
+      return;
+
     var changed = (this.chart.width !== width || this.chart.height !== height)
 
     this.chart.width = width;
