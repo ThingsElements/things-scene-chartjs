@@ -65,7 +65,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
     var self = this;
 
-    var data = this.get('data')
+    var data = this.data;
     this._chart.data.rawData = this.convertObject(data)
 
     context.translate(left, top);
