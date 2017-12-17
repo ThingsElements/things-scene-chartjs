@@ -1,7 +1,7 @@
 {
   "name": "@things-elements/things-scene-chartjs",
   "flat": true,
-  "version": "2.0.31",
+  "version": "2.0.32",
   "description": "An element providing a starting point for your own reusable Polymer elements.",
   "main": "index.js",
   "directories": {
