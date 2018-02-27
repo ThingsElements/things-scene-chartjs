@@ -24,6 +24,7 @@
 //     chartInstance.data.datasets.push(opt);
 //   }
 // }
+import Chart from 'chart.js'
 
 function updateSeriesDatas(chartInstance) {
   if (!chartInstance.data.rawData) {

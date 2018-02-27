@@ -1,6 +1,8 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
+import Chart from 'chart.js'
+
 function noop() {}
 
 var helpers = Chart.helpers;

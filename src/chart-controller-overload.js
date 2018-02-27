@@ -1,6 +1,7 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
+import Chart from 'chart.js'
 import helpers from './chart-helpers-overload'
 
 export default class ChartController extends Chart.Controller {

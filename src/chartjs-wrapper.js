@@ -1,15 +1,18 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
+import Chart from 'chart.js'
+import tinycolor from 'tinycolor2'
+
 import helpers from './chart-helpers-overload'
 import ChartController from './chart-controller-overload'
 import SceneChart from './chart-overload'
 import clone from './clone'
 
-var {
+import {
   Component,
   RectPath
-} = scene
+} from '@hatiolab/things-scene'
 
 Chart.defaults.global.defaultFontSize = 10
 Chart.defaults.global.hover.mode = 'index';
