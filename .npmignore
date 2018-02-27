@@ -1,6 +1,5 @@
 DEPLOYMENT.md
 DEVELOPMENT.md
-src/
 dist/
 npm-debug.log
 node_modules
@@ -10,3 +9,5 @@ bower_components
 .gitignore
 .git
 boards
+things-scene-chartjs-min.js
+things-scene-chartjs.js
