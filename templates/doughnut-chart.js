@@ -1,0 +1,60 @@
+export default {
+  name: 'doughnut chart',
+  /* 다국어 키 표현을 어떻게.. */
+  description: '...',
+  /* 다국어 키 표현을 어떻게.. */
+  group: 'chartAndGauge',
+  /* line|shape|textAndMedia|chartAndGauge|table|container|dataSource|IoT|3D|warehouse|form|etc */
+  icon: '../',
+  /* 또는, Object */
+  template: {
+    type: 'doughnut chart',
+    model: {
+      type: 'chartjs',
+      top: 0,
+      left: 0,
+      width: 200,
+      height: 200,
+      fontColor: '#FF0000',
+      lineWidth: 5,
+      chart: {
+        type: 'doughnut',
+        data: {
+          labels: [],
+          datasets: [{
+            data: [],
+            backgroundColor: [
+              "#FF6384",
+              "#36A2EB",
+              "#FFCE56"
+            ],
+            borderWidth: 0,
+            dataKey: 'value'
+          }],
+          labelDataKey: 'label'
+        },
+        options: {
+          theme: 'dark',
+          legend: {
+            display: true,
+            position: 'top'
+          },
+          animation: {
+            animateScale: true
+          }
+        }
+      },
+      data: [{
+        label: "Red",
+        value: 300
+      }, {
+        label: "Blue",
+        value: 50
+      }, {
+        label: "Yellow",
+        value: 100
+      }]
+    }
+  }
+}
+
