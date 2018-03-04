@@ -25,7 +25,7 @@ const NATURE = {
   resizable: true,
   rotatable: true,
   properties: [{
-    type: 'chartjs-properties',
+    type: 'chartjs',
     label: '',
     name: 'chart'
   }]
@@ -247,7 +247,6 @@ export default class ChartJSWrapper extends RectPath(Component) {
         if (series.yAxisID == 'right')
           series.yAxisID = 'left'
       }
-
     }
 
     // setup options
