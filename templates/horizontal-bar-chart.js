@@ -1,7 +1,9 @@
+import icon from '../assets/horizontal-bar-chart.png';
+
 export default {
   type: 'horizontal bar chart',
-  description: 'ChartJS - Horizontal BarChart',
-  icon: '',
+  description: 'ChartJS - horizontal barchart',
+  icon: icon,
   group: 'chartAndGauge',
   /* line|shape|textAndMedia|chartAndGauge|table|container|dataSource|IoT|3D|warehouse|form|etc */
   model: {

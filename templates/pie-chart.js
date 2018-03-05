@@ -1,7 +1,9 @@
+import icon from '../assets/pie-chart.png';
+
 export default {
   type: 'pie chart',
-  description: 'ChartJS - Pie Chart',
-  icon: '',
+  description: 'ChartJS - pie chart',
+  icon: icon,
   group: 'chartAndGauge',
   /* line|shape|textAndMedia|chartAndGauge|table|container|dataSource|IoT|3D|warehouse|form|etc */
   model: {

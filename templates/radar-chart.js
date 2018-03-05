@@ -1,7 +1,9 @@
+import icon from '../assets/radar-chart.png';
+
 export default {
   type: 'radar chart',
-  description: 'ChartJS - Radar Chart',
-  icon: '',
+  description: 'ChartJS - radar chart',
+  icon: icon,
   group: 'chartAndGauge',
   /* line|shape|textAndMedia|chartAndGauge|table|container|dataSource|IoT|3D|warehouse|form|etc */
   model: {

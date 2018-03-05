@@ -1,7 +1,9 @@
+import icon from '../assets/line-chart.png';
+
 export default {
   type: 'line chart',
-  description: 'ChartJS - Line Chart',
-  icon: '',
+  description: 'ChartJS - line chart',
+  icon: icon,
   group: 'chartAndGauge',
   /* line|shape|textAndMedia|chartAndGauge|table|container|dataSource|IoT|3D|warehouse|form|etc */
   model: {

@@ -1,7 +1,9 @@
+import icon from '../assets/doughnut-chart.png';
+
 export default {
   type: 'doughnut chart',
-  description: 'ChartJS - Donut',
-  icon: '',
+  description: 'ChartJS - doughnut',
+  icon: icon,
   group: 'chartAndGauge',
   /* line|shape|textAndMedia|chartAndGauge|table|container|dataSource|IoT|3D|warehouse|form|etc */
   model: {

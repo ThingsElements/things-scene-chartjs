@@ -1,7 +1,9 @@
+import icon from '../assets/bar-chart.png';
+
 export default {
   type: 'bar chart',
-  description: 'ChartJS - BarChart',
-  icon: '',
+  description: 'ChartJS - barchart',
+  icon: icon,
   group: 'chartAndGauge',
   /* line|shape|textAndMedia|chartAndGauge|table|container|dataSource|IoT|3D|warehouse|form|etc */
   model: {

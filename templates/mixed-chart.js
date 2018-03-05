@@ -1,7 +1,9 @@
+import icon from '../assets/mixed-chart.png';
+
 export default {
   type: 'mixed chart',
-  description: 'ChartJS - Mixed Chart',
-  icon: '',
+  description: 'ChartJS - mixed chart',
+  icon: icon,
   group: 'chartAndGauge',
   /* line|shape|textAndMedia|chartAndGauge|table|container|dataSource|IoT|3D|warehouse|form|etc */
   model: {

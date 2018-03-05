@@ -1,7 +1,9 @@
+import icon from '../assets/polar-area-chart.png';
+
 export default {
   type: 'polar area chart',
-  description: 'ChartJS - Area Chart',
-  icon: '',
+  description: 'ChartJS - ploar area chart',
+  icon: icon,
   group: 'chartAndGauge',
   /* line|shape|textAndMedia|chartAndGauge|table|container|dataSource|IoT|3D|warehouse|form|etc */
   model: {
