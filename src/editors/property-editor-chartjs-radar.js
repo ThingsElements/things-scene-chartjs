@@ -1,4 +1,6 @@
-import { html } from '@polymer/polymer/polymer-element';
+import {
+  html
+} from '@polymer/polymer/polymer-element';
 
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-button/paper-button';
@@ -14,7 +16,7 @@ export default class PropertyEditorChartJSRadar extends PropertyEditorChartJSAbs
   }
 
   static get editorTemplate() {
-    return html`
+    return html `
     <legend>
       <things-i18n-msg msgid="label.chart" auto>Chart</things-i18n-msg>
     </legend>
@@ -73,57 +75,57 @@ export default class PropertyEditorChartJSRadar extends PropertyEditorChartJSAbs
           <things-i18n-msg msgid="label.label" auto>label</things-i18n-msg>
         </label>
         <input type="text" value="{{series.label::change}}"></input>
-        
-        <!-- 
+
+        <!--
         <label>
           <things-i18n-msg msgid="label.line-tension" auto>line tension</things-i18n-msg>
         </label>
         <select class="select-content" value="{{series.lineTension::change}}">
           <option value="0.4">smooth</option>
           <option value="0">angled</option>
-        </select> 
+        </select>
         -->
-        
+
         <label>
           <things-i18n-msg msgid="label.border-color" auto>border color</things-i18n-msg>
         </label>
         <things-editor-color value="{{series.borderColor::change}}"></things-editor-color>
-        
+
         <label>
           <things-i18n-msg msgid="label.border-width" auto>border width</things-i18n-msg>
         </label>
         <input is="things-editor-number-input" number="{{series.borderWidth::change}}"></input>
-        
+
         <label>
           <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
         </label>
         <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
-        
+
         <label>
           <things-i18n-msg msgid="label.point-size" auto>Point Size</things-i18n-msg>
         </label>
         <input type="number" value-as-number="{{series.pointRadius::change}}"></input>
-        
+
         <label>
           <things-i18n-msg msgid="label.point-bg-color" auto>point BG color</things-i18n-msg>
         </label>
         <things-editor-color value="{{series.pointBackgroundColor::change}}"></things-editor-color>
-        
+
         <input type="checkbox" checked="{{series.fill::change}}" required></input>
         <label>
           <things-i18n-msg msgid="label.fill" auto>fill</things-i18n-msg>
         </label>
-        
+
         <label>
           <things-i18n-msg msgid="label.value-prefix" auto>Value Prefix</things-i18n-msg>
         </label>
         <input type="text" value="{{series.valuePrefix::change}}"></input>
-        
+
         <label>
           <things-i18n-msg msgid="label.value-suffix" auto>Value suffix</things-i18n-msg>
         </label>
         <input type="text" value="{{series.valueSuffix::change}}"></input>
-        
+
         <input type="checkbox" checked="{{series.displayValue::change}}" required></input>
         <label>
           <things-i18n-msg msgid="label.value-display" auto>Value Display</things-i18n-msg>
@@ -219,14 +221,17 @@ export default class PropertyEditorChartJSRadar extends PropertyEditorChartJSAbs
       fill: false
     })
 
-    this.notifySplices('values.data.datasets', [
-      { index: lastSeriesIndex, removed: [], addedCount: 1, object: this.values.data.datasets, type: 'splice' }
-    ]);
+    this.notifySplices('values.data.datasets', [{
+      index: lastSeriesIndex,
+      removed: [],
+      addedCount: 1,
+      object: this.values.data.datasets,
+      type: 'splice'
+    }]);
 
     this.set('currentSeriesIndex', -1)
     this.set('currentSeriesIndex', lastSeriesIndex)
 
-    this.fire('change')
   }
 
   onTapRemoveCurrentTab(e) {
@@ -237,9 +242,13 @@ export default class PropertyEditorChartJSRadar extends PropertyEditorChartJSAbs
     var currIndex = this.currentSeriesIndex;
     var removed = this.values.data.datasets.splice(currIndex, 1);
 
-    this.notifySplices('values.data.datasets', [
-      { index: currIndex, removed: removed, addedCount: 0, object: this.values.data.datasets, type: 'splice' }
-    ]);
+    this.notifySplices('values.data.datasets', [{
+      index: currIndex,
+      removed: removed,
+      addedCount: 0,
+      object: this.values.data.datasets,
+      type: 'splice'
+    }]);
 
     currIndex--
 
@@ -248,8 +257,6 @@ export default class PropertyEditorChartJSRadar extends PropertyEditorChartJSAbs
 
     this.set('currentSeriesIndex', -1)
     this.set('currentSeriesIndex', currIndex)
-
-    this.fire('change')
   }
 
   isOnly(datasets) {

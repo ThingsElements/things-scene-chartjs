@@ -1,4 +1,6 @@
-import { html } from '@polymer/polymer/polymer-element';
+import {
+  html
+} from '@polymer/polymer/polymer-element';
 
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-button/paper-button';
@@ -14,7 +16,7 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
   }
 
   static get editorTemplate() {
-    return html`
+    return html `
     <legend>
       <things-i18n-msg msgid="label.chart" auto>Chart</things-i18n-msg>
     </legend>
@@ -53,7 +55,7 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
     <legend>
       <things-i18n-msg msgid="label.series" auto>Series</things-i18n-msg>
     </legend>
-    
+
     <div fullwidth>
       <paper-tabs selected="{{currentSeriesIndex}}" fullwidth>
         <template is="dom-repeat" items="{{values.data.datasets}}" index-as="index">
@@ -102,7 +104,7 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
           </label>
           <input is="things-editor-number-input" number="{{series.defaultFontSize::change}}"></input>
         </template>
-        
+
         <template is="dom-if" if="[[!isOnly(values.data.datasets)]]">
           <paper-button on-tap="onTapRemoveCurrentTab">
             <iron-icon icon="icons:delete"></iron-icon>Remove Tab
@@ -249,14 +251,16 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
       yAxisID: 'left'
     })
 
-    this.notifySplices('values.data.datasets', [
-      { index: lastSeriesIndex, removed: [], addedCount: 1, object: this.values.data.datasets, type: 'splice' }
-    ]);
+    this.notifySplices('values.data.datasets', [{
+      index: lastSeriesIndex,
+      removed: [],
+      addedCount: 1,
+      object: this.values.data.datasets,
+      type: 'splice'
+    }]);
 
     this.set('currentSeriesIndex', -1)
     this.set('currentSeriesIndex', lastSeriesIndex)
-
-    this.fire('change')
   }
 
   onTapRemoveCurrentTab(e) {
@@ -267,9 +271,13 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
     var currIndex = this.currentSeriesIndex;
     var removed = this.values.data.datasets.splice(currIndex, 1);
 
-    this.notifySplices('values.data.datasets', [
-      { index: currIndex, removed: removed, addedCount: 0, object: this.values.data.datasets, type: 'splice' }
-    ]);
+    this.notifySplices('values.data.datasets', [{
+      index: currIndex,
+      removed: removed,
+      addedCount: 0,
+      object: this.values.data.datasets,
+      type: 'splice'
+    }]);
 
     currIndex--
 
@@ -278,8 +286,6 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
 
     this.set('currentSeriesIndex', -1)
     this.set('currentSeriesIndex', currIndex)
-
-    this.fire('change')
   }
 
   isOnly(datasets) {

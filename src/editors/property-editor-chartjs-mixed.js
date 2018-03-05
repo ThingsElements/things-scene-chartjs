@@ -1,4 +1,6 @@
-import { html } from '@polymer/polymer/polymer-element';
+import {
+  html
+} from '@polymer/polymer/polymer-element';
 
 import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract';
 
@@ -14,7 +16,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
   }
 
   static get editorTemplate() {
-    return html`
+    return html `
     <legend>
       <things-i18n-msg msgid="label.chart" auto>Chart</things-i18n-msg>
     </legend>
@@ -271,7 +273,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
     <label>
       <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
     </label>
-    
+
     <template is="dom-if" if="[[values.options.multiAxis]]">
       <legend>
         <things-i18n-msg msgid="label.y-2nd-axes" auto>Y 2nd Axes</things-i18n-msg>
@@ -281,12 +283,12 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
         <things-i18n-msg msgid="label.title" auto>Title</things-i18n-msg>
       </label>
       <input type="text" value="{{values.options.scales.yAxes.1.axisTitle::change}}"></input>
-      
+
       <input type="checkbox" checked="{{values.options.scales.yAxes.1.ticks.autoMin::change}}" required></input>
       <label>
         <things-i18n-msg msgid="label.axis-min-auto" auto>Min Auto</things-i18n-msg>
       </label>
-      
+
       <input type="checkbox" checked="{{values.options.scales.yAxes.1.ticks.autoMax::change}}" required></input>
       <label>
         <things-i18n-msg msgid="label.axis-max-auto" auto>Max Auto</things-i18n-msg>
@@ -405,14 +407,16 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
 
     this.values.data.datasets.push(addSeriesOption)
 
-    this.notifySplices('values.data.datasets', [
-      { index: lastSeriesIndex, removed: [], addedCount: 1, object: this.values.data.datasets, type: 'splice' }
-    ]);
+    this.notifySplices('values.data.datasets', [{
+      index: lastSeriesIndex,
+      removed: [],
+      addedCount: 1,
+      object: this.values.data.datasets,
+      type: 'splice'
+    }]);
 
     this.set('currentSeriesIndex', -1)
     this.set('currentSeriesIndex', lastSeriesIndex)
-
-    this.fire('change')
   }
 
   onTapRemoveCurrentTab(e) {
@@ -423,9 +427,13 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
     var currIndex = this.currentSeriesIndex;
     var removed = this.values.data.datasets.splice(currIndex, 1);
 
-    this.notifySplices('values.data.datasets', [
-      { index: currIndex, removed: removed, addedCount: 0, object: this.values.data.datasets, type: 'splice' }
-    ]);
+    this.notifySplices('values.data.datasets', [{
+      index: currIndex,
+      removed: removed,
+      addedCount: 0,
+      object: this.values.data.datasets,
+      type: 'splice'
+    }]);
 
     currIndex--
 
@@ -434,8 +442,6 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
 
     this.set('currentSeriesIndex', -1)
     this.set('currentSeriesIndex', currIndex)
-
-    this.fire('change')
   }
 
   isOnly(datasets) {

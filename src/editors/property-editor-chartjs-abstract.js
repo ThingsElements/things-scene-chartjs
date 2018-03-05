@@ -1,4 +1,7 @@
-import { Element as PolymerElement, html } from '@polymer/polymer/polymer-element';
+import {
+  Element as PolymerElement,
+  html
+} from '@polymer/polymer/polymer-element';
 
 export default class PropertyEditorChartJSAbstract extends PolymerElement {
 
@@ -7,7 +10,7 @@ export default class PropertyEditorChartJSAbstract extends PolymerElement {
   }
 
   static get template() {
-    return html`
+    return html `
     <style>
 
       :host {
@@ -110,11 +113,11 @@ export default class PropertyEditorChartJSAbstract extends PolymerElement {
       paper-tab[disabled] {
         background-color: rgba(0,0,0,.1);
       }
-      
+
       paper-tab:last-child {
         border-width: 0;
       }
-      
+
       paper-tab.iron-selected {
         background-color: rgba(255,255,255,.5);
         border: 1px solid rgba(0,0,0,.2);
@@ -127,7 +130,7 @@ export default class PropertyEditorChartJSAbstract extends PolymerElement {
   }
 
   static get editorTemplate() {
-    return html``;
+    return html ``;
   }
 
   static get properties() {
@@ -213,14 +216,16 @@ export default class PropertyEditorChartJSAbstract extends PolymerElement {
       yAxisID: 'left'
     })
 
-    this.notifySplices('values.data.datasets', [
-      { index: lastSeriesIndex, removed: [], addedCount: 1, object: this.values.data.datasets, type: 'splice' }
-    ]);
+    this.notifySplices('values.data.datasets', [{
+      index: lastSeriesIndex,
+      removed: [],
+      addedCount: 1,
+      object: this.values.data.datasets,
+      type: 'splice'
+    }]);
 
     this.set('currentSeriesIndex', -1)
     this.set('currentSeriesIndex', lastSeriesIndex)
-
-    this.fire('change')
   }
 
   onTapRemoveCurrentTab(e) {
@@ -231,9 +236,13 @@ export default class PropertyEditorChartJSAbstract extends PolymerElement {
     var currIndex = this.currentSeriesIndex;
     var removed = this.values.data.datasets.splice(currIndex, 1);
 
-    this.notifySplices('values.data.datasets', [
-      { index: currIndex, removed: removed, addedCount: 0, object: this.values.data.datasets, type: 'splice' }
-    ]);
+    this.notifySplices('values.data.datasets', [{
+      index: currIndex,
+      removed: removed,
+      addedCount: 0,
+      object: this.values.data.datasets,
+      type: 'splice'
+    }]);
 
     currIndex--
 
@@ -242,8 +251,6 @@ export default class PropertyEditorChartJSAbstract extends PolymerElement {
 
     this.set('currentSeriesIndex', -1)
     this.set('currentSeriesIndex', currIndex)
-
-    this.fire('change')
   }
 
   isOnly(datasets) {
