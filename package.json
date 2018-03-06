@@ -1,9 +1,9 @@
 {
-  "name": "@things-elements/things-scene-chartjs",
-  "version": "2.0.41",
+  "name": "@things-scene/chartjs",
+  "version": "3.0.0",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
-  "things-shell": true,
+  "things-scene": true,
   "directories": {
     "test": "test"
   },
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/ThingsElements/things-scene-chartjs#readme",
   "devDependencies": {
-    "@hatiolab/things-shell": "^0.2.20"
+    "@hatiolab/things-shell": "^0.3.0"
   },
   "dependencies": {
     "@hatiolab/things-scene": "^2.2.30",
