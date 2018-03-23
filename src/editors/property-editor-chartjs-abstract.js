@@ -1,5 +1,5 @@
 import {
-  Element as PolymerElement,
+  PolymerElement,
   html
 } from '@polymer/polymer/polymer-element';
 
@@ -10,7 +10,7 @@ export default class PropertyEditorChartJSAbstract extends PolymerElement {
   }
 
   static get template() {
-    return html `
+    return html`
     <style>
 
       :host {
@@ -130,7 +130,7 @@ export default class PropertyEditorChartJSAbstract extends PolymerElement {
   }
 
   static get editorTemplate() {
-    return html ``;
+    return html``;
   }
 
   static get properties() {
