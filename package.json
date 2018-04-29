@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/chartjs",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
   "things-scene": true,
@@ -9,7 +9,7 @@
   },
   "scripts": {
     "serve": "watchify src/index.js -o things-scene-chartjs.js src/index.js & polymer serve",
-    "build": "browserify src/index.js -o things-scene-chartjs.js && uglifyjs things-scene-chartjs.js -m -c -o things-scene-chartjs-min.js"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/ThingsElements/things-scene-chartjs#readme",
   "devDependencies": {
-    "@hatiolab/things-shell": "^0.3.0"
+    "@hatiolab/things-shell": "^0.4.8"
   },
   "dependencies": {
     "@hatiolab/things-scene": "^2.2.30",
