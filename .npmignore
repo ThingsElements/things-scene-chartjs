@@ -1,13 +1,11 @@
 DEPLOYMENT.md
 DEVELOPMENT.md
-dist/
 npm-debug.log
 node_modules
-bower_components
-.babelrc
 .editorconfig
 .gitignore
 .git
-boards
-things-scene-chartjs-min.js
-things-scene-chartjs.js
+.vscode
+.travis
+.yo-rc.json
+db.sqlite
