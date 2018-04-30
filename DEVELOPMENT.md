@@ -1,13 +1,18 @@
 ## node package를 설치한다.
-```$ npm install```
+```$ yarn```
 
-## bower package를 설치한다.
-```$ bower install```
+## 실행
+```$ yarn serve```
+```$ yarn serve:dev```
 
-## npm task - serve를 실행한다.(watchify와 polyserve를 병렬실행)
-## 포트를 바꾸려면, -- -p 8081 식으로 추가해준다.
-```$ npm run serve```
-```$ npm run serve -- -p 8081```
+## 포트를 바꾸려면, -p 3001 식으로 추가해준다.
+```$ yarn serve```
+```$ yarn serve -p 3001```
 
-## 브라우저에서 확인한다.
-http://localhost:8080/components/things-scene-chartjs/demo/index.html
+## test in browser
+http://localhost:3000
+
+## build
+```$ yarn build```
+## publish
+```$ yarn publish```
