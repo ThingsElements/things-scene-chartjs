@@ -1,11 +1,13 @@
 DEPLOYMENT.md
 DEVELOPMENT.md
-npm-debug.log
+bower_components
 node_modules
+licenses
 .editorconfig
 .gitignore
 .git
 .vscode
 .travis
 .yo-rc.json
+npm-debug.log
 db.sqlite

@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/chartjs",
-  "version": "3.0.4",
+  "version": "3.0.6",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
   "things-scene": true,
@@ -8,7 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "serve": "watchify src/index.js -o things-scene-chartjs.js src/index.js & polymer serve",
+    "serve": "things-shell",
+    "serve:dev": "things-shell-dev",
     "build": "webpack"
   },
   "repository": {
@@ -22,10 +23,10 @@
   },
   "homepage": "https://github.com/ThingsElements/things-scene-chartjs#readme",
   "devDependencies": {
-    "@hatiolab/things-shell": "^0.4.8"
+    "@hatiolab/things-shell": "*"
   },
   "dependencies": {
-    "@hatiolab/things-scene": "^2.2.30",
+    "@hatiolab/things-scene": "*",
     "chart.js": "2.4.0",
     "tinycolor2": "^1.4.1"
   }
