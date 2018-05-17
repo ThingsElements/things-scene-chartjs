@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/chartjs",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
   "things-scene": true,
@@ -10,7 +10,7 @@
   "scripts": {
     "serve": "things-shell",
     "serve:dev": "things-shell-dev",
-    "build:client": "webpack --config node_modules/@hatiolab/things-shell/webpack.config.dev.js && webpack",
+    "build:client": "webpack --config node_modules/@hatiolab/things-shell/webpack.config.js",
     "build": "webpack",
     "prepublish": "webpack"
   },
