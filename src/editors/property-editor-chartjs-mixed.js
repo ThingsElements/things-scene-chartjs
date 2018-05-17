@@ -1,6 +1,4 @@
-import {
-  html
-} from '@polymer/polymer/polymer-element';
+import { html } from '@polymer/polymer/polymer-element';
 
 import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract';
 
@@ -16,11 +14,11 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
   }
 
   static get editorTemplate() {
-    return html `
+    return html`
     <legend>
       <things-i18n-msg msgid="label.chart" auto>Chart</things-i18n-msg>
     </legend>
-
+    
     <label>
       <things-i18n-msg msgid="label.theme" auto>theme</things-i18n-msg>
     </label>
@@ -28,12 +26,12 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
       <option value="dark">dark</option>
       <option value="light">light</option>
     </select>
-
+    
     <input type="checkbox" checked="{{values.options.legend.display::change}}" required></input>
     <label>
       <things-i18n-msg msgid="label.legend" auto>Legend</things-i18n-msg>
     </label>
-
+    
     <template is="dom-if" if="[[values.options.legend.display]]">
       <label>
         <things-i18n-msg msgid="label.position" auto>Position</things-i18n-msg>
@@ -45,38 +43,38 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
         <option value="left">left</option>
       </select>
     </template>
-
+    
     <input type="checkbox" checked="{{values.options.stacked::change}}" required></input>
     <label>
       <things-i18n-msg msgid="label.stacked" auto>Stacked</things-i18n-msg>
     </label>
-
+    
     <input type="checkbox" checked="{{values.options.multiAxis::change}}" required></input>
     <label>
       <things-i18n-msg msgid="label.multi-axis" auto>Multi Axis</things-i18n-msg>
     </label>
-
+    
     <legend>
       <things-i18n-msg msgid="label.series" auto>Series</things-i18n-msg>
     </legend>
-
+    
     <div fullwidth>
       <paper-tabs selected="{{currentSeriesIndex}}" fullwidth>
         <template is="dom-repeat" items="{{values.data.datasets}}" index-as="index">
           <paper-tab data-series="[[_computeSeriesTabIndex(index)]]">[[_computeSeriesTabIndex(index)]]</paper-tab>
         </template>
-
+    
         <paper-tab>
           <paper-icon-button icon="add-circle" on-tap="onTapAddTab"></paper-icon-button>
         </paper-tab>
       </paper-tabs>
-
+    
       <div class="tab-content">
         <label>
           <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
         </label>
         <input type="text" value="{{series.dataKey::change}}"></input>
-
+    
         <template is="dom-if" if="[[_isTypeof(values.type, 'bar')]]">
           <label>
             <things-i18n-msg msgid="label.type" auto>type</things-i18n-msg>
@@ -86,12 +84,12 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
             <option value="line">line</option>
           </select>
         </template>
-
+    
         <label>
           <things-i18n-msg msgid="label.label" auto>label</things-i18n-msg>
         </label>
         <input type="text" value="{{series.label::change}}"></input>
-
+    
         <template is="dom-if" if="[[_isTypeof(series.type, 'line')]]">
           <label>
             <things-i18n-msg msgid="label.line-tension" auto>line tension</things-i18n-msg>
@@ -101,7 +99,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
             <option value="0">angled</option>
           </select>
         </template>
-
+    
         <template is="dom-if" if="[[_isTypeof(series.type, 'line')]]">
           <label>
             <things-i18n-msg msgid="label.border-color" auto>border color</things-i18n-msg>
@@ -112,12 +110,12 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
           </label>
           <input is="things-editor-number-input" number="{{series.borderWidth::change}}"></input>
         </template>
-
+    
         <label>
           <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
         </label>
         <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
-
+    
         <template is="dom-if" if="[[_isTypeof(series.type, 'line')]]">
           <label>
             <things-i18n-msg msgid="label.point-shape" auto>point shape</things-i18n-msg>
@@ -133,25 +131,25 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
             <option value="line">Line</option>
             <option value="dash">Dash</option>
           </select>
-
+    
           <label>
             <things-i18n-msg msgid="label.point-size" auto>point size</things-i18n-msg>
           </label>
           <input type="number" value-as-number="{{series.pointRadius::change}}"></input>
-
+    
           <label>
             <things-i18n-msg msgid="label.point-bg-color" auto>point BG color</things-i18n-msg>
           </label>
           <things-editor-color value="{{series.pointBackgroundColor::change}}"></things-editor-color>
         </template>
-
+    
         <template is="dom-if" if="[[_isTypeof(series.type, 'line')]]">
           <input type="checkbox" checked="{{series.fill::change}}" required></input>
           <label>
             <things-i18n-msg msgid="label.fill" auto>fill</things-i18n-msg>
           </label>
         </template>
-
+    
         <label>
           <things-i18n-msg msgid="label.target-axis" auto>target axis</things-i18n-msg>
         </label>
@@ -159,22 +157,22 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
           <option value="left">left</option>
           <option value="right">right</option>
         </select>
-
+    
         <label>
           <things-i18n-msg msgid="label.value-prefix" auto>Value Prefix</things-i18n-msg>
         </label>
         <input type="text" value="{{series.valuePrefix::change}}"></input>
-
+    
         <label>
           <things-i18n-msg msgid="label.value-suffix" auto>Value suffix</things-i18n-msg>
         </label>
         <input type="text" value="{{series.valueSuffix::change}}"></input>
-
+    
         <input type="checkbox" checked="{{series.displayValue::change}}" required></input>
         <label>
           <things-i18n-msg msgid="label.value-display" auto>Value Display</things-i18n-msg>
         </label>
-
+    
         <template is="dom-if" if="[[series.displayValue]]">
           <div>
             <label>
@@ -187,7 +185,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
             <input is="things-editor-number-input" number="{{series.defaultFontSize::change}}"></input>
           </div>
         </template>
-
+    
         <template is="dom-if" if="[[!isOnly(values.data.datasets)]]">
           <paper-button on-tap="onTapRemoveCurrentTab">
             <iron-icon icon="icons:delete"></iron-icon>Remove Tab
@@ -195,129 +193,129 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
         </template>
       </div>
     </div>
-
+    
     <legend>
       <things-i18n-msg msgid="label.x-axes" auto>X Axes</things-i18n-msg>
     </legend>
-
+    
     <label>
       <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
     </label>
     <input type="text" value="{{values.data.labelDataKey::change}}"></input>
-
+    
     <label>
       <things-i18n-msg msgid="label.title" auto>Title</things-i18n-msg>
     </label>
     <input type="text" value="{{values.options.scales.xAxes.0.axisTitle::change}}"></input>
-
+    
     <label>
       <things-i18n-msg msgid="label.thickness" auto>Thickness</things-i18n-msg>
     </label>
     <input type="number" value-as-number="{{values.options.scales.xAxes.0.barThickness::change}}"></input>
-
+    
     <input type="checkbox" checked="{{values.options.xGridLine::change}}" required></input>
     <label>
       <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
     </label>
-
+    
     <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.display::change}}" required></input>
     <label>
       <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
     </label>
-
-
+    
+    
     <legend>
       <things-i18n-msg msgid="label.y-axes" auto>Y Axes</things-i18n-msg>
     </legend>
-
+    
     <label>
       <things-i18n-msg msgid="label.title" auto>Title</things-i18n-msg>
     </label>
     <input type="text" value="{{values.options.scales.yAxes.0.axisTitle::change}}"></input>
-
+    
     <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.autoMin::change}}" required></input>
     <label>
       <things-i18n-msg msgid="label.axis-min-auto" auto>Min Auto</things-i18n-msg>
     </label>
-
+    
     <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.autoMax::change}}" required></input>
     <label>
       <things-i18n-msg msgid="label.axis-max-auto" auto>Max Auto</things-i18n-msg>
     </label>
-
+    
     <template is="dom-if" if="[[!values.options.scales.yAxes.0.ticks.autoMin]]">
       <label>
         <things-i18n-msg msgid="label.axis-min" auto>Min</things-i18n-msg>
       </label>
       <input type="number" value="{{values.options.scales.yAxes.0.ticks.min::change}}"></input>
     </template>
-
+    
     <template is="dom-if" if="[[!values.options.scales.yAxes.0.ticks.autoMax]]">
       <label>
         <things-i18n-msg msgid="label.axis-max" auto>Max</things-i18n-msg>
       </label>
       <input type="number" value="{{values.options.scales.yAxes.0.ticks.max::change}}"></input>
     </template>
-
+    
     <label>
       <things-i18n-msg msgid="label.axis-step-size" auto>StepSize</things-i18n-msg>
     </label>
     <input type="number" value="{{values.options.scales.yAxes.0.ticks.stepSize::change}}"></input>
-
+    
     <input type="checkbox" checked="{{values.options.yGridLine::change}}" required></input>
     <label>
       <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
     </label>
-
+    
     <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.display::change}}" required></input>
     <label>
       <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
     </label>
-
+    
     <template is="dom-if" if="[[values.options.multiAxis]]">
       <legend>
         <things-i18n-msg msgid="label.y-2nd-axes" auto>Y 2nd Axes</things-i18n-msg>
       </legend>
-
+    
       <label>
         <things-i18n-msg msgid="label.title" auto>Title</things-i18n-msg>
       </label>
       <input type="text" value="{{values.options.scales.yAxes.1.axisTitle::change}}"></input>
-
+    
       <input type="checkbox" checked="{{values.options.scales.yAxes.1.ticks.autoMin::change}}" required></input>
       <label>
         <things-i18n-msg msgid="label.axis-min-auto" auto>Min Auto</things-i18n-msg>
       </label>
-
+    
       <input type="checkbox" checked="{{values.options.scales.yAxes.1.ticks.autoMax::change}}" required></input>
       <label>
         <things-i18n-msg msgid="label.axis-max-auto" auto>Max Auto</things-i18n-msg>
       </label>
-
+    
       <template is="dom-if" if="[[!values.options.scales.yAxes.1.ticks.autoMin]]">
         <label>
           <things-i18n-msg msgid="label.axis-min" auto>Min</things-i18n-msg>
         </label>
         <input type="number" value="{{values.options.scales.yAxes.1.ticks.min::change}}"></input>
       </template>
-
+    
       <template is="dom-if" if="[[!values.options.scales.yAxes.1.ticks.autoMax]]">
         <label>
           <things-i18n-msg msgid="label.axis-max" auto>Max</things-i18n-msg>
         </label>
         <input type="number" value="{{values.options.scales.yAxes.1.ticks.max::change}}"></input>
       </template>
-
+    
       <label>
         <things-i18n-msg msgid="label.axis-step-size" auto>StepSize</things-i18n-msg>
       </label>
       <input type="number" value="{{values.options.scales.yAxes.1.ticks.stepSize::change}}"></input>
-
+    
       <input type="checkbox" checked="{{values.options.y2ndGridLine::change}}" required></input>
       <label>
         <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
       </label>
-
+    
       <input type="checkbox" checked="{{values.options.scales.yAxes.1.ticks.display::change}}" required></input>
       <label>
         <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>

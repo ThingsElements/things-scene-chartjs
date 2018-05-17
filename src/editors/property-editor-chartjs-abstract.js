@@ -1,7 +1,4 @@
-import {
-  PolymerElement,
-  html
-} from '@polymer/polymer/polymer-element';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element';
 
 export default class PropertyEditorChartJSAbstract extends PolymerElement {
 
@@ -12,119 +9,121 @@ export default class PropertyEditorChartJSAbstract extends PolymerElement {
   static get template() {
     return html`
     <style>
-
       :host {
         display: grid;
         grid-template-columns: repeat(10, 1fr);
         grid-gap: 5px;
       }
-
-      :host > * {
+    
+      :host>* {
         box-sizing: border-box;
-
+    
         grid-column: span 7;
       }
-
+    
       legend {
         @apply(--things-fieldset-legend);
-
+    
         grid-column: 1 / -1;
-
+    
         display: inline-block;
-
+    
         text-align: left;
         text-transform: capitalize;
       }
-
+    
       .tab-content {
-        background-color: rgba(255,255,255,.5);
-        border: 1px solid rgba(0,0,0,.2);
+        background-color: rgba(255, 255, 255, .5);
+        border: 1px solid rgba(0, 0, 0, .2);
         border-width: 0 1px 1px 1px;
-
+    
         padding: 5px;
-
+    
         display: grid;
         grid-template-columns: repeat(10, 1fr);
         grid-gap: 5px;
       }
-
-      .tab-content > * {
+    
+      .tab-content>* {
         box-sizing: border-box;
-
+    
         grid-column: span 7;
       }
-
-      label, .tab-content > label {
+    
+      label,
+      .tab-content>label {
         grid-column: span 3;
-
+    
         text-align: right;
-
-        color:var(--primary-text-color);
+    
+        color: var(--primary-text-color);
         font-size: 0.8em;
         line-height: 2.0;
         text-transform: capitalize;
       }
-
-      input[type=checkbox], .tab-content > input[type=checkbox] {
+    
+      input[type=checkbox],
+      .tab-content>input[type=checkbox] {
         grid-column: span 4;
-
+    
         justify-self: end;
         align-self: center;
       }
-
-      input[type=checkbox] + label, .tab-content > input[type=checkbox] + label {
+    
+      input[type=checkbox]+label,
+      .tab-content>input[type=checkbox]+label {
         grid-column: span 6;
-
+    
         text-align: left;
       }
-
+    
       [fullwidth] {
         grid-column: 1 / -1;
         margin: 0;
         border: 0;
       }
-
+    
       select {
         @apply(--things-select);
-        background:url(/images/bg-input-select.png) 100% 50% no-repeat #fff;
+        background: url(/images/bg-input-select.png) 100% 50% no-repeat #fff;
       }
-
+    
       things-editor-script {
-        width:94%;
-        height:300px;
-        margin:0 0 7px 7px;
-        overflow:auto;
+        width: 94%;
+        height: 300px;
+        margin: 0 0 7px 7px;
+        overflow: auto;
       }
-
+    
       paper-tabs {
-        border: 0 solid rgba(0,0,0,.2);
-        border-width:1px 1px 0 1px;
+        border: 0 solid rgba(0, 0, 0, .2);
+        border-width: 1px 1px 0 1px;
       }
-
+    
       paper-tab {
-        background-color: rgba(0,0,0,.2);
-        border: 1px solid rgba(0,0,0,.07);
+        background-color: rgba(0, 0, 0, .2);
+        border: 1px solid rgba(0, 0, 0, .07);
         border-width: 1px 1px 0 1px;
         padding: 0 5px;
         color: #fff;
         font-size: 13px;
       }
-
+    
       paper-tab[disabled] {
-        background-color: rgba(0,0,0,.1);
+        background-color: rgba(0, 0, 0, .1);
       }
-
+    
       paper-tab:last-child {
         border-width: 0;
       }
-
+    
       paper-tab.iron-selected {
-        background-color: rgba(255,255,255,.5);
-        border: 1px solid rgba(0,0,0,.2);
+        background-color: rgba(255, 255, 255, .5);
+        border: 1px solid rgba(0, 0, 0, .2);
         color: #585858;
       }
     </style>
-
+    
     ${this.editorTemplate}
     `;
   }
