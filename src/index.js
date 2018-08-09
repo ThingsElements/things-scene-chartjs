@@ -34,16 +34,15 @@ function updateSeriesDatas(chartInstance) {
   let seriesData = chartInstance.data.rawData.seriesData;
   let chartId = chartInstance.id;
 
-  if(!seriesData || seriesData.length === 0)
+  if (!seriesData || seriesData.length === 0)
     seriesData = [null];
 
-  for(let key in seriesData) {
-    if(chartInstance.data.datasets[key])
-      chartInstance.data.datasets[key].data = seriesData[key] || [];
+  for (let key in chartInstance.data.datasets) {
+    chartInstance.data.datasets[key].data = seriesData[key] || [];
   }
 }
 
-function updateLabelDatas(chartInstance){
+function updateLabelDatas(chartInstance) {
   let labelData = chartInstance.data.rawData.labelData;
   chartInstance.config.data.labels = labelData || [];
 }
@@ -51,15 +50,15 @@ function updateLabelDatas(chartInstance){
 function seriesHighlight(chartInstance, seriesData) {
   chartInstance.data.datasets.forEach(dataset => {
     let highlight = dataset.highlight
-    if(!highlight)
+    if (!highlight)
       return
 
     let highlightColor = highlight.color
     let highlightCondition = highlight.condition
 
-    seriesData.forEach( (sdata, sIndex) => {
-      sdata.forEach( (data, i) => {
-        if( !eval(highlightCondition) )
+    seriesData.forEach((sdata, sIndex) => {
+      sdata.forEach((data, i) => {
+        if (!eval(highlightCondition))
           return
 
         let meta = chartInstance.getDatasetMeta(sIndex)
@@ -73,20 +72,20 @@ function seriesHighlight(chartInstance, seriesData) {
   })
 }
 
-function _drawValues(chartInstance){
+function _drawValues(chartInstance) {
   // To only draw at the end of animation, check for easing === 1
   var ctx = chartInstance.chart.ctx;
 
   chartInstance.data.datasets.forEach(function (dataset, i) {
     // 값 표시가 체크되어 있지 않으면 스킵
-    if(!dataset.displayValue)
+    if (!dataset.displayValue)
       return
 
     var meta = chartInstance.getDatasetMeta(i);
     if (!meta.hidden) {
-      meta.data.forEach(function(element, index) {
+      meta.data.forEach(function (element, index) {
         // 데이터셋이 히든이거나 해당값이 빈값이면 스킵
-        if(element.hidden || dataset.data[index] == "" || dataset.data[index] == undefined || isNaN(dataset.data[index]))
+        if (element.hidden || dataset.data[index] == "" || dataset.data[index] == undefined || isNaN(dataset.data[index]))
           return
 
         // Draw the text in black, with the specified font
@@ -97,7 +96,7 @@ function _drawValues(chartInstance){
         ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
         // Just naively convert to string for now
         var data = dataset.data[index]
-        if(data && !isNaN(Number(data)))
+        if (data && !isNaN(Number(data)))
           data = Number(data);
 
         var dataString = data ? data.toLocaleString() : data;
@@ -112,7 +111,7 @@ function _drawValues(chartInstance){
         var position = element.getCenterPoint()
 
         // 라인일 경우는 레이블 위치를 라인의 포인트 위로 올린다.
-        if(dataset.type == 'line')
+        if (dataset.type == 'line')
           position.y = position.y - (dataset.pointRadius + 8 || 10)
 
         ctx.fillText(dataString, position.x, position.y);
@@ -122,7 +121,7 @@ function _drawValues(chartInstance){
 }
 
 Chart.plugins.register({
-  beforeInit : function(chartInstance){
+  beforeInit: function (chartInstance) {
 
     // chartInstance.chartSeries = [];
     //
@@ -130,7 +129,7 @@ Chart.plugins.register({
     //   chartInstance.chartSeries.push(dataset);
     // }
   },
-  beforeUpdate : function(chartInstance){
+  beforeUpdate: function (chartInstance) {
     if (!chartInstance.data.rawData) {
       return;
     }
@@ -140,11 +139,11 @@ Chart.plugins.register({
     updateSeriesDatas(chartInstance);
 
   },
-  beforeRender: function(chartInstance){
+  beforeRender: function (chartInstance) {
 
   },
 
-  beforeDraw: function(chartInstance) {
+  beforeDraw: function (chartInstance) {
     if (!chartInstance.data.rawData) {
       return;
     }
@@ -153,7 +152,7 @@ Chart.plugins.register({
     seriesHighlight(chartInstance, seriesData)
   },
 
-	afterDatasetsDraw: function (chartInstance, easing) {
+  afterDatasetsDraw: function (chartInstance, easing) {
 
     _drawValues(chartInstance)
   }
