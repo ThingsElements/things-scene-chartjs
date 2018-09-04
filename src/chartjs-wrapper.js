@@ -4,9 +4,9 @@
 import Chart from 'chart.js'
 import tinycolor from 'tinycolor2'
 
-import helpers from './chart-helpers-overload'
-import ChartController from './chart-controller-overload'
-import SceneChart from './chart-overload'
+// import helpers from './chart-helpers-overload'
+// import ChartController from './chart-controller-overload'
+// import SceneChart from './chart-overload'
 import clone from './clone'
 
 import { Component, RectPath } from '@hatiolab/things-scene'
@@ -36,7 +36,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     this.destroyChart()
   }
 
-  _draw(context) {
+  render(context) {
     var { left, top, width, height } = this.bounds
 
     context.beginPath()
@@ -58,21 +58,34 @@ export default class ChartJSWrapper extends RectPath(Component) {
       this._data_changed = false
     }
 
-    context.translate(left, top)
+    // context.translate(left, top)
+    context.beginPath()
 
-    if (!this._draw_once) {
-      this._chart.reset(width, height, context)
-      this._chart.update(0)
-      this._draw_once = true
-    } else {
-      if (this._chart.chart.ctx != context) {
-        this._chart.reset(width, height, context)
-      }
+    // context.rect(0, 0, width, height)
 
-      this._chart.draw(this._chart.__ease__)
-    }
+    // this._chart.be
 
-    context.translate(-left, -top)
+    // if (!this._draw_once) {
+    //   this._chart.update(0)
+    //   this._draw_once = true
+    // }
+    // if (!this._draw_once) {
+    //   this._chart.reset(width, height, context)
+    //   this._chart.update(0)
+    //   this._draw_once = true
+    // } else {
+    //   if (this._chart.chart.ctx != context) {
+    //     this._chart.reset(width, height, context)
+    //   }
+
+    //   this._chart.draw(this._chart.__ease__)
+    // }
+
+    context.drawImage(this._chartCanvas, left, top)
+
+    context.closePath()
+
+    // context.translate(-left, -top)
   }
 
   get nature() {
@@ -91,12 +104,42 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
   initChart(context) {
     var { chart } = this.model
+    var { width, height } = this.bounds
 
     if (chart) {
       this.convertConfigure(chart)
     }
 
-    this._chart = new SceneChart(context, clone(chart), this)
+    if (!this._chartCanvas) this._chartCanvas = document.createElement('canvas')
+
+    if (!this._chartContainer)
+      this._chartContainer = document.createElement('div')
+
+    // this._chart = new SceneChart(context, clone(chart), this)
+
+    document.body.appendChild(this._chartContainer)
+    this._chartContainer.appendChild(this._chartCanvas)
+
+    this._chartCanvas.style.visibility = 'hidden'
+    this._chartCanvas.style.position = 'fixed'
+    this._chartCanvas.style.zIndex = -2
+
+    var cloneChartConfig = clone(chart)
+    cloneChartConfig.options.maintainAspectRatio = false
+
+    this._chart = new Chart(this._chartCanvas, cloneChartConfig, this)
+
+    this._chartContainer.style.width = this._chartCanvas.style.width = `${width}px`
+    this._chartContainer.style.height = this._chartCanvas.style.height = `${height}px`
+    this._chartContainer.style.position = 'fixed'
+    this._chartContainer.style.zIndex = -1
+
+    this._chartContainer.width = this._chartCanvas.width = width
+    this._chartContainer.height = this._chartCanvas.height = height
+
+    this._chart.sceneComponent = this
+
+    this._chart.resize()
 
     this._data_changed = true
   }
@@ -481,6 +524,16 @@ export default class ChartJSWrapper extends RectPath(Component) {
     var key = keys && keys[0]
     var keySplit = key.split('.')
 
+    if (after.hasOwnProperty('width')) {
+      this._chartCanvas.parentElement.style.width = `${after.width}px`
+      this._chart.resize()
+    }
+
+    if (after.hasOwnProperty('height')) {
+      this._chartCanvas.parentElement.style.height = `${after.height}px`
+      this._chart.resize()
+    }
+
     if (
       after.hasOwnProperty('chart') ||
       key[0] == 'chart' ||
@@ -512,9 +565,34 @@ export default class ChartJSWrapper extends RectPath(Component) {
   onclick(e) {
     e.chartJSWrapper = this
     if (this._chart) {
-      this._chart.eventHandler(e)
       // console.log('elements', this._chart.getElementsAtEvent(e));
       // console.log('dataset', this._chart.getDatasetAtEvent(e));
+
+      var { offsetX, offsetY } = e
+      var { left, top, width, height } = this.bounds
+
+      var boundsPostion = this.transcoordT2S(left, top)
+
+      var newCustomEvent = new CustomEvent(e.type)
+
+      var newEvent = {}
+      for (const key in newCustomEvent) {
+        const value = newCustomEvent[key]
+        var newKey = key
+        if (key.indexOf('_') == 0) newKey = key.replace(/^_/, '')
+
+        newEvent[newKey] = value
+      }
+
+      var pointer = this.transcoordC2S(offsetX, offsetY)
+
+      newEvent.currentTarget = this._chart.canvas
+
+      newEvent.clientX = newEvent.offsetX = pointer.x - boundsPostion.x
+      newEvent.clientY = newEvent.offsetY = pointer.y - boundsPostion.y
+
+      this._chart.eventHandler(newEvent)
+      this.invalidate()
     }
   }
 
@@ -522,7 +600,34 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
   onmousemove(e) {
     e.chartJSWrapper = this
-    if (this._chart) this._chart.eventHandler(e)
+
+    if (this._chart) {
+      var { offsetX, offsetY } = e
+      var { left, top, width, height } = this.bounds
+
+      var boundsPostion = this.transcoordT2S(left, top)
+
+      var newCustomEvent = new CustomEvent(e.type)
+
+      var newEvent = {}
+      for (const key in newCustomEvent) {
+        const value = newCustomEvent[key]
+        var newKey = key
+        if (key.indexOf('_') == 0) newKey = key.replace(/^_/, '')
+
+        newEvent[newKey] = value
+      }
+
+      var pointer = this.transcoordC2S(offsetX, offsetY)
+
+      newEvent.currentTarget = this._chart.canvas
+
+      newEvent.clientX = newEvent.offsetX = pointer.x - boundsPostion.x
+      newEvent.clientY = newEvent.offsetY = pointer.y - boundsPostion.y
+
+      this._chart.eventHandler(newEvent)
+      this.invalidate()
+    }
   }
 }
 
