@@ -102,12 +102,21 @@ export default class ChartJSWrapper extends RectPath(Component) {
   }
 
   destroyChart() {
-    if (this._chart) this._chart.destroy()
+    this._chart && this._chart.destroy()
     this._chart = null
   }
 
   convertObject(dataArray) {
     if (!dataArray) return null
+
+    if (typeof (dataArray) == 'string') {
+      try {
+        dataArray = JSON.parse(dataArray)
+      } catch (e) {
+        console.warn('invalid chart data format', e)
+        return null
+      }
+    }
 
     if (!(dataArray instanceof Array)) {
       // is not Array
@@ -308,7 +317,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
             },
             ticks: {
               beginAtZero: false,
-              callback: function(value, index, values) {
+              callback: function (value, index, values) {
                 var returnValue = value
                 if (typeof returnValue == 'number') {
                   returnValue = returnValue.toLocaleString()
@@ -440,7 +449,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
   }
 
   _appendTickCallback(ticks) {
-    ticks.callback = function(value, index, values) {
+    ticks.callback = function (value, index, values) {
       var returnValue = Number(value)
       if (!Number.isNaN(returnValue)) {
         returnValue = returnValue.toLocaleString()
@@ -454,7 +463,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
   _setTooltipCallback(tooltips) {
     tooltips.callbacks = {
-      label: function(tooltipItem, data) {
+      label: function (tooltipItem, data) {
         var label = data.labels[tooltipItem.index]
         var value =
           data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
@@ -481,12 +490,10 @@ export default class ChartJSWrapper extends RectPath(Component) {
     var key = keys && keys[0]
     var keySplit = key.split('.')
 
-    if (
-      after.hasOwnProperty('chart') ||
+    if (('chart' in after) ||
       key[0] == 'chart' ||
-      after.hasOwnProperty('fontSize') ||
-      after.hasOwnProperty('fontFamily')
-    ) {
+      'fontSize' in after ||
+      'fontFamily' in after) {
       isChartChanged = true
     }
 
@@ -494,7 +501,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
       delete this.model[key]
     }
 
-    if (after.hasOwnProperty('data')) {
+    if ('data' in after) {
       this._data_changed = true
       // this.model.data = after.data
       if (this._chart) {
@@ -503,7 +510,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
       }
     }
 
-    if (isChartChanged) this.destroyChart()
+    isChartChanged && this.destroyChart()
 
     this._draw_once = false
     this.invalidate()
@@ -518,7 +525,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     }
   }
 
-  ondragstart(e) {}
+  ondragstart(e) { }
 
   onmousemove(e) {
     e.chartJSWrapper = this

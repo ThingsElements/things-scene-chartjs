@@ -1,12 +1,28 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element';
+import { LitElement, html } from '@polymer/lit-element'
 
-export default class PropertyEditorChartJSAbstract extends PolymerElement {
+export default class PropertyEditorChartJSAbstract extends LitElement {
 
-  static get is() {
-    return 'property-editor-chartjs-abstract';
+  static get properties() {
+    return {
+      value: Object,
+      currentSeriesIndex: Number
+    }
   }
 
-  static get template() {
+  constructor() {
+    super()
+
+    this.value = {}
+    this.currentSeriesIndex = 0
+  }
+
+  connectedCallback() {
+    super.connectedCallback()
+
+    this.shadowRoot.addEventListener('change', this.onValuesChanged.bind(this))
+  }
+
+  _render(props) {
     return html`
     <style>
       :host {
@@ -124,140 +140,215 @@ export default class PropertyEditorChartJSAbstract extends PolymerElement {
       }
     </style>
     
-    ${this.editorTemplate}
-    `;
+    <legend>
+      <things-i18n-msg msgid="label.chart">Chart</things-i18n-msg>
+    </legend>
+    
+    <label>
+      <things-i18n-msg msgid="label.theme">theme</things-i18n-msg>
+    </label>
+    <select value-key="theme" class="select-content" value=${this.theme}>
+      <option value="dark">dark</option>
+      <option value="light">light</option>
+    </select>
+    
+    <input type="checkbox" value-key="display" checked=${this.display}>
+    <label>
+      <things-i18n-msg msgid="label.legend">Legend</things-i18n-msg>
+    </label>
+    
+    ${ this.display ? html`
+      <label>
+        <things-i18n-msg msgid="label.position">Position</things-i18n-msg>
+      </label>
+      <select value-key="position" class="select-content" value=${this.position}>
+        <option value="top">top</option>
+        <option value="right">right</option>
+        <option value="bottom">bottom</option>
+        <option value="left">left</option>
+      </select>
+    `: html``}
+    
+    <label>
+      <things-i18n-msg msgid="label.text-size">Text Size</things-i18n-msg>
+    </label>
+    <input type="number" value-key="value.options.defaultFontSize" value=${props.value.options.defaultFontSize}>
+
+    ${this.editorTemplate(props)}
+    `
   }
 
-  static get editorTemplate() {
-    return html``;
+  editorTemplate() {
+    return html``
   }
 
-  static get properties() {
-    return {
-      values: {
-        type: Object,
-        notify: true
-      },
-
-      series: {
-        type: Object,
-        value: {}
-      },
-
-      currentSeriesIndex: {
-        type: Number,
-        value: -1
-      },
-
-      _changedBySelf: {
-        type: Boolean,
-        value: false
-      }
-    }
+  get data() {
+    return this.value.data
   }
 
-  static get observers() {
-    return [
-      'onValuesChanged(values.*)',
-      'onCurrentSeriesIndexChanged(currentSeriesIndex)'
-    ];
+  set data(data) {
+    this.value.data = data
   }
 
-  onValuesChanged(values) {
-    if (values.path == 'values') {
-      if (this._changedBySelf) {
-        // values가 바뀌었으므로 path를 다시 link한다.
-        this.unlinkPaths('series')
-        this.set('series', this.values.data.datasets[this.currentSeriesIndex])
-        this.linkPaths('series', 'values.data.datasets.' + this.currentSeriesIndex)
-        return
-      }
-
-      // values가 바뀌면 datasets[0]을 선택한다.
-      this.set('currentSeriesIndex', -1);
-      this.set('currentSeriesIndex', 0);
-
-      return;
-    }
-
-    // values 하위의 무언가가 변경되면 values를 deep clone하여 다시 set.
-    this._changedBySelf = true
-    this.set('values', Object.assign({}, values.base))
-    this._changedBySelf = false
+  get series() {
+    return this.value.data && this.value.data.datasets[this.currentSeriesIndex] || {}
   }
 
-  onCurrentSeriesIndexChanged(currentSeriesIndex) {
-    if (currentSeriesIndex < 0)
+  set series(series) {
+    !this.value.data ? (this.value.data = { dataset: [series] })
+      : (this.value.data.datasets[this.currentSeriesIndex] = series)
+  }
+
+  get legend() {
+    !this.value.options && (this.value.options = {})
+    return this.value.options.legend
+  }
+
+  set legend(legend) {
+    this.value.options.legend = legend
+  }
+
+  get theme() {
+    return this.value.options && this.value.options.theme
+  }
+
+  set theme(theme) {
+    !this.value.options && (this.value.options = {})
+    this.value.options.theme = theme
+  }
+
+  get scales() {
+    return this.value.options.scales
+  }
+
+  set scales(scales) {
+    !this.value.options && (this.value.options = {})
+    this.value.options.scales = scales
+  }
+
+  get display() {
+    return this.legend && this.legend.display
+  }
+
+  set display(display) {
+    this.legend.display = display
+  }
+
+  get position() {
+    return this.legend.position
+  }
+
+  set position(position) {
+    this.legend.position = position
+  }
+
+  get stacked() {
+    return this.value.options.stacked
+  }
+
+  set stacked(stacked) {
+    this.value.options.stacked = stacked
+  }
+
+  get labelDataKey() {
+    return this.data && this.data.labelDataKey
+  }
+
+  set labelDataKey(labelDataKey) {
+    this.data.labelDataKey = labelDataKey
+  }
+
+  onValuesChanged(e) {
+    var element = e.target
+    var key = element.getAttribute('value-key')
+    var value = element.value
+
+    if (!key) {
       return
+    }
 
-    // currentSeriesIndex가 바뀌면 series와 datasets[currentSeriesIndex]의 path를 link
-    this.unlinkPaths('series')
-    this.set('series', {})
+    switch (element.tagName) {
+      case 'THINGS-EDITOR-ANGLE-INPUT':
+        value = Number(element.radian) || 0
+        break
 
-    if (!this.get('values.data.datasets'))
-      return
+      case 'INPUT':
+        switch (element.type) {
+          case 'checkbox':
+            value = element.checked
+            break;
+          case 'number':
+            value = Number(element.value) || 0
+            break
+          case 'text':
+            value = String(element.value)
+        }
+        break
 
-    this.set('series', this.values.data.datasets[currentSeriesIndex])
-    this.linkPaths('series', 'values.data.datasets.' + currentSeriesIndex)
+      case 'PAPER-BUTTON':
+        value = element.active
+        break
+
+      case 'PAPER-LISTBOX':
+        value = element.selected
+        break
+
+      default:
+        value = element.value
+        break
+    }
+
+    var attrs = key.split('.')
+    var attr = attrs.shift()
+    var variable = this
+
+    while (attrs.length > 0) {
+      variable = variable[attr]
+      attr = attrs.shift()
+    }
+
+    variable[attr] = value
+
+    console.log('changed', this.value)
+
+    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
   }
 
   onTapAddTab(e) {
-    if (!this.get('values.data.datasets'))
+    if (!this.value.data.datasets)
       return
 
-    var lastSeriesIndex = this.values.data.datasets.length;
+    var lastSeriesIndex = this.value.data.datasets.length
 
-    this.values.data.datasets.push({
+    this.value.data.datasets.push({
       label: 'new series',
       data: [],
       borderWidth: 0,
       dataKey: '',
-      yAxisID: 'left'
+      yAxisID: 'left',
+      fill: false
     })
 
-    this.notifySplices('values.data.datasets', [{
-      index: lastSeriesIndex,
-      removed: [],
-      addedCount: 1,
-      object: this.values.data.datasets,
-      type: 'splice'
-    }]);
+    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
 
-    this.set('currentSeriesIndex', -1)
-    this.set('currentSeriesIndex', lastSeriesIndex)
+    this.currentSeriesIndex = lastSeriesIndex
   }
 
   onTapRemoveCurrentTab(e) {
 
-    if (!this.get('values.data.datasets'))
+    if (!this.value.data.datasets)
       return
 
     var currIndex = this.currentSeriesIndex;
-    var removed = this.values.data.datasets.splice(currIndex, 1);
-
-    this.notifySplices('values.data.datasets', [{
-      index: currIndex,
-      removed: removed,
-      addedCount: 0,
-      object: this.values.data.datasets,
-      type: 'splice'
-    }]);
+    this.value.data.datasets.splice(currIndex, 1);
 
     currIndex--
 
     if (currIndex < 0)
       currIndex = 0
 
-    this.set('currentSeriesIndex', -1)
-    this.set('currentSeriesIndex', currIndex)
-  }
+    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
 
-  isOnly(datasets) {
-    if (datasets && datasets.length === 1)
-      return true
-  }
-
-  _computeSeriesTabIndex(index) {
-    return index + 1
+    this.currentSeriesIndex = currIndex
   }
 }

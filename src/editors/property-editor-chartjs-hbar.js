@@ -1,299 +1,228 @@
-import { html } from '@polymer/polymer/polymer-element';
+import { html } from '@polymer/lit-element'
 
-import '@polymer/iron-icon/iron-icon';
-import '@polymer/paper-button/paper-button';
-import '@polymer/paper-tabs/paper-tabs';
-import '@polymer/paper-icon-button/paper-icon-button';
+import '@polymer/iron-icon/iron-icon'
+import '@polymer/paper-button/paper-button'
+import '@polymer/paper-tabs/paper-tabs'
+import '@polymer/paper-icon-button/paper-icon-button'
 
-import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract';
+import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract'
 
 export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbstract {
 
   static get is() {
-    return 'property-editor-chartjs-hbar';
+    return 'property-editor-chartjs-hbar'
   }
 
-  static get editorTemplate() {
-    return html`
-    <legend>
-      <things-i18n-msg msgid="label.chart" auto>Chart</things-i18n-msg>
-    </legend>
-    
-    <label>
-      <things-i18n-msg msgid="label.theme" auto>theme</things-i18n-msg>
-    </label>
-    <select class="select-content" value="{{values.options.theme::change}}">
-      <option value="dark">dark</option>
-      <option value="light">light</option>
-    </select>
-    
-    <input type="checkbox" checked="{{values.options.legend.display::change}}" required></input>
-    <label>
-      <things-i18n-msg msgid="label.legend" auto>Legend</things-i18n-msg>
-    </label>
-    
-    <template is="dom-if" if="[[values.options.legend.display]]">
-      <label>
-        <things-i18n-msg msgid="label.position" auto>Position</things-i18n-msg>
-      </label>
-      <select class="select-content" value="{{values.options.legend.position::change}}">
-        <option value="top">top</option>
-        <option value="right">right</option>
-        <option value="bottom">bottom</option>
-        <option value="left">left</option>
-      </select>
-    </template>
-    
-    <input type="checkbox" checked="{{values.options.stacked::change}}" required></input>
-    <label>
-      <things-i18n-msg msgid="label.stacked" auto>Stacked</things-i18n-msg>
-    </label>
-    
-    
-    <legend>
-      <things-i18n-msg msgid="label.series" auto>Series</things-i18n-msg>
-    </legend>
-    
-    <div fullwidth>
-      <paper-tabs selected="{{currentSeriesIndex}}" fullwidth>
-        <template is="dom-repeat" items="{{values.data.datasets}}" index-as="index">
-          <paper-tab data-series="[[_computeSeriesTabIndex(index)]]">[[_computeSeriesTabIndex(index)]]</paper-tab>
-        </template>
-        <paper-tab>
-          <paper-icon-button icon="add-circle" on-tap="onTapAddTab"></paper-icon-button>
-        </paper-tab>
-      </paper-tabs>
-    
-      <div class="tab-content">
-        <label>
-          <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
-        </label>
-        <input type="text" value="{{series.dataKey::change}}"></input>
-        <label>
-          <things-i18n-msg msgid="label.label" auto>label</things-i18n-msg>
-        </label>
-        <input type="text" value="{{series.label::change}}"></input>
-        <label>
-          <things-i18n-msg msgid="label.background-color" auto>background color</things-i18n-msg>
-        </label>
-        <things-editor-color value="{{series.backgroundColor::change}}"></things-editor-color>
-        <label>
-          <things-i18n-msg msgid="label.value-prefix" auto>Value Prefix</things-i18n-msg>
-        </label>
-        <input type="text" value="{{series.valuePrefix::change}}"></input>
-        <label>
-          <things-i18n-msg msgid="label.value-suffix" auto>Value suffix</things-i18n-msg>
-        </label>
-        <input type="text" value="{{series.valueSuffix::change}}"></input>
-    
-        <input type="checkbox" checked="{{series.displayValue::change}}" required></input>
-        <label>
-          <things-i18n-msg msgid="label.value-display" auto>Value Display</things-i18n-msg>
-        </label>
-    
-        <template is="dom-if" if="[[series.displayValue]]">
-          <label>
-            <things-i18n-msg msgid="label.font-color" auto>Font Color</things-i18n-msg>
-          </label>
-          <things-editor-color value="{{series.defaultFontColor::change}}"></things-editor-color>
-    
-          <label>
-            <things-i18n-msg msgid="label.font-size" auto>Font Size</things-i18n-msg>
-          </label>
-          <input is="things-editor-number-input" number="{{series.defaultFontSize::change}}"></input>
-        </template>
-    
-        <template is="dom-if" if="[[!isOnly(values.data.datasets)]]">
-          <paper-button on-tap="onTapRemoveCurrentTab">
-            <iron-icon icon="icons:delete"></iron-icon>Remove Tab
-          </paper-button>
-        </template>
-      </div>
-    </div>
-    
-    
-    <legend>
-      <things-i18n-msg msgid="label.y-axes" auto>Y Axes</things-i18n-msg>
-    </legend>
-    
-    <label>
-      <things-i18n-msg msgid="label.data-key" auto>Data Key</things-i18n-msg>
-    </label>
-    <input type="text" value="{{values.data.labelDataKey::change}}"></input>
-    
-    <label>
-      <things-i18n-msg msgid="label.title" auto>Title</things-i18n-msg>
-    </label>
-    <input type="text" value="{{values.options.scales.yAxes.0.axisTitle::change}}"></input>
-    
-    <label>
-      <things-i18n-msg msgid="label.thickness" auto>Thickness</things-i18n-msg>
-    </label>
-    <input type="number" value-as-number="{{values.options.scales.yAxes.0.barThickness::change}}"></input>
-    
-    <input type="checkbox" checked="{{values.options.xGridLine::change}}" required></input>
-    <label>
-      <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
-    </label>
-    
-    <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.display::change}}" required></input>
-    <label>
-      <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
-    </label>
-    
-    
-    <legend>
-      <things-i18n-msg msgid="label.x-axes" auto>X Axes</things-i18n-msg>
-    </legend>
-    
-    <label>
-      <things-i18n-msg msgid="label.title" auto>Title</things-i18n-msg>
-    </label>
-    <input type="text" value="{{values.options.scales.xAxes.0.axisTitle::change}}"></input>
-    
-    <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.autoMin::change}}" required></input>
-    <label>
-      <things-i18n-msg msgid="label.axis-min-auto" auto>Min Auto</things-i18n-msg>
-    </label>
-    
-    <input type="checkbox" checked="{{values.options.scales.xAxes.0.ticks.autoMax::change}}" required></input>
-    <label>
-      <things-i18n-msg msgid="label.axis-max-auto" auto>Max Auto</things-i18n-msg>
-    </label>
-    
-    <template is="dom-if" if="[[!values.options.scales.xAxes.0.ticks.autoMin]]">
-      <label>
-        <things-i18n-msg msgid="label.axis-min" auto>Min</things-i18n-msg>
-      </label>
-      <input type="number" value="{{values.options.scales.xAxes.0.ticks.min::change}}"></input>
-    </template>
-    
-    <template is="dom-if" if="[[!values.options.scales.xAxes.0.ticks.autoMax]]">
-      <label>
-        <things-i18n-msg msgid="label.axis-max" auto>Max</things-i18n-msg>
-      </label>
-      <input type="number" value="{{values.options.scales.xAxes.0.ticks.max::change}}"></input>
-    </template>
-    
-    <label>
-      <things-i18n-msg msgid="label.axis-step-size" auto>StepSize</things-i18n-msg>
-    </label>
-    <input type="number" value="{{values.options.scales.yAxes.0.ticks.stepSize::change}}"></input>
-    
-    <input type="checkbox" checked="{{values.options.yGridLine::change}}" required></input>
-    <label>
-      <things-i18n-msg msgid="label.grid-line" auto>Grid Line</things-i18n-msg>
-    </label>
-    
-    <input type="checkbox" checked="{{values.options.scales.yAxes.0.ticks.display::change}}" required></input>
-    <label>
-      <things-i18n-msg msgid="label.display-tick" auto>Display Tick</things-i18n-msg>
-    </label>
-    `;
-  }
+  constructor() {
+    super()
 
-  // observers: [
-  //   'onValuesChanged(values.*)',
-  //   'onCurrentSeriesIndexChanged(currentSeriesIndex)'
-  // ]
-
-  onValuesChanged(values) {
-    if (values.path == 'values') {
-      if (this._changedBySelf) {
-        // values가 바뀌었으므로 path를 다시 link한다.
-        this.unlinkPaths('series')
-        this.set('series', this.values.data.datasets[this.currentSeriesIndex])
-        this.linkPaths('series', 'values.data.datasets.' + this.currentSeriesIndex)
-        return
+    this.value = {
+      options: {
+        legend: {},
+        scales: {
+          xAxes: [{
+            ticks: {}
+          }],
+          yAxes: [{
+            ticks: {}
+          }]
+        }
+      },
+      data: {
+        datasets: []
       }
-
-      // values가 바뀌면 datasets[0]을 선택한다.
-      this.set('currentSeriesIndex', -1);
-      this.set('currentSeriesIndex', 0);
-
-      return;
     }
-
-    // values 하위의 무언가가 변경되면 values를 deep clone하여 다시 set.
-    this._changedBySelf = true
-    this.set('values', Object.assign({}, values.base))
-    this._changedBySelf = false
   }
 
-  onCurrentSeriesIndexChanged(currentSeriesIndex) {
-    if (currentSeriesIndex < 0)
-      return
-
-    // currentSeriesIndex가 바뀌면 series와 datasets[currentSeriesIndex]의 path를 link
-    this.unlinkPaths('series')
-    this.set('series', {})
-
-    if (!this.get('values.data.datasets'))
-      return
-
-    this.set('series', this.values.data.datasets[currentSeriesIndex])
-    this.linkPaths('series', 'values.data.datasets.' + currentSeriesIndex)
+  get xAxes0() {
+    return this.scales.xAxes[0]
   }
 
-  onTapAddTab(e) {
-    if (!this.get('values.data.datasets'))
-      return
-
-    var lastSeriesIndex = this.values.data.datasets.length;
-
-    this.values.data.datasets.push({
-      label: 'new series',
-      data: [],
-      borderWidth: 0,
-      dataKey: '',
-      yAxisID: 'left'
-    })
-
-    this.notifySplices('values.data.datasets', [{
-      index: lastSeriesIndex,
-      removed: [],
-      addedCount: 1,
-      object: this.values.data.datasets,
-      type: 'splice'
-    }]);
-
-    this.set('currentSeriesIndex', -1)
-    this.set('currentSeriesIndex', lastSeriesIndex)
+  set xAxes0(xAxes0) {
+    this.scales.xAxes[0] = xAxes0
   }
 
-  onTapRemoveCurrentTab(e) {
-
-    if (!this.get('values.data.datasets'))
-      return
-
-    var currIndex = this.currentSeriesIndex;
-    var removed = this.values.data.datasets.splice(currIndex, 1);
-
-    this.notifySplices('values.data.datasets', [{
-      index: currIndex,
-      removed: removed,
-      addedCount: 0,
-      object: this.values.data.datasets,
-      type: 'splice'
-    }]);
-
-    currIndex--
-
-    if (currIndex < 0)
-      currIndex = 0
-
-    this.set('currentSeriesIndex', -1)
-    this.set('currentSeriesIndex', currIndex)
+  get yAxes0() {
+    return this.scales.yAxes[0]
   }
 
-  isOnly(datasets) {
-    if (datasets && datasets.length === 1)
-      return true
+  set yAxes0(yAxes0) {
+    this.scales.yAxes[0] = yAxes0
   }
 
-  _computeSeriesTabIndex(index) {
-    return index + 1
+  get dataKey() {
+    return this.series.dataKey
+  }
+
+  set dataKey(dataKey) {
+    this.series.dataKey = dataKey
+  }
+
+  get label() {
+    return this.series.label
+  }
+
+  set label(label) {
+    this.series.label = label
+  }
+
+  get backgroundColor() {
+    return this.series.backgroundColor
+  }
+
+  set backgroundColor(backgroundColor) {
+    this.series.backgroundColor = backgroundColor
+  }
+
+  editorTemplate(props) {
+    return html`
+      
+      <input type="checkbox" value-key="stacked" checked=${this.stacked}>
+      <label>
+        <things-i18n-msg msgid="label.stacked">Stacked</things-i18n-msg>
+      </label>
+      
+      <legend>
+        <things-i18n-msg msgid="label.series">Series</things-i18n-msg>
+      </legend>
+      
+      <div fullwidth>
+        <paper-tabs
+          on-iron-select="${e => this.currentSeriesIndex = e.target.selected}"  
+          selected=${props.currentSeriesIndex} fullwidth>
+          ${ this.data.datasets.map((dataset, index) => html`
+            <paper-tab data-series="${index + 1}">${index + 1}</paper-tab>
+          `)}
+          <paper-tab>
+            <paper-icon-button icon="add-circle" on-tap="${e => this.onTapAddTab(e)}"></paper-icon-button>
+          </paper-tab>
+        </paper-tabs>
+      
+        <div class="tab-content">
+          <label>
+            <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg>
+          </label>
+          <input type="text" value-key="series.dataKey" value=${this.series.dataKey}>
+          <label>
+            <things-i18n-msg msgid="label.label">label</things-i18n-msg>
+          </label>
+          <input type="text" value-key="series.label" value=${this.series.label}>
+          <label>
+            <things-i18n-msg msgid="label.background-color">background color</things-i18n-msg>
+          </label>
+          <things-editor-color value-key="series.backgroundColor" value=${this.series.backgroundColor}></things-editor-color>
+          <label>
+            <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg>
+          </label>
+          <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix}>
+          <label>
+            <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg>
+          </label>
+          <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix}>
+      
+          <input type="checkbox" value-key="series.displayValue" checked=${this.series.displayValue}>
+          <label>
+            <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg>
+          </label>
+      
+          ${ this.series.displayValue ? html`
+            <label>
+              <things-i18n-msg msgid="label.font-color">Font Color</things-i18n-msg>
+            </label>
+            <things-editor-color value-key="series.defaultFontColor" value=${this.series.defaultFontColor}></things-editor-color>
+      
+            <label>
+              <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg>
+            </label>
+            <input type="number" value-key="series.defaultFontSize" value=${this.series.defaultFontSize}>
+          `: html``}
+      
+          ${ !this.data.datasets || this.data.datasets.length != 1 ? html`
+            <paper-button on-tap="${e => this.onTapRemoveCurrentTab(e)}">
+              <iron-icon icon="icons:delete"></iron-icon>Remove Tab
+            </paper-button>
+          `: html``}
+        </div>
+      </div>
+      
+      <legend>
+        <things-i18n-msg msgid="label.y-axes">Y Axes</things-i18n-msg>
+      </legend>
+      
+      <label>
+        <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg>
+      </label>
+      <input type="text" value-key="labelDataKey" value=${this.labelDataKey}>
+      
+      <label>
+        <things-i18n-msg msgid="label.title">Title</things-i18n-msg>
+      </label>
+      <input type="text" value-key="yAxes0.axisTitle" value=${this.yAxes0.axisTitle}>
+      
+      <label>
+        <things-i18n-msg msgid="label.thickness">Thickness</things-i18n-msg>
+      </label>
+      <input type="number" value-key="yAxes0.barThickness" value=${this.yAxes0.barThickness}>
+      
+      <input type="checkbox" value-key="value.options.xGridLine" checked=${props.value.options.xGridLine}>
+      <label>
+        <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg>
+      </label>
+      
+      <input type="checkbox" value-key="xAxes0.ticks.display" checked=${this.xAxes0.ticks.display}>
+      <label>
+        <things-i18n-msg msgid="label.display-tick">Display Tick</things-i18n-msg>
+      </label>
+      
+      <legend>
+        <things-i18n-msg msgid="label.x-axes">X Axes</things-i18n-msg>
+      </legend>
+      
+      <label>
+        <things-i18n-msg msgid="label.title">Title</things-i18n-msg>
+      </label>
+      <input type="text" value-key="x0AxisTitle" value=${this.xAxes0.axisTitle}>
+      
+      <input type="checkbox" value-key="xAxes0.ticks.autoMin" checked=${this.xAxes0.ticks.autoMin}>
+      <label>
+        <things-i18n-msg msgid="label.axis-min-auto">Min Auto</things-i18n-msg>
+      </label>
+      
+      <input type="checkbox" value-key="xAxes0.ticks.autoMax" checked=${this.xAxes0.ticks.autoMax}>
+      <label>
+        <things-i18n-msg msgid="label.axis-max-auto">Max Auto</things-i18n-msg>
+      </label>
+      
+      ${ !this.xAxes0.ticks.autoMin ? html`
+        <label>
+          <things-i18n-msg msgid="label.axis-min">Min</things-i18n-msg>
+        </label>
+        <input type="number" value-key="xAxes0.ticks.min" value=${this.xAxes0.ticks.min}>
+      `: html``}
+      
+      ${ !this.xAxes0.ticks.autoMax ? html`
+        <label>
+          <things-i18n-msg msgid="label.axis-max">Max</things-i18n-msg>
+        </label>
+        <input type="number" value-key="xAxes0.ticks.max" value=${this.xAxes0.ticks.max}>
+      `: html``}
+      
+      <label>
+        <things-i18n-msg msgid="label.axis-step-size">StepSize</things-i18n-msg>
+      </label>
+      <input type="number" value-key="yAxes0.ticks.stepSize" value=${this.yAxes0.ticks.stepSize}>
+      
+      <input type="checkbox" checked=${props.value.options.yGridLine}>
+      <label>
+        <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg>
+      </label>
+      
+      <input type="checkbox" value-key="yAxes0.ticks.display" checked=${this.yAxes0.ticks.display}>
+      <label>
+        <things-i18n-msg msgid="label.display-tick">Display Tick</things-i18n-msg>
+      </label>
+    `
   }
 }
 
-customElements.define(PropertyEditorChartJSHBar.is, PropertyEditorChartJSHBar);
+customElements.define(PropertyEditorChartJSHBar.is, PropertyEditorChartJSHBar)
