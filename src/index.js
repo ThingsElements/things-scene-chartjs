@@ -1,155 +1,160 @@
-/*
- * Copyright © HatioLab Inc. All rights reserved.
- */
+// import ChartJS from './chartjs-element'
+//
+// /*
+//  * Copyright © HatioLab Inc. All rights reserved.
+//  */
+
+// // function updateSeriesDatas(chartInstance) {
+// //   let seriesData = chartInstance.data.rawData.seriesData;
+// //   let chartId = chartInstance.id;
+// //
+// //   if(!seriesData || seriesData.length === 0)
+// //     seriesData = [null];
+// //
+// //   let seriesOptions = chartInstance.seriesOptions || [];
+// //
+// //   chartInstance.data.datasets = [];
+// //
+// //   for(let key in seriesData) {
+// //     var opt = seriesOptions
+// //     if(seriesOptions.length > 0)
+// //       opt = seriesOptions[key % seriesOptions.length]
+// //
+// //     var dataset = Object.assign({}, opt);
+// //     opt.data = seriesData[key] || [];
+// //
+// //     chartInstance.data.datasets.push(opt);
+// //   }
+// // }
+// import Chart from 'chart.js'
 
 // function updateSeriesDatas(chartInstance) {
-//   let seriesData = chartInstance.data.rawData.seriesData;
-//   let chartId = chartInstance.id;
-//
-//   if(!seriesData || seriesData.length === 0)
-//     seriesData = [null];
-//
-//   let seriesOptions = chartInstance.seriesOptions || [];
-//
-//   chartInstance.data.datasets = [];
-//
-//   for(let key in seriesData) {
-//     var opt = seriesOptions
-//     if(seriesOptions.length > 0)
-//       opt = seriesOptions[key % seriesOptions.length]
-//
-//     var dataset = Object.assign({}, opt);
-//     opt.data = seriesData[key] || [];
-//
-//     chartInstance.data.datasets.push(opt);
+//   if (!chartInstance.data.rawData) {
+//     return
+//   }
+
+//   let seriesData = chartInstance.data.rawData.seriesData
+//   let chartId = chartInstance.id
+
+//   if (!seriesData || seriesData.length === 0) seriesData = [null]
+
+//   for (let key in chartInstance.data.datasets) {
+//     chartInstance.data.datasets[key].data = seriesData[key] || []
 //   }
 // }
-import Chart from 'chart.js'
 
-function updateSeriesDatas(chartInstance) {
-  if (!chartInstance.data.rawData) {
-    return
-  }
+// function updateLabelDatas(chartInstance) {
+//   let labelData = chartInstance.data.rawData.labelData
+//   chartInstance.config.data.labels = labelData || []
+// }
 
-  let seriesData = chartInstance.data.rawData.seriesData
-  let chartId = chartInstance.id
+// function seriesHighlight(chartInstance, seriesData) {
+//   chartInstance.data.datasets.forEach(dataset => {
+//     let highlight = dataset.highlight
+//     if (!highlight) return
 
-  if (!seriesData || seriesData.length === 0) seriesData = [null]
+//     let highlightColor = highlight.color
+//     let highlightCondition = highlight.condition
 
-  for (let key in chartInstance.data.datasets) {
-    chartInstance.data.datasets[key].data = seriesData[key] || []
-  }
-}
+//     seriesData.forEach((sdata, sIndex) => {
+//       sdata.forEach((data, i) => {
+//         if (!eval(highlightCondition)) return
 
-function updateLabelDatas(chartInstance) {
-  let labelData = chartInstance.data.rawData.labelData
-  chartInstance.config.data.labels = labelData || []
-}
+//         let meta = chartInstance.getDatasetMeta(sIndex)
+//         meta.data[i]._model.backgroundColor = highlightColor
+//         meta.data[i]._model.hoverBackgroundColor = highlightColor
 
-function seriesHighlight(chartInstance, seriesData) {
-  chartInstance.data.datasets.forEach(dataset => {
-    let highlight = dataset.highlight
-    if (!highlight) return
+//         // dataset.backgroundColor = highlightColor
+//       })
+//     })
+//   })
+// }
 
-    let highlightColor = highlight.color
-    let highlightCondition = highlight.condition
+// function _drawValues(chartInstance) {
+//   // To only draw at the end of animation, check for easing === 1
+//   var ctx = chartInstance.chart.ctx
 
-    seriesData.forEach((sdata, sIndex) => {
-      sdata.forEach((data, i) => {
-        if (!eval(highlightCondition)) return
+//   chartInstance.data.datasets.forEach(function(dataset, i) {
+//     // 값 표시가 체크되어 있지 않으면 스킵
+//     if (!dataset.displayValue) return
 
-        let meta = chartInstance.getDatasetMeta(sIndex)
-        meta.data[i]._model.backgroundColor = highlightColor
-        meta.data[i]._model.hoverBackgroundColor = highlightColor
+//     var meta = chartInstance.getDatasetMeta(i)
+//     if (!meta.hidden) {
+//       meta.data.forEach(function(element, index) {
+//         // 데이터셋이 히든이거나 해당값이 빈값이면 스킵
+//         if (
+//           element.hidden ||
+//           dataset.data[index] == '' ||
+//           dataset.data[index] == undefined ||
+//           isNaN(dataset.data[index])
+//         )
+//           return
 
-        // dataset.backgroundColor = highlightColor
-      })
-    })
-  })
-}
+//         // Draw the text in black, with the specified font
+//         ctx.fillStyle = dataset.defaultFontColor || '#000000'
+//         var fontSize = dataset.defaultFontSize || 11
+//         var fontStyle = 'normal'
+//         var fontFamily = chartInstance.options.defaultFontFamily
+//         ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily)
+//         // Just naively convert to string for now
+//         var data = dataset.data[index]
+//         if (data && !isNaN(Number(data))) data = Number(data)
 
-function _drawValues(chartInstance) {
-  // To only draw at the end of animation, check for easing === 1
-  var ctx = chartInstance.chart.ctx
+//         var dataString = data ? data.toLocaleString() : data
+//         var prefix = dataset.valuePrefix || ''
+//         var suffix = dataset.valueSuffix || ''
 
-  chartInstance.data.datasets.forEach(function(dataset, i) {
-    // 값 표시가 체크되어 있지 않으면 스킵
-    if (!dataset.displayValue) return
+//         dataString = prefix + dataString + suffix
 
-    var meta = chartInstance.getDatasetMeta(i)
-    if (!meta.hidden) {
-      meta.data.forEach(function(element, index) {
-        // 데이터셋이 히든이거나 해당값이 빈값이면 스킵
-        if (
-          element.hidden ||
-          dataset.data[index] == '' ||
-          dataset.data[index] == undefined ||
-          isNaN(dataset.data[index])
-        )
-          return
+//         // Make sure alignment settings are correct
+//         ctx.textAlign = 'center'
+//         ctx.textBaseline = 'middle'
+//         var position = element.getCenterPoint()
 
-        // Draw the text in black, with the specified font
-        ctx.fillStyle = dataset.defaultFontColor || '#000000'
-        var fontSize = dataset.defaultFontSize || 11
-        var fontStyle = 'normal'
-        var fontFamily = chartInstance.options.defaultFontFamily
-        ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily)
-        // Just naively convert to string for now
-        var data = dataset.data[index]
-        if (data && !isNaN(Number(data))) data = Number(data)
+//         // 라인일 경우는 레이블 위치를 라인의 포인트 위로 올린다.
+//         if (dataset.type == 'line') position.y = position.y - (dataset.pointRadius + 8 || 10)
 
-        var dataString = data ? data.toLocaleString() : data
-        var prefix = dataset.valuePrefix || ''
-        var suffix = dataset.valueSuffix || ''
+//         ctx.fillText(dataString, position.x, position.y)
+//       })
+//     }
+//   })
+// }
 
-        dataString = prefix + dataString + suffix
+// Chart.plugins.register({
+//   beforeInit: function(chartInstance) {
+//     // chartInstance.chartSeries = [];
+//     //
+//     // for(let dataset of chartInstance.data.datasets) {
+//     //   chartInstance.chartSeries.push(dataset);
+//     // }
+//   },
+//   beforeUpdate: function(chartInstance) {
+//     if (!chartInstance.data.rawData) {
+//       return
+//     }
 
-        // Make sure alignment settings are correct
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
-        var position = element.getCenterPoint()
+//     let seriesData = chartInstance.data.rawData.seriesData
+//     updateLabelDatas(chartInstance)
+//     updateSeriesDatas(chartInstance)
+//   },
+//   beforeRender: function(chartInstance) {},
 
-        // 라인일 경우는 레이블 위치를 라인의 포인트 위로 올린다.
-        if (dataset.type == 'line') position.y = position.y - (dataset.pointRadius + 8 || 10)
+//   beforeDraw: function(chartInstance) {
+//     if (!chartInstance.data.rawData) {
+//       return
+//     }
 
-        ctx.fillText(dataString, position.x, position.y)
-      })
-    }
-  })
-}
+//     let seriesData = chartInstance.data.rawData.seriesData
+//     seriesHighlight(chartInstance, seriesData)
+//   },
 
-Chart.plugins.register({
-  beforeInit: function(chartInstance) {
-    // chartInstance.chartSeries = [];
-    //
-    // for(let dataset of chartInstance.data.datasets) {
-    //   chartInstance.chartSeries.push(dataset);
-    // }
-  },
-  beforeUpdate: function(chartInstance) {
-    if (!chartInstance.data.rawData) {
-      return
-    }
+//   afterDatasetsDraw: function(chartInstance, easing) {
+//     _drawValues(chartInstance)
+//   }
+// })
 
-    let seriesData = chartInstance.data.rawData.seriesData
-    updateLabelDatas(chartInstance)
-    updateSeriesDatas(chartInstance)
-  },
-  beforeRender: function(chartInstance) {},
+// export { default as SceneChart } from './chart-overload'
+// export { default as ChartJSWrapper } from './chartjs-wrapper'
 
-  beforeDraw: function(chartInstance) {
-    if (!chartInstance.data.rawData) {
-      return
-    }
-
-    let seriesData = chartInstance.data.rawData.seriesData
-    seriesHighlight(chartInstance, seriesData)
-  },
-
-  afterDatasetsDraw: function(chartInstance, easing) {
-    _drawValues(chartInstance)
-  }
-})
-
-export { default as SceneChart } from './chart-overload'
-export { default as ChartJSWrapper } from './chartjs-wrapper'
+import ChartJS from './chartjs'
+export default './chartjs'

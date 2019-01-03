@@ -12,7 +12,7 @@ export default {
     left: 300,
     width: 200,
     height: 200,
-    lineWidth: 5,
+    lineWidth: 0,
     alpha: 1,
     chart: {
       type: 'bar',

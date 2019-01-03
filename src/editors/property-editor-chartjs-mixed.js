@@ -81,7 +81,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
 
       <div fullwidth>
         <paper-tabs
-          on-iron-select="${e => (this.currentSeriesIndex = e.target.selected)}"
+          @iron-select="${e => (this.currentSeriesIndex = e.target.selected)}"
           selected=${props.currentSeriesIndex}
           fullwidth
         >
@@ -94,7 +94,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
           }
 
           <paper-tab>
-            <paper-icon-button icon="add-circle" on-tap="${e => this.onTapAddTab(e)}"></paper-icon-button>
+            <paper-icon-button icon="add-circle" @tap="${e => this.onTapAddTab(e)}"></paper-icon-button>
           </paper-tab>
         </paper-tabs>
 
