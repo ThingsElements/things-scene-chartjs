@@ -1,4 +1,4 @@
-import icon from '../assets/radar-chart.png';
+import icon from '../assets/radar-chart.png'
 
 export default {
   type: 'radar chart',
@@ -20,23 +20,23 @@ export default {
         labels: [],
         datasets: [
           {
-            label: "My First dataset",
+            label: 'My First dataset',
             type: 'radar',
-            backgroundColor: "rgb(66, 110, 164)",
-            borderColor: "rgb(66, 110, 164)",
-            pointBackgroundColor: "rgba(255,255,255,1)",
-            pointBorderColor: "rgb(66, 110, 164)",
+            backgroundColor: 'rgb(66, 110, 164)',
+            borderColor: 'rgb(66, 110, 164)',
+            pointBackgroundColor: 'rgba(255,255,255,1)',
+            pointBorderColor: 'rgb(66, 110, 164)',
             data: [],
             fill: false,
             dataKey: 'rate1'
           },
           {
-            label: "My Second dataset",
+            label: 'My Second dataset',
             type: 'radar',
-            backgroundColor: "rgb(62, 196, 221)",
-            borderColor: "rgb(62, 196, 221)",
-            pointBackgroundColor: "rgba(255,255,255,1)",
-            pointBorderColor: "rgb(62, 196, 221)",
+            backgroundColor: 'rgb(62, 196, 221)',
+            borderColor: 'rgb(62, 196, 221)',
+            pointBackgroundColor: 'rgba(255,255,255,1)',
+            pointBorderColor: 'rgb(62, 196, 221)',
             data: [],
             fill: false,
             dataKey: 'rate2'
@@ -51,39 +51,46 @@ export default {
           position: 'top'
         },
         scale: {
-          ticks: {
-          }
+          ticks: {}
         }
       }
     },
-    data: [{
-      hobby: "Eating",
-      rate1: 65,
-      rate2: 28
-    }, {
-      hobby: "Drinking",
-      rate1: 59,
-      rate2: 48
-    }, {
-      hobby: "Sleeping",
-      rate1: 90,
-      rate2: 40
-    }, {
-      hobby: "Designing",
-      rate1: 81,
-      rate2: 19
-    }, {
-      hobby: "Coding",
-      rate1: 56,
-      rate2: 96
-    }, {
-      hobby: "Cycling",
-      rate1: 55,
-      rate2: 27
-    }, {
-      hobby: "Running",
-      rate1: 40,
-      rate2: 100
-    }]
+    data: [
+      {
+        hobby: 'Eating',
+        rate1: 65,
+        rate2: 28
+      },
+      {
+        hobby: 'Drinking',
+        rate1: 59,
+        rate2: 48
+      },
+      {
+        hobby: 'Sleeping',
+        rate1: 90,
+        rate2: 40
+      },
+      {
+        hobby: 'Designing',
+        rate1: 81,
+        rate2: 19
+      },
+      {
+        hobby: 'Coding',
+        rate1: 56,
+        rate2: 96
+      },
+      {
+        hobby: 'Cycling',
+        rate1: 55,
+        rate2: 27
+      },
+      {
+        hobby: 'Running',
+        rate1: 40,
+        rate2: 100
+      }
+    ]
   }
 }

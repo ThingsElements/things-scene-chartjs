@@ -109,7 +109,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
   convertObject(dataArray) {
     if (!dataArray) return null
 
-    if (typeof (dataArray) == 'string') {
+    if (typeof dataArray == 'string') {
       try {
         dataArray = JSON.parse(dataArray)
       } catch (e) {
@@ -309,15 +309,11 @@ export default class ChartJSWrapper extends RectPath(Component) {
             id: 'right',
             display: options.multiAxis || false,
             gridLines: {
-              display:
-                (yAxes[0] &&
-                  yAxes[0].gridLines &&
-                  yAxes[0].gridLines.display) ||
-                false
+              display: (yAxes[0] && yAxes[0].gridLines && yAxes[0].gridLines.display) || false
             },
             ticks: {
               beginAtZero: false,
-              callback: function (value, index, values) {
+              callback: function(value, index, values) {
                 var returnValue = value
                 if (typeof returnValue == 'number') {
                   returnValue = returnValue.toLocaleString()
@@ -449,7 +445,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
   }
 
   _appendTickCallback(ticks) {
-    ticks.callback = function (value, index, values) {
+    ticks.callback = function(value, index, values) {
       var returnValue = Number(value)
       if (!Number.isNaN(returnValue)) {
         returnValue = returnValue.toLocaleString()
@@ -463,10 +459,9 @@ export default class ChartJSWrapper extends RectPath(Component) {
 
   _setTooltipCallback(tooltips) {
     tooltips.callbacks = {
-      label: function (tooltipItem, data) {
+      label: function(tooltipItem, data) {
         var label = data.labels[tooltipItem.index]
-        var value =
-          data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+        var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
         var toNumValue = Number(value)
 
         if (!isNaN(toNumValue)) {
@@ -490,10 +485,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     var key = keys && keys[0]
     var keySplit = key.split('.')
 
-    if (('chart' in after) ||
-      key[0] == 'chart' ||
-      'fontSize' in after ||
-      'fontFamily' in after) {
+    if ('chart' in after || key[0] == 'chart' || 'fontSize' in after || 'fontFamily' in after) {
       isChartChanged = true
     }
 
@@ -525,7 +517,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     }
   }
 
-  ondragstart(e) { }
+  ondragstart(e) {}
 
   onmousemove(e) {
     e.chartJSWrapper = this

@@ -1,7 +1,6 @@
 import { LitElement, html } from '@polymer/lit-element'
 
 export default class PropertyEditorChartJSAbstract extends LitElement {
-
   static get properties() {
     return {
       value: Object,
@@ -14,167 +13,162 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
 
     this.value = {}
     this.currentSeriesIndex = 0
+
+    this.addEventListener('change', this.onValuesChanged.bind(this))
   }
 
-  connectedCallback() {
-    super.connectedCallback()
+  // connectedCallback() {
+  //   super.connectedCallback()
 
-    this.shadowRoot.addEventListener('change', this.onValuesChanged.bind(this))
-  }
+  // }
 
-  _render(props) {
+  render() {
     return html`
-    <style>
-      :host {
-        display: grid;
-        grid-template-columns: repeat(10, 1fr);
-        grid-gap: 5px;
-      }
-    
-      :host>* {
-        box-sizing: border-box;
-    
-        grid-column: span 7;
-      }
-    
-      legend {
-        @apply(--things-fieldset-legend);
-    
-        grid-column: 1 / -1;
-    
-        display: inline-block;
-    
-        text-align: left;
-        text-transform: capitalize;
-      }
-    
-      .tab-content {
-        background-color: rgba(255, 255, 255, .5);
-        border: 1px solid rgba(0, 0, 0, .2);
-        border-width: 0 1px 1px 1px;
-    
-        padding: 5px;
-    
-        display: grid;
-        grid-template-columns: repeat(10, 1fr);
-        grid-gap: 5px;
-      }
-    
-      .tab-content>* {
-        box-sizing: border-box;
-    
-        grid-column: span 7;
-      }
-    
-      label,
-      .tab-content>label {
-        grid-column: span 3;
-    
-        text-align: right;
-    
-        color: var(--primary-text-color);
-        font-size: 0.8em;
-        line-height: 2.0;
-        text-transform: capitalize;
-      }
-    
-      input[type=checkbox],
-      .tab-content>input[type=checkbox] {
-        grid-column: span 4;
-    
-        justify-self: end;
-        align-self: center;
-      }
-    
-      input[type=checkbox]+label,
-      .tab-content>input[type=checkbox]+label {
-        grid-column: span 6;
-    
-        text-align: left;
-      }
-    
-      [fullwidth] {
-        grid-column: 1 / -1;
-        margin: 0;
-        border: 0;
-      }
-    
-      select {
-        @apply(--things-select);
-        background: url(/images/bg-input-select.png) 100% 50% no-repeat #fff;
-      }
-    
-      things-editor-script {
-        width: 94%;
-        height: 300px;
-        margin: 0 0 7px 7px;
-        overflow: auto;
-      }
-    
-      paper-tabs {
-        border: 0 solid rgba(0, 0, 0, .2);
-        border-width: 1px 1px 0 1px;
-      }
-    
-      paper-tab {
-        background-color: rgba(0, 0, 0, .2);
-        border: 1px solid rgba(0, 0, 0, .07);
-        border-width: 1px 1px 0 1px;
-        padding: 0 5px;
-        color: #fff;
-        font-size: 13px;
-      }
-    
-      paper-tab[disabled] {
-        background-color: rgba(0, 0, 0, .1);
-      }
-    
-      paper-tab:last-child {
-        border-width: 0;
-      }
-    
-      paper-tab.iron-selected {
-        background-color: rgba(255, 255, 255, .5);
-        border: 1px solid rgba(0, 0, 0, .2);
-        color: #585858;
-      }
-    </style>
-    
-    <legend>
-      <things-i18n-msg msgid="label.chart">Chart</things-i18n-msg>
-    </legend>
-    
-    <label>
-      <things-i18n-msg msgid="label.theme">theme</things-i18n-msg>
-    </label>
-    <select value-key="theme" class="select-content" value=${this.theme}>
-      <option value="dark">dark</option>
-      <option value="light">light</option>
-    </select>
-    
-    <input type="checkbox" value-key="display" checked=${this.display}>
-    <label>
-      <things-i18n-msg msgid="label.legend">Legend</things-i18n-msg>
-    </label>
-    
-    ${ this.display ? html`
-      <label>
-        <things-i18n-msg msgid="label.position">Position</things-i18n-msg>
-      </label>
-      <select value-key="position" class="select-content" value=${this.position}>
-        <option value="top">top</option>
-        <option value="right">right</option>
-        <option value="bottom">bottom</option>
-        <option value="left">left</option>
-      </select>
-    `: html``}
-    
-    <label>
-      <things-i18n-msg msgid="label.text-size">Text Size</things-i18n-msg>
-    </label>
-    <input type="number" value-key="value.options.defaultFontSize" value=${props.value.options.defaultFontSize}>
+      <style>
+        :host {
+          display: grid;
+          grid-template-columns: repeat(10, 1fr);
+          grid-gap: 5px;
+        }
 
-    ${this.editorTemplate(props)}
+        :host > * {
+          box-sizing: border-box;
+
+          grid-column: span 7;
+        }
+
+        legend {
+          @apply (--things-fieldset-legend);
+
+          grid-column: 1 / -1;
+
+          display: inline-block;
+
+          text-align: left;
+          text-transform: capitalize;
+        }
+
+        .tab-content {
+          background-color: rgba(255, 255, 255, 0.5);
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          border-width: 0 1px 1px 1px;
+
+          padding: 5px;
+
+          display: grid;
+          grid-template-columns: repeat(10, 1fr);
+          grid-gap: 5px;
+        }
+
+        .tab-content > * {
+          box-sizing: border-box;
+
+          grid-column: span 7;
+        }
+
+        label,
+        .tab-content > label {
+          grid-column: span 3;
+
+          text-align: right;
+
+          color: var(--primary-text-color);
+          font-size: 0.8em;
+          line-height: 2;
+          text-transform: capitalize;
+        }
+
+        input[type='checkbox'],
+        .tab-content > input[type='checkbox'] {
+          grid-column: span 4;
+
+          justify-self: end;
+          align-self: center;
+        }
+
+        input[type='checkbox'] + label,
+        .tab-content > input[type='checkbox'] + label {
+          grid-column: span 6;
+
+          text-align: left;
+        }
+
+        [fullwidth] {
+          grid-column: 1 / -1;
+          margin: 0;
+          border: 0;
+        }
+
+        select {
+          @apply (--things-select);
+          background: url(/images/bg-input-select.png) 100% 50% no-repeat #fff;
+        }
+
+        things-editor-script {
+          width: 94%;
+          height: 300px;
+          margin: 0 0 7px 7px;
+          overflow: auto;
+        }
+
+        paper-tabs {
+          border: 0 solid rgba(0, 0, 0, 0.2);
+          border-width: 1px 1px 0 1px;
+        }
+
+        paper-tab {
+          background-color: rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(0, 0, 0, 0.07);
+          border-width: 1px 1px 0 1px;
+          padding: 0 5px;
+          color: #fff;
+          font-size: 13px;
+        }
+
+        paper-tab[disabled] {
+          background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        paper-tab:last-child {
+          border-width: 0;
+        }
+
+        paper-tab.iron-selected {
+          background-color: rgba(255, 255, 255, 0.5);
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          color: #585858;
+        }
+      </style>
+
+      <legend><things-i18n-msg msgid="label.chart">Chart</things-i18n-msg></legend>
+
+      <label> <things-i18n-msg msgid="label.theme">theme</things-i18n-msg> </label>
+      <select value-key="theme" class="select-content" value=${this.theme}>
+        <option value="dark">dark</option>
+        <option value="light">light</option>
+      </select>
+
+      <input type="checkbox" value-key="display" checked=${this.display} />
+      <label> <things-i18n-msg msgid="label.legend">Legend</things-i18n-msg> </label>
+
+      ${
+        this.display
+          ? html`
+              <label> <things-i18n-msg msgid="label.position">Position</things-i18n-msg> </label>
+              <select value-key="position" class="select-content" value=${this.position}>
+                <option value="top">top</option>
+                <option value="right">right</option>
+                <option value="bottom">bottom</option>
+                <option value="left">left</option>
+              </select>
+            `
+          : html``
+      }
+
+      <label> <things-i18n-msg msgid="label.text-size">Text Size</things-i18n-msg> </label>
+      <input type="number" value-key="value.options.defaultFontSize" value=${this.value.options.defaultFontSize} />
+
+      ${this.editorTemplate(this)}
     `
   }
 
@@ -191,11 +185,12 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
   }
 
   get series() {
-    return this.value.data && this.value.data.datasets[this.currentSeriesIndex] || {}
+    return (this.value.data && this.value.data.datasets[this.currentSeriesIndex]) || {}
   }
 
   set series(series) {
-    !this.value.data ? (this.value.data = { dataset: [series] })
+    !this.value.data
+      ? (this.value.data = { dataset: [series] })
       : (this.value.data.datasets[this.currentSeriesIndex] = series)
   }
 
@@ -276,7 +271,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
         switch (element.type) {
           case 'checkbox':
             value = element.checked
-            break;
+            break
           case 'number':
             value = Number(element.value) || 0
             break
@@ -315,8 +310,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
   }
 
   onTapAddTab(e) {
-    if (!this.value.data.datasets)
-      return
+    if (!this.value.data.datasets) return
 
     var lastSeriesIndex = this.value.data.datasets.length
 
@@ -335,17 +329,14 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
   }
 
   onTapRemoveCurrentTab(e) {
+    if (!this.value.data.datasets) return
 
-    if (!this.value.data.datasets)
-      return
-
-    var currIndex = this.currentSeriesIndex;
-    this.value.data.datasets.splice(currIndex, 1);
+    var currIndex = this.currentSeriesIndex
+    this.value.data.datasets.splice(currIndex, 1)
 
     currIndex--
 
-    if (currIndex < 0)
-      currIndex = 0
+    if (currIndex < 0) currIndex = 0
 
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
 

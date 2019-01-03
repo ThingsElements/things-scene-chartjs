@@ -1,4 +1,4 @@
-import icon from '../assets/pie-chart.png';
+import icon from '../assets/pie-chart.png'
 
 export default {
   type: 'pie chart',
@@ -18,16 +18,14 @@ export default {
       type: 'pie',
       data: {
         labels: [],
-        datasets: [{
-          data: [],
-          backgroundColor: [
-            "#FF6384",
-            "#36A2EB",
-            "#FFCE56"
-          ],
-          borderWidth: 0,
-          dataKey: 'value'
-        }],
+        datasets: [
+          {
+            data: [],
+            backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+            borderWidth: 0,
+            dataKey: 'value'
+          }
+        ],
         labelDataKey: 'label'
       },
       options: {
@@ -41,15 +39,19 @@ export default {
         }
       }
     },
-    data: [{
-      label: "A",
-      value: 80
-    }, {
-      label: "B",
-      value: 15
-    }, {
-      label: "C",
-      value: 15
-    }]
+    data: [
+      {
+        label: 'A',
+        value: 80
+      },
+      {
+        label: 'B',
+        value: 15
+      },
+      {
+        label: 'C',
+        value: 15
+      }
+    ]
   }
 }

@@ -7,4 +7,13 @@ import pieChart from './pie-chart'
 import polarAreaChart from './polar-area-chart'
 import radarChart from './radar-chart'
 
-export default [barChart, horizontalBarChart, lineChart, mixedChart, pieChart, doughnutChart, polarAreaChart, radarChart]
+export default [
+  barChart,
+  horizontalBarChart,
+  lineChart,
+  mixedChart,
+  pieChart,
+  doughnutChart,
+  polarAreaChart,
+  radarChart
+]

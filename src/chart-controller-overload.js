@@ -21,10 +21,10 @@ export default class ChartController extends Chart.Controller {
   clear() {}
 
   draw(ease) {
-    if(arguments.length > 1) {
-      this.__ease__ = ease;
+    if (arguments.length > 1) {
+      this.__ease__ = ease
       this._component && this._component.invalidate()
-      return;
+      return
     }
 
     super.draw(ease)
@@ -32,23 +32,22 @@ export default class ChartController extends Chart.Controller {
 
   reset(width, height, context) {
     // 특정 사이즈 이하가 될 경우 오류가 발생하는 문제를 회피하기 위함.
-    if (width < 100 || height < 100)
-      return;
+    if (width < 100 || height < 100) return
 
-    var changed = (this.chart.width !== width || this.chart.height !== height)
+    var changed = this.chart.width !== width || this.chart.height !== height
 
-    this.chart.width = width;
-    this.chart.height = height;
+    this.chart.width = width
+    this.chart.height = height
 
-    this.chart.ctx = context;
+    this.chart.ctx = context
 
-    for(let i = 0;i < this.boxes.length;i++) {
-      let box = this.boxes[i];
-      box.ctx = context;
+    for (let i = 0; i < this.boxes.length; i++) {
+      let box = this.boxes[i]
+      box.ctx = context
     }
 
-    changed && this.updateLayout();
+    changed && this.updateLayout()
   }
 }
 
-Chart.Controller = ChartController;
+Chart.Controller = ChartController
