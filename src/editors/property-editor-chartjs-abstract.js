@@ -14,13 +14,8 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     this.value = {}
     this.currentSeriesIndex = 0
 
-    this.addEventListener('change', this.onValuesChanged.bind(this))
+    this.shadowRoot.addEventListener('change', this.onValuesChanged.bind(this))
   }
-
-  // connectedCallback() {
-  //   super.connectedCallback()
-
-  // }
 
   render() {
     return html`
