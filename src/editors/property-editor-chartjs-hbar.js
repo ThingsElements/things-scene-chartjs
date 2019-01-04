@@ -86,7 +86,7 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
 
       <div fullwidth>
         <paper-tabs
-          on-iron-select="${e => (this.currentSeriesIndex = e.target.selected)}"
+          @iron-select="${e => (this.currentSeriesIndex = e.target.selected)}"
           selected=${props.currentSeriesIndex}
           fullwidth
         >
@@ -98,7 +98,7 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
             )
           }
           <paper-tab>
-            <paper-icon-button icon="add-circle" on-tap="${e => this.onTapAddTab(e)}"></paper-icon-button>
+            <paper-icon-button icon="add-circle" @tap="${e => this.onTapAddTab(e)}"></paper-icon-button>
           </paper-tab>
         </paper-tabs>
 
@@ -137,7 +137,7 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
           ${
             !this.data.datasets || this.data.datasets.length != 1
               ? html`
-                  <paper-button on-tap="${e => this.onTapRemoveCurrentTab(e)}">
+                  <paper-button @tap="${e => this.onTapRemoveCurrentTab(e)}">
                     <iron-icon icon="icons:delete"></iron-icon>Remove Tab
                   </paper-button>
                 `

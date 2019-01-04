@@ -28,28 +28,75 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
 
         :host > * {
           box-sizing: border-box;
-
           grid-column: span 7;
         }
 
         legend {
           @apply (--things-fieldset-legend);
-
           grid-column: 1 / -1;
-
           display: inline-block;
-
           text-align: left;
           text-transform: capitalize;
+        }
+
+        .tab-header {
+          display: grid;
+          grid-template-columns: repeat(10, 1fr);
+          grid-gap: 1px;
+          overflow: hidden;
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          border-bottom: 0;
+          background-color: #ccc;
+          box-sizing: border-box;
+          padding-top: 3px;
+          align-items: center;
+        }
+
+        .tab-header > paper-tabs {
+          grid-column: 1 / -2;
+          height: 25px;
+        }
+
+        .tab-header > paper-tabs.hide-scroll-arrow {
+          position: relative;
+          --paper-tabs-container: {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background-color: #ccc;
+          }
+          --paper-tabs-content: {
+            display: flex;
+          }
+        }
+
+        .tab-header paper-icon-button {
+          justify-self: center;
+          --paper-icon-button: {
+            width: 20px;
+            height: 20px;
+            padding: 0;
+            color: #fff;
+          }
+        }
+
+        .tab-header paper-tabs paper-icon-button {
+          display: flex;
+          margin-left: 5px;
+          --paper-icon-button: {
+            width: 15px;
+            height: 15px;
+            padding: 2px;
+            color: #585858;
+          }
         }
 
         .tab-content {
           background-color: rgba(255, 255, 255, 0.5);
           border: 1px solid rgba(0, 0, 0, 0.2);
           border-width: 0 1px 1px 1px;
-
           padding: 5px;
-
           display: grid;
           grid-template-columns: repeat(10, 1fr);
           grid-gap: 5px;
@@ -57,16 +104,13 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
 
         .tab-content > * {
           box-sizing: border-box;
-
           grid-column: span 7;
         }
 
         label,
         .tab-content > label {
           grid-column: span 3;
-
           text-align: right;
-
           color: var(--primary-text-color);
           font-size: 0.8em;
           line-height: 2;
@@ -76,7 +120,6 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
         input[type='checkbox'],
         .tab-content > input[type='checkbox'] {
           grid-column: span 4;
-
           justify-self: end;
           align-self: center;
         }
@@ -106,18 +149,18 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
           overflow: auto;
         }
 
-        paper-tabs {
-          border: 0 solid rgba(0, 0, 0, 0.2);
-          border-width: 1px 1px 0 1px;
-        }
-
         paper-tab {
           background-color: rgba(0, 0, 0, 0.2);
-          border: 1px solid rgba(0, 0, 0, 0.07);
           border-width: 1px 1px 0 1px;
           padding: 0 5px;
           color: #fff;
           font-size: 13px;
+          box-sizing: border-box;
+        }
+
+        paper-tabs.hide-scroll-arrow paper-tab {
+          background-color: #ccc;
+          min-width: 30px;
         }
 
         paper-tab[disabled] {
@@ -128,9 +171,9 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
           border-width: 0;
         }
 
-        paper-tab.iron-selected {
-          background-color: rgba(255, 255, 255, 0.5);
-          border: 1px solid rgba(0, 0, 0, 0.2);
+        paper-tabs paper-tab.iron-selected {
+          background-color: #f6f8f9;
+          border-radius: 10px 10px 0 0;
           color: #585858;
         }
       </style>
@@ -299,8 +342,6 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
 
     variable[attr] = value
 
-    console.log('changed', this.value)
-
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
   }
 
@@ -319,7 +360,6 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     })
 
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
-
     this.currentSeriesIndex = lastSeriesIndex
   }
 
@@ -334,7 +374,8 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     if (currIndex < 0) currIndex = 0
 
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
-
     this.currentSeriesIndex = currIndex
+
+    this.requestUpdate()
   }
 }
