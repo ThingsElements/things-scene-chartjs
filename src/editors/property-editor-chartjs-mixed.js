@@ -80,23 +80,35 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
       <legend><things-i18n-msg msgid="label.series">Series</things-i18n-msg></legend>
 
       <div fullwidth>
-        <paper-tabs
-          @iron-select="${e => (this.currentSeriesIndex = e.target.selected)}"
-          selected=${props.currentSeriesIndex}
-          fullwidth
-        >
-          ${
-            this.data.datasets.map(
-              (dataset, index) => html`
-                <paper-tab data-series="${index + 1}">${index + 1}</paper-tab>
-              `
-            )
-          }
-
-          <paper-tab>
-            <paper-icon-button icon="add-circle" @tap="${e => this.onTapAddTab(e)}"></paper-icon-button>
-          </paper-tab>
-        </paper-tabs>
+        <div class="tab-header">
+          <paper-tabs
+            class="hide-scroll-arrow"
+            @iron-select="${e => (this.currentSeriesIndex = e.target.selected)}"
+            selected=${this.currentSeriesIndex}
+            no-bar
+            noink
+            scrollable
+          >
+            ${
+              this.data.datasets.map(
+                (dataset, index) => html`
+                  <paper-tab data-series="${index + 1}" noink
+                    >${index + 1}
+                    ${
+                      !this.data.datasets || (this.data.datasets.length != 1 && this.currentSeriesIndex == index)
+                        ? html`
+                            <paper-icon-button icon="close" @tap="${e => this.onTapRemoveCurrentTab(e)}">
+                            </paper-icon-button>
+                          `
+                        : html``
+                    }
+                  </paper-tab>
+                `
+              )
+            }
+          </paper-tabs>
+          <paper-icon-button icon="add" @tap="${e => this.onTapAddTab(e)}"></paper-icon-button>
+        </div>
 
         <div class="tab-content">
           <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
@@ -209,15 +221,6 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
                   ></things-editor-color>
                   <label> <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg> </label>
                   <input type="number" value-key="series.defaultFontSize" value=${this.series.defaultFontSize} />
-                `
-              : html``
-          }
-          ${
-            !this.data.datasets || this.data.datasets.length != 1
-              ? html`
-                  <paper-button on-tap="${e => this.onTapRemoveCurrentTab(e)}">
-                    <iron-icon icon="icons:delete"></iron-icon>Remove Tab
-                  </paper-button>
                 `
               : html``
           }
@@ -357,9 +360,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
     }
 
     this.value.data.datasets.push(addSeriesOption)
-
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
-
     this.currentSeriesIndex = lastSeriesIndex
   }
 }

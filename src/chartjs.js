@@ -1,4 +1,5 @@
 import { Component, HTMLOverlayElement, error } from '@hatiolab/things-scene'
+import clone from './clone'
 import './chartjs-element'
 
 const NATURE = {
@@ -37,14 +38,22 @@ export default class ChartJS extends HTMLOverlayElement {
     var { chart: chartConfig } = this.state
     var { width, height } = this.bounds
 
+    console.log('changed!', chartConfig)
+
     try {
       element.width = width
       element.height = height
 
-      element.options = JSON.parse(JSON.stringify(chartConfig))
+      element.options = clone(chartConfig)
     } catch (e) {
       error(e)
     }
+  }
+
+  onchange(after, before) {
+    super.onchange(after, before)
+
+    console.log(after, before)
   }
 }
 
