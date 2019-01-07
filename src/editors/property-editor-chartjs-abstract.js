@@ -1,3 +1,6 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
 import { LitElement, html } from '@polymer/lit-element'
 
 export default class PropertyEditorChartJSAbstract extends LitElement {

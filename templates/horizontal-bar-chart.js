@@ -1,3 +1,6 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
 import icon from '../assets/horizontal-bar-chart.png'
 
 export default {
@@ -12,8 +15,6 @@ export default {
     left: 300,
     width: 200,
     height: 200,
-    lineWidth: 5,
-    alpha: 1,
     chart: {
       type: 'horizontalBar',
       data: {

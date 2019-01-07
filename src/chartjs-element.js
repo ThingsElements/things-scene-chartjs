@@ -1,5 +1,16 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
+
 import { LitElement, html } from '@polymer/lit-element'
 import { Chart } from 'chart.js'
+import ChartDataBinderPlugin from './plugins/chart-data-binder'
+import ChartValueDisplayPlugin from './plugins/chart-value-display'
+import ChartSeriesHighlightPlugin from './plugins/chart-series-highlight'
+
+Chart.plugins.register(ChartDataBinderPlugin)
+Chart.plugins.register(ChartValueDisplayPlugin)
+Chart.plugins.register(ChartSeriesHighlightPlugin)
 
 export default class ChartJS extends LitElement {
   static get is() {
@@ -10,46 +21,62 @@ export default class ChartJS extends LitElement {
     return {
       width: Number,
       height: Number,
-      options: Object
+      options: Object,
+      data: Array
     }
   }
 
-  constructor() {
-    super()
+  get initialized() {
+    return this._initialized
+  }
+
+  set initialized(initialized) {
+    this._initialized = initialized
   }
 
   firstUpdated() {
-    const { data, options, type } = this.options
-    options.maintainAspectRatio = false
-
-    const ctx = this.shadowRoot.querySelector('#chart').getContext('2d')
-    this.chart = new Chart(ctx, {
-      type,
-      data,
-      options
-    })
+    this.initChart()
   }
 
   render() {
     return html`
-      <style>
-        div {
-          overflow: hidden;
-        }
-        canvas {
-          width: 100%;
-          height: 100%;
-        }
-      </style>
-      <div style="width:${this.width}px;height:${this.height}px;"><canvas id="chart"></canvas></div>
+      <canvas id="chart" style="width:${Math.floor(this.width)}px;height:${Math.floor(this.height)}px;"></canvas>
     `
   }
 
   updated(changedProperties) {
-    if (changedProperties.has('options')) {
-      console.log(changedProperties.get('options'))
-      // this.updateChartConfig()
+    if (!this.initialized) return
+
+    if (changedProperties.has('width') || changedProperties.has('height')) {
+      this.chart.resize()
     }
+
+    if (changedProperties.has('options')) {
+      this.updateChartConfig()
+    }
+
+    if (changedProperties.has('data')) {
+      this.chart.data.rawData = this.data
+      this.chart.update()
+    }
+  }
+
+  initChart() {
+    const { data, options, type } = this.options
+    options.maintainAspectRatio = false
+
+    const chartCanvas = this.shadowRoot.querySelector('#chart')
+    this.chart = new Chart(chartCanvas, {
+      type,
+      data,
+      options,
+      plugins: {
+        'chart-data-binder': true,
+        'chart-value-display': true
+      }
+    })
+
+    this.initialized = true
   }
 
   updateChart() {
@@ -59,10 +86,15 @@ export default class ChartJS extends LitElement {
   }
 
   updateChartConfig() {
+    if (!this.chart) return
+    const { data, options, type } = this.options
+    options.maintainAspectRatio = false
+
     this.chart.type = type
     this.chart.data = data
     this.chart.options = options
-    this.chart.update()
+    this.chart.data.rawData = this.data
+    this.chart.update(0)
   }
 }
 
