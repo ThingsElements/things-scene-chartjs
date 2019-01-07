@@ -40,15 +40,13 @@ export default class ChartJS extends LitElement {
 
   render() {
     return html`
-      <canvas id="chart" style="width:${Math.floor(this.width)}px;height:${Math.floor(this.height)}px;"></canvas>
+      <canvas id="chart"></canvas>
     `
   }
 
   updated(changedProperties) {
-    if (!this.initialized) return
-
     if (changedProperties.has('width') || changedProperties.has('height')) {
-      this.chart.resize()
+      this.updateChartSize()
     }
 
     if (changedProperties.has('options')) {
@@ -57,7 +55,7 @@ export default class ChartJS extends LitElement {
 
     if (changedProperties.has('data')) {
       this.chart.data.rawData = this.data
-      this.chart.update()
+      this.chart.update(0)
     }
   }
 
@@ -65,8 +63,8 @@ export default class ChartJS extends LitElement {
     const { data, options, type } = this.options
     options.maintainAspectRatio = false
 
-    const chartCanvas = this.shadowRoot.querySelector('#chart')
-    this.chart = new Chart(chartCanvas, {
+    this.canvas = this.shadowRoot.querySelector('#chart')
+    this.chart = new Chart(this.canvas, {
       type,
       data,
       options,
@@ -76,17 +74,36 @@ export default class ChartJS extends LitElement {
       }
     })
 
+    this.updateChartSize()
+
     this.initialized = true
   }
 
-  updateChart() {
-    if (this.chart) {
-      this.chart.update()
+  updateChartSize() {
+    const width = Math.floor(this.width)
+    const height = Math.floor(this.height)
+
+    this.canvas.style.width = `${width}px`
+    this.canvas.style.height = `${height}px`
+
+    const _ = () => {
+      if (this.canvas.offsetWidth == 0 || this.canvas.offsetHeight == 0) {
+        requestAnimationFrame(_)
+      } else {
+        /* 
+        주의 : chart.resize() 내에서 pixel ratio를 감안해서, canvas 의 width, height를 설정하기때문에,
+        별도 처리가 필요하지 않다.
+        */
+        this.chart.resize()
+      }
     }
+
+    requestAnimationFrame(_)
   }
 
   updateChartConfig() {
     if (!this.chart) return
+
     const { data, options, type } = this.options
     options.maintainAspectRatio = false
 
