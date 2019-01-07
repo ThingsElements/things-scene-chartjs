@@ -34,6 +34,16 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
           grid-column: span 7;
         }
 
+        :host > label {
+          box-sizing: border-box;
+          grid-column: span 3;
+        }
+
+        :host > legend {
+          box-sizing: border-box;
+          grid-column: 1 / -1;
+        }
+
         legend {
           @apply (--things-fieldset-legend);
           grid-column: 1 / -1;

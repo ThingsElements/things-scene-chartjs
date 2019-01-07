@@ -16,6 +16,17 @@ export default class ChartJSEditor extends ThingsEditorProperty {
 
   editorTemplate(props) {
     return html`
+      <style>
+        :host > label {
+          box-sizing: border-box;
+          grid-column: span 3;
+        }
+
+        :host > input {
+          box-sizing: border-box;
+          grid-column: span 7;
+        }
+      </style>
       ${
         props.value
           ? html`

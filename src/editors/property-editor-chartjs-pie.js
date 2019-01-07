@@ -67,7 +67,7 @@ export default class PropertyEditorChartJSPie extends PropertyEditorChartJSAbstr
       <label> <things-i18n-msg msgid="label.background-color">background color</things-i18n-msg> </label>
       <things-editor-multiple-color
         value-key="series.backgroundColor"
-        values=${this.series.backgroundColor}
+        .values=${this.series.backgroundColor}
       ></things-editor-multiple-color>
 
       <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
@@ -83,7 +83,7 @@ export default class PropertyEditorChartJSPie extends PropertyEditorChartJSAbstr
         this.series.displayValue
           ? html`
               <label> <things-i18n-msg msgid="label.font-color">Font Color</things-i18n-msg> </label>
-              <things-editor-color value-key="series.defaultFontColor" value=${this.series.defaultFontColor}>
+              <things-editor-color value-key="series.defaultFontColor" .value=${this.series.defaultFontColor}>
               </things-editor-color>
 
               <label> <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg> </label>
