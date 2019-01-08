@@ -339,6 +339,10 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
         value = element.selected
         break
 
+      case 'THINGS-EDITOR-MULTIPLE-COLOR':
+        value = element.values
+        break
+
       default:
         value = element.value
         break
