@@ -1,3 +1,6 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
 import { html } from '@polymer/lit-element'
 
 import '@polymer/iron-icon/iron-icon'

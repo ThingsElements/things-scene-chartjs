@@ -1,3 +1,6 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
 import { LitElement, html } from '@polymer/lit-element'
 
 export default class PropertyEditorChartJSAbstract extends LitElement {
@@ -334,6 +337,10 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
 
       case 'PAPER-LISTBOX':
         value = element.selected
+        break
+
+      case 'THINGS-EDITOR-MULTIPLE-COLOR':
+        value = element.values
         break
 
       default:

@@ -1,3 +1,6 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
 import { html } from '@polymer/lit-element'
 
 import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract'
