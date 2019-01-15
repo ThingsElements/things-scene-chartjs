@@ -206,10 +206,10 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
           </select>
 
           <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix} />
+          <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix || ''} />
 
           <label> <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix} />
+          <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix || ''} />
 
           <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue} />
           <label> <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg> </label>
@@ -220,10 +220,16 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
                   <label> <things-i18n-msg msgid="label.font-color">Font Color</things-i18n-msg> </label>
                   <things-editor-color
                     value-key="series.defaultFontColor"
-                    .value=${this.series.defaultFontColor}
+                    .value=${this.series.defaultFontColor || '#000'}
                   ></things-editor-color>
                   <label> <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg> </label>
-                  <input type="number" value-key="series.defaultFontSize" value=${this.series.defaultFontSize} />
+                  <input type="number" value-key="series.defaultFontSize" value=${this.series.defaultFontSize || 10} />
+                  <label> <things-i18n-msg msgid="label.position">Position</things-i18n-msg> </label>
+                  <select value-key="series.dataLabelAnchor" value=${this.series.dataLabelAnchor}>
+                    <option value="start">Start</option>
+                    <option value="center" selected>Center</option>
+                    <option value="end">End</option>
+                  </select>
                 `
               : html``
           }

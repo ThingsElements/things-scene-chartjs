@@ -124,10 +124,35 @@ export default class ThingsChartJS extends LitElement {
 
   attachPluginOptions(options = {}, type) {
     var pluginOptions = (options.plugins = options.plugins || {})
-    var datalabelsOption = (pluginOptions.datalabels = pluginOptions.datalabels || {})
+    this.attachDatalabelPluginOptions(pluginOptions)
+  }
 
+  attachDatalabelPluginOptions(pluginOptions = {}) {
+    var datalabelsOption = (pluginOptions.datalabels = pluginOptions.datalabels || {})
     datalabelsOption['display'] = function(context) {
       return !!context.dataset.displayValue
+    }
+
+    datalabelsOption['anchor'] = function(context) {
+      return context.dataset.dataLabelAnchor || 'center'
+    }
+
+    datalabelsOption['color'] = function(context) {
+      return context.dataset.defaultFontColor || '#000'
+    }
+
+    datalabelsOption['font'] = function(context) {
+      return {
+        size: context.dataset.defaultFontSize
+      }
+    }
+
+    datalabelsOption['clamp'] = true
+
+    datalabelsOption['formatter'] = function(value, context) {
+      var prefix = context.dataset.valuePrefix || ''
+      var suffix = context.dataset.valueSuffix || ''
+      return prefix + value.toLocaleString() + suffix
     }
   }
 }
