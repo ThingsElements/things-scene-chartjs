@@ -264,29 +264,24 @@ function _appendTickCallback(ticks) {
 }
 
 function _setTooltipCallback(tooltips) {
-  tooltips.callbacks = {
-    label: function(tooltipItem, data) {
-      var label = data.labels[tooltipItem.index]
-      var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
-      var toNumValue = Number(value)
-
-      if (!isNaN(toNumValue)) {
-        value = toNumValue
-      }
-
-      if (value) value = value.toLocaleString()
-
-      var prefix = data.datasets[tooltipItem.datasetIndex].valuePrefix || ''
-      var suffix = data.datasets[tooltipItem.datasetIndex].valueSuffix || ''
-
-      return prefix + value + suffix
+  tooltips.callbacks = tooltips.callbacks || {}
+  tooltips.callbacks.label = function(tooltipItem, data) {
+    var label = data.labels[tooltipItem.index]
+    var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+    var toNumValue = Number(value)
+    if (!isNaN(toNumValue)) {
+      value = toNumValue
     }
+    if (value) value = value.toLocaleString()
+    var prefix = data.datasets[tooltipItem.datasetIndex].valuePrefix || ''
+    var suffix = data.datasets[tooltipItem.datasetIndex].valueSuffix || ''
+    return `${label}: ${prefix + value + suffix}`
   }
 }
 
 export default {
   id: 'scene-config-converter',
-  beforeUpdate: function(chartInstance) {
+  beforeUpdate(chartInstance) {
     // cancellable
     convertConfigure(chartInstance)
   }

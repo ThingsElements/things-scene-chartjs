@@ -25,14 +25,6 @@ export default class ThingsChartJS extends LitElement {
     }
   }
 
-  static get plugins() {
-    return {
-      'scene-config-converter': true,
-      'data-binder': true,
-      datalabels: true
-    }
-  }
-
   get initialized() {
     return this._initialized
   }
@@ -76,8 +68,7 @@ export default class ThingsChartJS extends LitElement {
     this.chart = new Chart(this.canvas, {
       type,
       data,
-      options,
-      plugins: ThingsChartJS.plugins
+      options
     })
 
     this.updateChartSize()
@@ -122,7 +113,7 @@ export default class ThingsChartJS extends LitElement {
     this.chart.update(0)
   }
 
-  attachPluginOptions(options = {}, type) {
+  attachPluginOptions(options = {}) {
     var pluginOptions = (options.plugins = options.plugins || {})
     this.attachDatalabelPluginOptions(pluginOptions)
   }

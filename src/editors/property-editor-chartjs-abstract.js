@@ -321,6 +321,14 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     this.data.labelDataKey = labelDataKey
   }
 
+  set options(options) {
+    this.value.options = options
+  }
+
+  get options() {
+    return this.value.options
+  }
+
   onValuesChanged(e) {
     var element = e.target
     var key = element.getAttribute('value-key')

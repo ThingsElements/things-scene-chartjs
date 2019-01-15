@@ -33,6 +33,7 @@
   "dependencies": {
     "@hatiolab/things-scene": "^2.2.76",
     "chart.js": "^2.7.3",
+    "chartjs-plugin-colorschemes": "^0.2.0",
     "chartjs-plugin-crosshair": "^1.1.1",
     "chartjs-plugin-datalabels": "^0.5.0",
     "tinycolor2": "^1.4.1"
