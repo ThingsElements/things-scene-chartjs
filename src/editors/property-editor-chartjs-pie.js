@@ -71,12 +71,12 @@ export default class PropertyEditorChartJSPie extends PropertyEditorChartJSAbstr
       ></things-editor-multiple-color>
 
       <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
-      <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix} />
+      <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix || ''} />
 
       <label> <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg> </label>
-      <input type="text" value-key="valueSuffix" value=${this.series.valueSuffix} />
+      <input type="text" value-key="valueSuffix" value=${this.series.valueSuffix || ''} />
 
-      <input type="checkbox" value-key="series.displayValue" checked=${this.series.displayValue} />
+      <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue || false} />
       <label> <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg> </label>
 
       ${

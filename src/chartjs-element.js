@@ -143,7 +143,10 @@ export default class ThingsChartJS extends LitElement {
     datalabelsOption['formatter'] = function(value, context) {
       var prefix = context.dataset.valuePrefix || ''
       var suffix = context.dataset.valueSuffix || ''
-      return prefix + value.toLocaleString() + suffix
+      if (value == undefined) return value
+
+      var stringValue = String(value)
+      return prefix + stringValue.toLocaleString() + suffix
     }
   }
 }

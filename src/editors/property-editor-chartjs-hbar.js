@@ -127,11 +127,11 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
             .value=${this.series.backgroundColor}
           ></things-editor-color>
           <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix} />
+          <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix || ''} />
           <label> <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix} />
+          <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix || ''} />
 
-          <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue} />
+          <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue || false} />
           <label> <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg> </label>
 
           ${
@@ -157,7 +157,7 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
       <input type="text" value-key="labelDataKey" value=${this.labelDataKey} />
 
       <label> <things-i18n-msg msgid="label.title">Title</things-i18n-msg> </label>
-      <input type="text" value-key="yAxes0.axisTitle" value=${this.yAxes0.axisTitle} />
+      <input type="text" value-key="yAxes0.axisTitle" value=${this.yAxes0.axisTitle || ''} />
 
       <label> <things-i18n-msg msgid="label.thickness">Thickness</things-i18n-msg> </label>
       <input type="number" value-key="yAxes0.barThickness" value=${this.yAxes0.barThickness} />
@@ -171,7 +171,7 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
       <legend><things-i18n-msg msgid="label.x-axes">X Axes</things-i18n-msg></legend>
 
       <label> <things-i18n-msg msgid="label.title">Title</things-i18n-msg> </label>
-      <input type="text" value-key="x0AxisTitle" value=${this.xAxes0.axisTitle} />
+      <input type="text" value-key="x0AxisTitle" value=${this.xAxes0.axisTitle || ''} />
 
       <input type="checkbox" value-key="xAxes0.ticks.autoMin" ?checked=${this.xAxes0.ticks.autoMin} />
       <label> <things-i18n-msg msgid="label.axis-min-auto">Min Auto</things-i18n-msg> </label>

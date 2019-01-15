@@ -151,7 +151,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
         }
 
         select {
-          @apply (--things-select);
+          border: #ccc 1px solid;
           background: url(/images/bg-input-select.png) 100% 50% no-repeat #fff;
         }
 
@@ -199,7 +199,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
         <option value="light">light</option>
       </select>
 
-      <input type="checkbox" value-key="display" checked=${this.display} />
+      <input type="checkbox" value-key="display" ?checked=${this.display} />
       <label> <things-i18n-msg msgid="label.legend">Legend</things-i18n-msg> </label>
 
       ${
@@ -352,6 +352,40 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     variable[attr] = value
 
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
+    this.requestUpdate()
+  }
+
+  onTapAddTab(e) {
+    if (!this.value.data.datasets) return
+
+    var lastSeriesIndex = this.value.data.datasets.length
+
+    this.value.data.datasets.push({
+      label: 'new series',
+      data: [],
+      borderWidth: 0,
+      dataKey: '',
+      yAxisID: 'left',
+      fill: false
+    })
+
+    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
+    this.currentSeriesIndex = lastSeriesIndex
+  }
+
+  onTapRemoveCurrentTab(e) {
+    if (!this.value.data.datasets) return
+
+    var currIndex = this.currentSeriesIndex
+    this.value.data.datasets.splice(currIndex, 1)
+
+    currIndex--
+
+    if (currIndex < 0) currIndex = 0
+
+    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
+    this.currentSeriesIndex = currIndex
+
     this.requestUpdate()
   }
 

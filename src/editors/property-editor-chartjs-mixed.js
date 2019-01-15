@@ -115,13 +115,13 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
 
         <div class="tab-content">
           <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
-          <input type="text" value-key="dataKey" value=${this.dataKey} />
+          <input type="text" value-key="dataKey" .value=${this.dataKey} />
 
           ${
             this.value.type == 'bar'
               ? html`
                   <label> <things-i18n-msg msgid="label.type">type</things-i18n-msg> </label>
-                  <select class="select-content" value-key="series.type" value=${this.series.type}>
+                  <select class="select-content" value-key="series.type" .value=${this.series.type}>
                     <option value="bar" selected>bar</option>
                     <option value="line">line</option>
                   </select>
@@ -130,13 +130,13 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
           }
 
           <label> <things-i18n-msg msgid="label.label">label</things-i18n-msg> </label>
-          <input type="text" value-key="series.label" value=${this.series.label} />
+          <input type="text" value-key="series.label" .value=${this.series.label} />
 
           ${
             this.series.type == 'line'
               ? html`
                   <label> <things-i18n-msg msgid="label.line-tension">line tension</things-i18n-msg> </label>
-                  <select class="select-content" value-key="series.lineTension" value=${this.series.lineTension}>
+                  <select class="select-content" value-key="series.lineTension" .value=${this.series.lineTension}>
                     <option value="0.4">smooth</option>
                     <option value="0">angled</option>
                   </select>
@@ -167,7 +167,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
             this.series.type == 'line'
               ? html`
                   <label> <things-i18n-msg msgid="label.point-shape">point shape</things-i18n-msg> </label>
-                  <select class="select-content" value-key="series.pointStyle" value=${this.series.pointStyle}>
+                  <select class="select-content" value-key="series.pointStyle" .value=${this.series.pointStyle}>
                     <option value="circle">circle</option>
                     <option value="triangle">triangle</option>
                     <option value="rect">rect</option>
@@ -180,13 +180,21 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
                   </select>
 
                   <label> <things-i18n-msg msgid="label.point-size">point size</things-i18n-msg> </label>
-                  <input type="number" value-key="series.pointRadius" value=${this.series.pointRadius} />
+                  <input type="number" value-key="series.pointRadius" .value=${this.series.pointRadius} />
 
                   <label> <things-i18n-msg msgid="label.point-bg-color">point BG color</things-i18n-msg> </label>
                   <things-editor-color
                     value-key="series.pointBackgroundColor"
                     .value=${this.series.pointBackgroundColor}
                   ></things-editor-color>
+                `
+              : html``
+          }
+          ${
+            this.multiAxis
+              ? html`
+                  <label> <things-i18n-msg msgid="label.stack-group">Stack group</things-i18n-msg> </label>
+                  <input type="text" value-key="series.stack" .value=${this.series.stack} />
                 `
               : html``
           }
@@ -198,20 +206,25 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
                 `
               : html``
           }
-
-          <label> <things-i18n-msg msgid="label.target-axis">target axis</things-i18n-msg> </label>
-          <select class="select-content" value-key="series.yAxisID" value=${this.series.yAxisID}>
-            <option value="left">left</option>
-            <option value="right">right</option>
-          </select>
+          ${
+            this.multiAxis
+              ? html`
+                  <label> <things-i18n-msg msgid="label.target-axis">target axis</things-i18n-msg> </label>
+                  <select class="select-content" value-key="series.yAxisID" .value=${this.series.yAxisID}>
+                    <option value="left">left</option>
+                    <option value="right">right</option>
+                  </select>
+                `
+              : html``
+          }
 
           <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix || ''} />
+          <input type="text" value-key="series.valuePrefix" .value=${this.series.valuePrefix || ''} />
 
           <label> <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix || ''} />
+          <input type="text" value-key="series.valueSuffix" .value=${this.series.valueSuffix || ''} />
 
-          <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue} />
+          <input type="checkbox" value-key="series.displayValue" .checked=${this.series.displayValue || false} />
           <label> <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg> </label>
 
           ${
@@ -223,9 +236,9 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
                     .value=${this.series.defaultFontColor || '#000'}
                   ></things-editor-color>
                   <label> <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg> </label>
-                  <input type="number" value-key="series.defaultFontSize" value=${this.series.defaultFontSize || 10} />
+                  <input type="number" value-key="series.defaultFontSize" .value=${this.series.defaultFontSize || 10} />
                   <label> <things-i18n-msg msgid="label.position">Position</things-i18n-msg> </label>
-                  <select value-key="series.dataLabelAnchor" value=${this.series.dataLabelAnchor}>
+                  <select value-key="series.dataLabelAnchor" .value=${this.series.dataLabelAnchor || 'center'}>
                     <option value="start">Start</option>
                     <option value="center" selected>Center</option>
                     <option value="end">End</option>
@@ -242,10 +255,10 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
       <input type="text" value-key="labelDataKey" value=${this.labelDataKey} />
 
       <label> <things-i18n-msg msgid="label.title">Title</things-i18n-msg> </label>
-      <input type="text" value-key="xAxes0.axisTitle" value=${this.xAxes0.axisTitle} />
+      <input type="text" value-key="xAxes0.axisTitle" value=${this.xAxes0.axisTitle || ''} />
 
       <label> <things-i18n-msg msgid="label.thickness">Thickness</things-i18n-msg> </label>
-      <input type="number" value-key="xAxes0.barThickness" value=${this.xAxes0.barThickness} />
+      <input type="number" value-key="xAxes0.barPercentage" value=${this.xAxes0.barPercentage} />
 
       <input type="checkbox" value-key="value.options.xGridLine" ?checked=${props.value.options.xGridLine} />
       <label> <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg> </label>
@@ -256,7 +269,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
       <legend><things-i18n-msg msgid="label.y-axes">Y Axes</things-i18n-msg></legend>
 
       <label> <things-i18n-msg msgid="label.title">Title</things-i18n-msg> </label>
-      <input type="text" value-key="yAxes0.axisTitle" value=${this.yAxes0.axisTitle} />
+      <input type="text" value-key="yAxes0.axisTitle" value=${this.yAxes0.axisTitle || ''} />
 
       <input type="checkbox" value-key="yAxes0.ticks.autoMin" ?checked=${this.yAxes0.ticks.autoMin} />
       <label> <things-i18n-msg msgid="label.axis-min-auto">Min Auto</things-i18n-msg> </label>
@@ -296,7 +309,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
               <legend><things-i18n-msg msgid="label.y-2nd-axes">Y 2nd Axes</things-i18n-msg></legend>
 
               <label> <things-i18n-msg msgid="label.title">Title</things-i18n-msg> </label>
-              <input type="text" value-key="yAxes1.axisTitle" value=${this.yAxes1.axisTitle} />
+              <input type="text" value-key="yAxes1.axisTitle" value=${this.yAxes1.axisTitle || ''} />
 
               <input type="checkbox" value-key="yAxes1.ticks.autoMin" ?checked=${this.yAxes1.ticks.autoMin} />
               <label> <things-i18n-msg msgid="label.axis-min-auto">Min Auto</things-i18n-msg> </label>
