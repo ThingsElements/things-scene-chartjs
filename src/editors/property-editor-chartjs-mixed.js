@@ -93,12 +93,12 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
             scrollable
           >
             ${
-              this.data.datasets.map(
+              this.datasets.map(
                 (dataset, index) => html`
                   <paper-tab data-series="${index + 1}" noink
                     >${index + 1}
                     ${
-                      !this.data.datasets || (this.data.datasets.length != 1 && this.currentSeriesIndex == index)
+                      !this.datasets || (this.datasets.length != 1 && this.currentSeriesIndex == index)
                         ? html`
                             <paper-icon-button icon="close" @tap="${e => this.onTapRemoveCurrentTab(e)}">
                             </paper-icon-button>
@@ -115,7 +115,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
 
         <div class="tab-content">
           <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
-          <input type="text" value-key="series.dataKey" value=${this.series.dataKey} />
+          <input type="text" value-key="dataKey" value=${this.dataKey} />
 
           ${
             this.value.type == 'bar'

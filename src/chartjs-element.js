@@ -4,15 +4,14 @@
 
 import { LitElement, html } from '@polymer/lit-element'
 import { Chart } from 'chart.js'
-import ChartDataBinderPlugin from './plugins/chart-data-binder'
-import ChartValueDisplayPlugin from './plugins/chart-value-display'
-import ChartSeriesHighlightPlugin from './plugins/chart-series-highlight'
+import DataBinderPlugin from './plugins/chartjs-plugin-data-binder'
+import SceneConfigConverterPlugin from './plugins/chartjs-plugin-scene-config-converter'
+import DatalabelsPlugin from 'chartjs-plugin-datalabels'
 
-Chart.plugins.register(ChartDataBinderPlugin)
-Chart.plugins.register(ChartValueDisplayPlugin)
-Chart.plugins.register(ChartSeriesHighlightPlugin)
+Chart.plugins.register(DataBinderPlugin)
+Chart.plugins.register(SceneConfigConverterPlugin)
 
-export default class ChartJS extends LitElement {
+export default class ThingsChartJS extends LitElement {
   static get is() {
     return 'things-chartjs'
   }
@@ -23,6 +22,14 @@ export default class ChartJS extends LitElement {
       height: Number,
       options: Object,
       data: Array
+    }
+  }
+
+  static get plugins() {
+    return {
+      'scene-config-converter': true,
+      'data-binder': true,
+      datalabels: true
     }
   }
 
@@ -63,15 +70,14 @@ export default class ChartJS extends LitElement {
     const { data, options, type } = this.options
     options.maintainAspectRatio = false
 
+    this.attachPluginOptions(options, type)
+
     this.canvas = this.shadowRoot.querySelector('#chart')
     this.chart = new Chart(this.canvas, {
       type,
       data,
       options,
-      plugins: {
-        'chart-data-binder': true,
-        'chart-value-display': true
-      }
+      plugins: ThingsChartJS.plugins
     })
 
     this.updateChartSize()
@@ -90,7 +96,7 @@ export default class ChartJS extends LitElement {
       if (this.canvas.offsetWidth == 0 || this.canvas.offsetHeight == 0) {
         requestAnimationFrame(_)
       } else {
-        /* 
+        /*
         주의 : chart.resize() 내에서 pixel ratio를 감안해서, canvas 의 width, height를 설정하기때문에,
         별도 처리가 필요하지 않다.
         */
@@ -107,12 +113,23 @@ export default class ChartJS extends LitElement {
     const { data, options, type } = this.options
     options.maintainAspectRatio = false
 
+    this.attachPluginOptions(options, type)
+
     this.chart.type = type
     this.chart.data = data
     this.chart.options = options
     this.chart.data.rawData = this.data
     this.chart.update(0)
   }
+
+  attachPluginOptions(options = {}, type) {
+    var pluginOptions = (options.plugins = options.plugins || {})
+    var datalabelsOption = (pluginOptions.datalabels = pluginOptions.datalabels || {})
+
+    datalabelsOption['display'] = function(context) {
+      return !!context.dataset.displayValue
+    }
+  }
 }
 
-customElements.define(ChartJS.is, ChartJS)
+customElements.define(ThingsChartJS.is, ThingsChartJS)

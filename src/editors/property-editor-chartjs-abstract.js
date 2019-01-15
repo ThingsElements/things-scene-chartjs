@@ -235,14 +235,31 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     this.value.data = data
   }
 
+  get datasets() {
+    if (!this.data.datasets) this.data.datasets = []
+
+    return this.data.datasets
+  }
+
+  set datasets(datasets) {
+    this.datasets = datasets
+  }
+
   get series() {
-    return (this.value.data && this.value.data.datasets[this.currentSeriesIndex]) || {}
+    if (!this.datasets[this.currentSeriesIndex]) this.datasets[this.currentSeriesIndex] = {}
+    return this.datasets[this.currentSeriesIndex]
   }
 
   set series(series) {
-    !this.value.data
-      ? (this.value.data = { dataset: [series] })
-      : (this.value.data.datasets[this.currentSeriesIndex] = series)
+    !this.data ? (this.data = { dataset: [series] }) : (this.datasets[this.currentSeriesIndex] = series)
+  }
+
+  set dataKey(key) {
+    this.series.dataKey = key
+  }
+
+  get dataKey() {
+    return this.series.dataKey
   }
 
   get legend() {
@@ -313,40 +330,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
       return
     }
 
-    switch (element.tagName) {
-      case 'THINGS-EDITOR-ANGLE-INPUT':
-        value = Number(element.radian) || 0
-        break
-
-      case 'INPUT':
-        switch (element.type) {
-          case 'checkbox':
-            value = element.checked
-            break
-          case 'number':
-            value = Number(element.value) || 0
-            break
-          case 'text':
-            value = String(element.value)
-        }
-        break
-
-      case 'PAPER-BUTTON':
-        value = element.active
-        break
-
-      case 'PAPER-LISTBOX':
-        value = element.selected
-        break
-
-      case 'THINGS-EDITOR-MULTIPLE-COLOR':
-        value = element.values
-        break
-
-      default:
-        value = element.value
-        break
-    }
+    value = this._getElementValue(element)
 
     var attrs = key.split('.')
     var attr = attrs.shift()
@@ -360,39 +344,35 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     variable[attr] = value
 
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
-  }
-
-  onTapAddTab(e) {
-    if (!this.value.data.datasets) return
-
-    var lastSeriesIndex = this.value.data.datasets.length
-
-    this.value.data.datasets.push({
-      label: 'new series',
-      data: [],
-      borderWidth: 0,
-      dataKey: '',
-      yAxisID: 'left',
-      fill: false
-    })
-
-    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
-    this.currentSeriesIndex = lastSeriesIndex
-  }
-
-  onTapRemoveCurrentTab(e) {
-    if (!this.value.data.datasets) return
-
-    var currIndex = this.currentSeriesIndex
-    this.value.data.datasets.splice(currIndex, 1)
-
-    currIndex--
-
-    if (currIndex < 0) currIndex = 0
-
-    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
-    this.currentSeriesIndex = currIndex
-
     this.requestUpdate()
+  }
+
+  _getElementValue(element) {
+    switch (element.tagName) {
+      case 'INPUT':
+        switch (element.type) {
+          case 'checkbox':
+            return element.checked
+          case 'number':
+            return Number(element.value) || 0
+          case 'text':
+            return String(element.value)
+        }
+
+      case 'PAPER-BUTTON':
+        return element.active
+
+      case 'PAPER-LISTBOX':
+        return element.selected
+
+      case 'THINGS-EDITOR-MULTIPLE-COLOR':
+        return element.values
+
+      case 'THINGS-EDITOR-ANGLE-INPUT':
+        return Number(element.radian) || 0
+
+      default:
+        return element.value
+    }
   }
 }
