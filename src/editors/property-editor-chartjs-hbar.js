@@ -126,28 +126,7 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
             value-key="series.backgroundColor"
             .value=${this.series.backgroundColor}
           ></things-editor-color>
-          <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix || ''} />
-          <label> <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix || ''} />
-
-          <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue || false} />
-          <label> <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg> </label>
-
-          ${
-            this.series.displayValue
-              ? html`
-                  <label> <things-i18n-msg msgid="label.font-color">Font Color</things-i18n-msg> </label>
-                  <things-editor-color
-                    value-key="series.defaultFontColor"
-                    .value=${this.series.defaultFontColor}
-                  ></things-editor-color>
-
-                  <label> <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg> </label>
-                  <input type="number" value-key="series.defaultFontSize" value=${this.series.defaultFontSize} />
-                `
-              : html``
-          }
+          ${this.displayValueTemplate()}
         </div>
       </div>
 

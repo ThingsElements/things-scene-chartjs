@@ -94,38 +94,7 @@ export default class PropertyEditorChartJSRadar extends PropertyEditorChartJSAbs
           <input type="checkbox" value-key="series.fill" ?checked=${this.series.fill} />
           <label> <things-i18n-msg msgid="label.fill">fill</things-i18n-msg> </label>
 
-          <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix || ''} />
-
-          <label> <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix || ''} />
-
-          <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue || false} />
-          <label> <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg> </label>
-
-          ${
-            this.series.displayValue
-              ? html`
-                  <label> <things-i18n-msg msgid="label.font-color">Font Color</things-i18n-msg> </label>
-                  <things-editor-color
-                    value-key="series.defaultFontColor"
-                    .value=${this.series.defaultFontColor}
-                  ></things-editor-color>
-
-                  <label> <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg> </label>
-                  <input type="number" value-key="series.defaultFontSize" value=${this.series.defaultFontSize} />
-                `
-              : html``
-          }
-          ${
-            !this.data.datasets || this.data.datasets.length != 1
-              ? html`
-                  <paper-button @tap="${e => this.onTapRemoveCurrentTab(e)}">
-                    <iron-icon icon="icons:delete"></iron-icon>Remove Tab
-                  </paper-button>
-                `
-              : html``
-          }
+          ${this.displayValueTemplate()}
         </div>
       </div>
 

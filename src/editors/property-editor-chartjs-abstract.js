@@ -223,6 +223,39 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     `
   }
 
+  displayValueTemplate() {
+    return html`
+      <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
+      <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix || ''} />
+
+      <label> <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg> </label>
+      <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix || ''} />
+
+      <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue || false} />
+      <label> <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg> </label>
+
+      ${
+        this.series.displayValue
+          ? html`
+              <label> <things-i18n-msg msgid="label.font-color">Font Color</things-i18n-msg> </label>
+              <things-editor-color
+                value-key="series.defaultFontColor"
+                .value=${this.series.defaultFontColor || '#000'}
+              ></things-editor-color>
+              <label> <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg> </label>
+              <input type="number" value-key="series.defaultFontSize" .value=${this.series.defaultFontSize || 10} />
+              <label> <things-i18n-msg msgid="label.position">Position</things-i18n-msg> </label>
+              <select value-key="series.dataLabelAnchor" value=${this.series.dataLabelAnchor || 'center'}>
+                <option value="start">Start</option>
+                <option value="center" selected>Center</option>
+                <option value="end">End</option>
+              </select>
+            `
+          : html``
+      }
+    `
+  }
+
   editorTemplate() {
     return html``
   }

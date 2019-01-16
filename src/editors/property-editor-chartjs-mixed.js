@@ -6,6 +6,7 @@ import { html } from '@polymer/lit-element'
 import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract'
 
 import '@polymer/iron-icon/iron-icon'
+import '@polymer/iron-pages/iron-pages'
 import '@polymer/paper-button/paper-button'
 import '@polymer/paper-tabs/paper-tabs'
 import '@polymer/paper-icon-button/paper-icon-button'
@@ -113,140 +114,126 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSAbs
           <paper-icon-button icon="add" @tap="${e => this.onTapAddTab(e)}"></paper-icon-button>
         </div>
 
-        <div class="tab-content">
-          <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
-          <input type="text" value-key="dataKey" .value=${this.dataKey} />
-
+        <iron-pages .selected=${this.currentSeriesIndex} .attr-for-selected="series-index">
           ${
-            this.value.type == 'bar'
-              ? html`
-                  <label> <things-i18n-msg msgid="label.type">type</things-i18n-msg> </label>
-                  <select class="select-content" value-key="series.type" .value=${this.series.type}>
-                    <option value="bar" selected>bar</option>
-                    <option value="line">line</option>
-                  </select>
-                `
-              : html``
-          }
+            this.datasets.map(
+              (dataset, index) => html`
+                <div class="tab-content" series-index="${index}">
+                  <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
+                  <input type="text" value-key="dataKey" value=${this.dataKey} />
 
-          <label> <things-i18n-msg msgid="label.label">label</things-i18n-msg> </label>
-          <input type="text" value-key="series.label" .value=${this.series.label} />
+                  ${
+                    this.value.type == 'bar'
+                      ? html`
+                          <label> <things-i18n-msg msgid="label.type">type</things-i18n-msg> </label>
+                          <select class="select-content" value-key="series.type" value=${this.series.type}>
+                            <option value="bar" selected>bar</option>
+                            <option value="line">line</option>
+                          </select>
+                        `
+                      : html``
+                  }
 
-          ${
-            this.series.type == 'line'
-              ? html`
-                  <label> <things-i18n-msg msgid="label.line-tension">line tension</things-i18n-msg> </label>
-                  <select class="select-content" value-key="series.lineTension" .value=${this.series.lineTension}>
-                    <option value="0.4">smooth</option>
-                    <option value="0">angled</option>
-                  </select>
-                `
-              : html``
-          }
-          ${
-            this.series.type == 'line'
-              ? html`
-                  <label> <things-i18n-msg msgid="label.border-color">border color</things-i18n-msg> </label>
+                  <label> <things-i18n-msg msgid="label.label">label</things-i18n-msg> </label>
+                  <input type="text" value-key="series.label" value=${this.series.label} />
+
+                  ${
+                    this.series.type == 'line'
+                      ? html`
+                          <label> <things-i18n-msg msgid="label.line-tension">line tension</things-i18n-msg> </label>
+                          <select
+                            class="select-content"
+                            value-key="series.lineTension"
+                            value=${this.series.lineTension}
+                          >
+                            <option value="0.4">smooth</option>
+                            <option value="0">angled</option>
+                          </select>
+                        `
+                      : html``
+                  }
+                  ${
+                    this.series.type == 'line'
+                      ? html`
+                          <label> <things-i18n-msg msgid="label.border-color">border color</things-i18n-msg> </label>
+                          <things-editor-color
+                            value-key="series.borderColor"
+                            .value=${this.series.borderColor}
+                          ></things-editor-color>
+                          <label> <things-i18n-msg msgid="label.border-width">border width</things-i18n-msg> </label>
+                          <input type="number" value-key="series.borderWidth" value=${this.series.borderWidth} />
+                        `
+                      : html``
+                  }
+
+                  <label> <things-i18n-msg msgid="label.background-color">background color</things-i18n-msg> </label>
                   <things-editor-color
-                    value-key="series.borderColor"
-                    .value=${this.series.borderColor}
+                    value-key="series.backgroundColor"
+                    .value=${this.series.backgroundColor}
                   ></things-editor-color>
-                  <label> <things-i18n-msg msgid="label.border-width">border width</things-i18n-msg> </label>
-                  <input type="number" value-key="series.borderWidth" value=${this.series.borderWidth} />
-                `
-              : html``
+
+                  ${
+                    this.series.type == 'line'
+                      ? html`
+                          <label> <things-i18n-msg msgid="label.point-shape">point shape</things-i18n-msg> </label>
+                          <select class="select-content" value-key="series.pointStyle" value=${this.series.pointStyle}>
+                            <option value="circle">circle</option>
+                            <option value="triangle">triangle</option>
+                            <option value="rect">rect</option>
+                            <option value="rectRot">diamond</option>
+                            <option value="cross">cross</option>
+                            <option value="crossRot">X</option>
+                            <option value="star">star</option>
+                            <option value="line">Line</option>
+                            <option value="dash">Dash</option>
+                          </select>
+
+                          <label> <things-i18n-msg msgid="label.point-size">point size</things-i18n-msg> </label>
+                          <input type="number" value-key="series.pointRadius" value=${this.series.pointRadius} />
+
+                          <label>
+                            <things-i18n-msg msgid="label.point-bg-color">point BG color</things-i18n-msg>
+                          </label>
+                          <things-editor-color
+                            value-key="series.pointBackgroundColor"
+                            .value=${this.series.pointBackgroundColor}
+                          ></things-editor-color>
+                        `
+                      : html``
+                  }
+                  ${
+                    this.multiAxis
+                      ? html`
+                          <label> <things-i18n-msg msgid="label.stack-group">Stack group</things-i18n-msg> </label>
+                          <input type="text" value-key="series.stack" value=${this.series.stack} />
+                        `
+                      : html``
+                  }
+                  ${
+                    this.series.type == 'line'
+                      ? html`
+                          <input type="checkbox" value-key="series.fill" ?checked=${this.series.fill} />
+                          <label> <things-i18n-msg msgid="label.fill">fill</things-i18n-msg> </label>
+                        `
+                      : html``
+                  }
+                  ${
+                    this.multiAxis
+                      ? html`
+                          <label> <things-i18n-msg msgid="label.target-axis">target axis</things-i18n-msg> </label>
+                          <select class="select-content" value-key="series.yAxisID" value=${this.series.yAxisID}>
+                            <option value="left">left</option>
+                            <option value="right">right</option>
+                          </select>
+                        `
+                      : html``
+                  }
+                  ${this.displayValueTemplate()}
+                </div>
+              `
+            )
           }
-
-          <label> <things-i18n-msg msgid="label.background-color">background color</things-i18n-msg> </label>
-          <things-editor-color
-            value-key="series.backgroundColor"
-            .value=${this.series.backgroundColor}
-          ></things-editor-color>
-
-          ${
-            this.series.type == 'line'
-              ? html`
-                  <label> <things-i18n-msg msgid="label.point-shape">point shape</things-i18n-msg> </label>
-                  <select class="select-content" value-key="series.pointStyle" .value=${this.series.pointStyle}>
-                    <option value="circle">circle</option>
-                    <option value="triangle">triangle</option>
-                    <option value="rect">rect</option>
-                    <option value="rectRot">diamond</option>
-                    <option value="cross">cross</option>
-                    <option value="crossRot">X</option>
-                    <option value="star">star</option>
-                    <option value="line">Line</option>
-                    <option value="dash">Dash</option>
-                  </select>
-
-                  <label> <things-i18n-msg msgid="label.point-size">point size</things-i18n-msg> </label>
-                  <input type="number" value-key="series.pointRadius" .value=${this.series.pointRadius} />
-
-                  <label> <things-i18n-msg msgid="label.point-bg-color">point BG color</things-i18n-msg> </label>
-                  <things-editor-color
-                    value-key="series.pointBackgroundColor"
-                    .value=${this.series.pointBackgroundColor}
-                  ></things-editor-color>
-                `
-              : html``
-          }
-          ${
-            this.multiAxis
-              ? html`
-                  <label> <things-i18n-msg msgid="label.stack-group">Stack group</things-i18n-msg> </label>
-                  <input type="text" value-key="series.stack" .value=${this.series.stack} />
-                `
-              : html``
-          }
-          ${
-            this.series.type == 'line'
-              ? html`
-                  <input type="checkbox" value-key="series.fill" ?checked=${this.series.fill} />
-                  <label> <things-i18n-msg msgid="label.fill">fill</things-i18n-msg> </label>
-                `
-              : html``
-          }
-          ${
-            this.multiAxis
-              ? html`
-                  <label> <things-i18n-msg msgid="label.target-axis">target axis</things-i18n-msg> </label>
-                  <select class="select-content" value-key="series.yAxisID" .value=${this.series.yAxisID}>
-                    <option value="left">left</option>
-                    <option value="right">right</option>
-                  </select>
-                `
-              : html``
-          }
-
-          <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valuePrefix" .value=${this.series.valuePrefix || ''} />
-
-          <label> <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg> </label>
-          <input type="text" value-key="series.valueSuffix" .value=${this.series.valueSuffix || ''} />
-
-          <input type="checkbox" value-key="series.displayValue" .checked=${this.series.displayValue || false} />
-          <label> <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg> </label>
-
-          ${
-            this.series.displayValue
-              ? html`
-                  <label> <things-i18n-msg msgid="label.font-color">Font Color</things-i18n-msg> </label>
-                  <things-editor-color
-                    value-key="series.defaultFontColor"
-                    .value=${this.series.defaultFontColor || '#000'}
-                  ></things-editor-color>
-                  <label> <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg> </label>
-                  <input type="number" value-key="series.defaultFontSize" .value=${this.series.defaultFontSize || 10} />
-                  <label> <things-i18n-msg msgid="label.position">Position</things-i18n-msg> </label>
-                  <select value-key="series.dataLabelAnchor" .value=${this.series.dataLabelAnchor || 'center'}>
-                    <option value="start">Start</option>
-                    <option value="center" selected>Center</option>
-                    <option value="end">End</option>
-                  </select>
-                `
-              : html``
-          }
-        </div>
+        </iron-pages>
       </div>
 
       <legend><things-i18n-msg msgid="label.x-axes">X Axes</things-i18n-msg></legend>
