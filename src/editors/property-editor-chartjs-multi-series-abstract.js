@@ -1,7 +1,7 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-import { html } from '@polymer/lit-element'
+import { html } from 'lit-element'
 
 import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract'
 
@@ -10,8 +10,6 @@ import '@polymer/iron-pages/iron-pages'
 import '@polymer/paper-button/paper-button'
 import '@polymer/paper-tabs/paper-tabs'
 import '@polymer/paper-icon-button/paper-icon-button'
-
-import { TinyColor, random as randomColor } from '@ctrl/tinycolor'
 
 export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEditorChartJSAbstract {
   static get is() {
@@ -41,6 +39,19 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
         datasets: []
       }
     }
+  }
+
+  get color() {
+    var oldVersionColor = this.series.backgroundColor
+    if (this.series.type == 'line') oldVersionColor = this.series.borderColor
+    if (this.series.type == 'radar') oldVersionColor = this.series.borderColor
+    return this.series.color || oldVersionColor
+  }
+
+  set color(color) {
+    this.series.color = color
+    delete this.series.backgroundColor
+    delete this.series.borderColor
   }
 
   get xAxes0() {
@@ -256,22 +267,14 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
                 ${
                   this.series.type == 'line'
                     ? html`
-                        <label> <things-i18n-msg msgid="label.border-color">border color</things-i18n-msg> </label>
-                        <things-editor-color
-                          value-key="series.borderColor"
-                          .value=${this.series.borderColor}
-                        ></things-editor-color>
                         <label> <things-i18n-msg msgid="label.border-width">border width</things-i18n-msg> </label>
                         <input type="number" value-key="series.borderWidth" value=${this.series.borderWidth} />
                       `
                     : html``
                 }
 
-                <label> <things-i18n-msg msgid="label.background-color">background color</things-i18n-msg> </label>
-                <things-editor-color
-                  value-key="series.backgroundColor"
-                  .value=${this.series.backgroundColor}
-                ></things-editor-color>
+                <label> <things-i18n-msg msgid="label.color">color</things-i18n-msg> </label>
+                <things-editor-color value-key="color" .value=${this.color}></things-editor-color>
 
                 ${
                   this.series.type == 'line'
@@ -291,12 +294,6 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
 
                         <label> <things-i18n-msg msgid="label.point-size">point size</things-i18n-msg> </label>
                         <input type="number" value-key="series.pointRadius" value=${this.series.pointRadius} />
-
-                        <label> <things-i18n-msg msgid="label.point-bg-color">point BG color</things-i18n-msg> </label>
-                        <things-editor-color
-                          value-key="series.pointBackgroundColor"
-                          .value=${this.series.pointBackgroundColor}
-                        ></things-editor-color>
                       `
                     : html``
                 } <label> <things-i18n-msg msgid="label.stack-group">Stack group</things-i18n-msg> </label>
@@ -326,47 +323,5 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
         }
       </iron-pages>
     `
-  }
-
-  onTapAddTab(e) {
-    if (!this.datasets) return
-
-    var lastSeriesIndex = this.datasets.length
-    var chartType = this.value.type
-
-    var lastSeriesColor = new TinyColor(this.datasets[lastSeriesIndex - 1].backgroundColor)
-
-    var addSeriesOption
-    if (chartType == 'line') {
-      addSeriesOption = {
-        label: `series ${this.datasets.length + 1}`,
-        type: 'line',
-        data: [],
-        borderWidth: 4,
-        borderPointRadius: 4,
-        dataKey: '',
-        yAxisID: 'left',
-        fill: false,
-        backgroundColor: randomColor({
-          hue: lastSeriesColor
-        }).toRgbString()
-      }
-    } else {
-      addSeriesOption = {
-        label: `series ${this.datasets.length + 1}`,
-        type: 'bar',
-        data: [],
-        borderWidth: 0,
-        dataKey: '',
-        yAxisID: 'left',
-        backgroundColor: randomColor({
-          hue: lastSeriesColor
-        }).toRgbString()
-      }
-    }
-
-    this.value.data.datasets.push(addSeriesOption)
-    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
-    this.currentSeriesIndex = lastSeriesIndex
   }
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-import { html } from '@polymer/lit-element'
+import { html } from 'lit-element'
 
 import PropertyEditorChartJSMultiSeriesAbstract from './property-editor-chartjs-multi-series-abstract'
 
@@ -10,8 +10,6 @@ import '@polymer/iron-pages/iron-pages'
 import '@polymer/paper-button/paper-button'
 import '@polymer/paper-tabs/paper-tabs'
 import '@polymer/paper-icon-button/paper-icon-button'
-
-import { TinyColor, random as randomColor } from '@ctrl/tinycolor'
 
 export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSMultiSeriesAbstract {
   static get is() {
@@ -185,48 +183,6 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSMul
           : html``
       }
     `
-  }
-
-  onTapAddTab(e) {
-    if (!this.datasets) return
-
-    var lastSeriesIndex = this.datasets.length
-    var chartType = this.value.type
-
-    var lastSeriesColor = new TinyColor(this.datasets[lastSeriesIndex - 1].backgroundColor)
-
-    var addSeriesOption
-    if (chartType == 'line') {
-      addSeriesOption = {
-        label: `series ${this.datasets.length + 1}`,
-        type: 'line',
-        data: [],
-        borderWidth: 4,
-        borderPointRadius: 4,
-        dataKey: '',
-        yAxisID: 'left',
-        fill: false,
-        backgroundColor: randomColor({
-          hue: lastSeriesColor
-        }).toRgbString()
-      }
-    } else {
-      addSeriesOption = {
-        label: `series ${this.datasets.length + 1}`,
-        type: 'bar',
-        data: [],
-        borderWidth: 0,
-        dataKey: '',
-        yAxisID: 'left',
-        backgroundColor: randomColor({
-          hue: lastSeriesColor
-        }).toRgbString()
-      }
-    }
-
-    this.value.data.datasets.push(addSeriesOption)
-    this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
-    this.currentSeriesIndex = lastSeriesIndex
   }
 }
 

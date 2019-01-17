@@ -2,7 +2,7 @@
  * Copyright © HatioLab Inc. All rights reserved.
  */
 
-import { LitElement, html } from '@polymer/lit-element'
+import { LitElement, html } from 'lit-element'
 import { Chart } from 'chart.js'
 import DataBinderPlugin from './plugins/chartjs-plugin-data-binder'
 import convertChartConfigure from './config-converter'

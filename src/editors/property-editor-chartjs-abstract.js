@@ -1,7 +1,8 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-import { LitElement, html } from '@polymer/lit-element'
+import { LitElement, html } from 'lit-element'
+import { TinyColor, random as randomColor } from '@ctrl/tinycolor'
 
 export default class PropertyEditorChartJSAbstract extends LitElement {
   static get properties() {
@@ -388,16 +389,16 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     if (!this.value.data.datasets) return
 
     var lastSeriesIndex = this.value.data.datasets.length
+    var chartType = this.value.type
+    var lastSeriesColor = new TinyColor(this.datasets[lastSeriesIndex - 1].backgroundColor)
 
-    this.value.data.datasets.push({
-      label: 'new series',
-      data: [],
-      borderWidth: 0,
-      dataKey: '',
-      yAxisID: 'left',
-      fill: false
+    var seriesModel = this._getSeriesModel({
+      chartType,
+      datasetsLength: lastSeriesIndex,
+      lastSeriesColor
     })
 
+    this.value.data.datasets.push(seriesModel)
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
     this.currentSeriesIndex = lastSeriesIndex
   }
@@ -416,6 +417,32 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     this.currentSeriesIndex = currIndex
 
     this.requestUpdate()
+  }
+
+  _getSeriesModel({ chartType, datasetsLength, lastSeriesColor }) {
+    var addSeriesOption = {
+      label: `series ${datasetsLength + 1}`,
+      data: [],
+      borderWidth: 0,
+      dataKey: '',
+      yAxisID: 'left',
+      color: randomColor({
+        hue: lastSeriesColor
+      }).toRgbString()
+    }
+
+    if (chartType) addSeriesOption.chartType = chartType
+
+    switch (chartType) {
+      case 'line':
+        addSeriesOption.borderWidth = 4
+        addSeriesOption.borderPointRadius = 4
+      case 'radar':
+        addSeriesOption.fill = false
+        break
+    }
+
+    return addSeriesOption
   }
 
   _getElementValue(element) {

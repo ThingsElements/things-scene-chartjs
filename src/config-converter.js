@@ -249,23 +249,25 @@ function _getBaseColorFromTheme(theme) {
 function _setSeriesConfigures(series, chart, stacked) {
   var type = series.type || chart.type
   var stackGroup = stacked ? 'group 1' : series.stack || series.dataKey
+  var color = series.color ? series.color : series.backgroundColor
 
   switch (type) {
     case 'bar':
     case 'horizontalBar':
-      series.borderColor = series.backgroundColor
+      series.borderColor = series.backgroundColor = color
       series.borderWidth = 0
       break
 
     case 'line':
     case 'radar':
-      series.pointBackgroundColor = series.backgroundColor = series.pointBorderColor = series.borderColor
-      // series.pointBorderColor = series.borderColor
+      color = series.color ? series.color : series.borderColor
+      series.pointBackgroundColor = series.pointBorderColor = series.borderColor = series.backgroundColor = color
       series.pointBorderWidth = series.borderWidth * 0.5
       series.pointHoverRadius = series.pointRadius
       break
 
     default:
+      series.borderColor = series.backgroundColor = color
       break
   }
 

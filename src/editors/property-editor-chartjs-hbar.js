@@ -1,7 +1,7 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-import { html } from '@polymer/lit-element'
+import { html } from 'lit-element'
 
 import '@polymer/iron-icon/iron-icon'
 import '@polymer/paper-button/paper-button'
@@ -72,12 +72,12 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
     this.series.label = label
   }
 
-  get backgroundColor() {
-    return this.series.backgroundColor
+  get color() {
+    return this.series.color || this.series.backgroundColor
   }
 
-  set backgroundColor(backgroundColor) {
-    this.series.backgroundColor = backgroundColor
+  set color(color) {
+    this.series.color = color
   }
 
   editorTemplate(props) {
@@ -121,11 +121,8 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
           <input type="text" value-key="series.dataKey" value=${this.series.dataKey} />
           <label> <things-i18n-msg msgid="label.label">label</things-i18n-msg> </label>
           <input type="text" value-key="series.label" value=${this.series.label} />
-          <label> <things-i18n-msg msgid="label.background-color">background color</things-i18n-msg> </label>
-          <things-editor-color
-            value-key="series.backgroundColor"
-            .value=${this.series.backgroundColor}
-          ></things-editor-color>
+          <label> <things-i18n-msg msgid="label.color">color</things-i18n-msg> </label>
+          <things-editor-color value-key="color" .value=${this.color}></things-editor-color>
           ${this.displayValueTemplate()}
         </div>
       </div>

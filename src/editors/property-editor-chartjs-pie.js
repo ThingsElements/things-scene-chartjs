@@ -1,7 +1,7 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-import { html } from '@polymer/lit-element'
+import { html } from 'lit-element'
 
 import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract'
 
@@ -41,12 +41,13 @@ export default class PropertyEditorChartJSPie extends PropertyEditorChartJSAbstr
     this.series.valueSuffix = valueSuffix
   }
 
-  get backgroundColor() {
-    return this.series.backgroundColor
+  get color() {
+    return this.series.color || this.series.backgroundColor
   }
 
-  set backgroundColor(backgroundColor) {
-    this.series.backgroundColor = backgroundColor
+  set color(color) {
+    this.series.color = color
+    delete this.series.backgroundColor
   }
 
   get displayValue() {
@@ -64,11 +65,8 @@ export default class PropertyEditorChartJSPie extends PropertyEditorChartJSAbstr
       <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
       <input type="text" value-key="dataKey" value=${this.series.dataKey} />
 
-      <label> <things-i18n-msg msgid="label.background-color">background color</things-i18n-msg> </label>
-      <things-editor-multiple-color
-        value-key="series.backgroundColor"
-        .values=${this.series.backgroundColor}
-      ></things-editor-multiple-color>
+      <label> <things-i18n-msg msgid="label.color">color</things-i18n-msg> </label>
+      <things-editor-multiple-color value-key="color" .values=${this.color}></things-editor-multiple-color>
 
       ${this.displayValueTemplate()}
 
