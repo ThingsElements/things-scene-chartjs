@@ -31,6 +31,7 @@
     "lodash": "^4.17.11"
   },
   "dependencies": {
+    "@ctrl/tinycolor": "^2.2.1",
     "@hatiolab/things-scene": "^2.2.76",
     "chart.js": "^2.7.3",
     "chartjs-plugin-colorschemes": "^0.2.0",

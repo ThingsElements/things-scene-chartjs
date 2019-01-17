@@ -3,7 +3,7 @@
  */
 import { html } from '@polymer/lit-element'
 
-import PropertyEditorChartJSMultiSeriesAbstract from './property-editor-chartjs-multi-series-abstract'
+import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract'
 
 import '@polymer/iron-icon/iron-icon'
 import '@polymer/iron-pages/iron-pages'
@@ -13,9 +13,9 @@ import '@polymer/paper-icon-button/paper-icon-button'
 
 import { TinyColor, random as randomColor } from '@ctrl/tinycolor'
 
-export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSMultiSeriesAbstract {
+export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEditorChartJSAbstract {
   static get is() {
-    return 'property-editor-chartjs-mixed'
+    return 'property-editor-chartjs-multi-series-abstract'
   }
 
   constructor() {
@@ -95,7 +95,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSMul
       <label> <things-i18n-msg msgid="label.thickness">Thickness</things-i18n-msg> </label>
       <input type="number" value-key="xAxes0.barPercentage" value=${this.xAxes0.barPercentage} />
 
-      <input type="checkbox" value-key="value.options.xGridLine" ?checked=${props.value.options.xGridLine} />
+      <input type="checkbox" value-key="value.options.xGridLine" ?checked=${this.value.options.xGridLine} />
       <label> <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg> </label>
 
       <input type="checkbox" value-key="xAxes0.ticks.display" ?checked=${this.xAxes0.ticks.display} />
@@ -132,14 +132,14 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSMul
       <label> <things-i18n-msg msgid="label.axis-step-size">StepSize</things-i18n-msg> </label>
       <input type="number" value-key="yAxes0.ticks.stepSize" value=${this.yAxes0.ticks.stepSize} />
 
-      <input type="checkbox" value-key="value.options.yGridLine" ?checked=${props.value.options.yGridLine} />
+      <input type="checkbox" value-key="value.options.yGridLine" ?checked=${this.value.options.yGridLine} />
       <label> <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg> </label>
 
       <input type="checkbox" value-key="yAxes0.ticks.display" ?checked=${this.yAxes0.ticks.display} />
       <label> <things-i18n-msg msgid="label.display-tick">Display Tick</things-i18n-msg> </label>
 
       ${
-        props.value.options.multiAxis
+        this.value.options.multiAxis
           ? html`
               <legend><things-i18n-msg msgid="label.y-2nd-axes">Y 2nd Axes</things-i18n-msg></legend>
 
@@ -175,7 +175,7 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSMul
               <input
                 type="checkbox"
                 value-key="value.options.y2ndGridLine"
-                ?checked=${props.value.options.y2ndGridLine}
+                ?checked=${this.value.options.y2ndGridLine}
               />
               <label> <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg> </label>
 
@@ -184,6 +184,147 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSMul
             `
           : html``
       }
+    `
+  }
+
+  multiSeriesTabTemplate() {
+    return html`
+      <div class="tab-header">
+        <paper-tabs
+          class="hide-scroll-arrow"
+          @iron-select="${e => (this.currentSeriesIndex = e.target.selected)}"
+          .selected=${this.currentSeriesIndex}
+          no-bar
+          noink
+          scrollable
+        >
+          ${
+            this.datasets.map(
+              (dataset, index) => html`
+                <paper-tab data-series="${index + 1}" noink
+                  >${index + 1}
+                  ${
+                    !this.datasets || (this.datasets.length != 1 && this.currentSeriesIndex == index)
+                      ? html`
+                          <paper-icon-button icon="close" @tap="${e => this.onTapRemoveCurrentTab(e)}">
+                          </paper-icon-button>
+                        `
+                      : html``
+                  }
+                </paper-tab>
+              `
+            )
+          }
+        </paper-tabs>
+        <paper-icon-button icon="add" @tap="${e => this.onTapAddTab(e)}"></paper-icon-button>
+      </div>
+
+      <iron-pages .selected=${this.currentSeriesIndex} .attr-for-selected="series-index">
+        ${
+          this.datasets.map(
+            (dataset, index) => html`
+              <div class="tab-content" series-index="${index}">
+                <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
+                <input type="text" value-key="dataKey" value=${this.dataKey} />
+
+                ${
+                  this.value.type == 'bar'
+                    ? html`
+                        <label> <things-i18n-msg msgid="label.type">type</things-i18n-msg> </label>
+                        <select class="select-content" value-key="series.type" value=${this.series.type}>
+                          <option value="bar" selected>bar</option>
+                          <option value="line">line</option>
+                        </select>
+                      `
+                    : html``
+                }
+
+                <label> <things-i18n-msg msgid="label.label">label</things-i18n-msg> </label>
+                <input type="text" value-key="series.label" value=${this.series.label} />
+
+                ${
+                  this.series.type == 'line'
+                    ? html`
+                        <label> <things-i18n-msg msgid="label.line-tension">line tension</things-i18n-msg> </label>
+                        <select class="select-content" value-key="series.lineTension" value=${this.series.lineTension}>
+                          <option value="0.4">smooth</option>
+                          <option value="0">angled</option>
+                        </select>
+                      `
+                    : html``
+                }
+                ${
+                  this.series.type == 'line'
+                    ? html`
+                        <label> <things-i18n-msg msgid="label.border-color">border color</things-i18n-msg> </label>
+                        <things-editor-color
+                          value-key="series.borderColor"
+                          .value=${this.series.borderColor}
+                        ></things-editor-color>
+                        <label> <things-i18n-msg msgid="label.border-width">border width</things-i18n-msg> </label>
+                        <input type="number" value-key="series.borderWidth" value=${this.series.borderWidth} />
+                      `
+                    : html``
+                }
+
+                <label> <things-i18n-msg msgid="label.background-color">background color</things-i18n-msg> </label>
+                <things-editor-color
+                  value-key="series.backgroundColor"
+                  .value=${this.series.backgroundColor}
+                ></things-editor-color>
+
+                ${
+                  this.series.type == 'line'
+                    ? html`
+                        <label> <things-i18n-msg msgid="label.point-shape">point shape</things-i18n-msg> </label>
+                        <select class="select-content" value-key="series.pointStyle" value=${this.series.pointStyle}>
+                          <option value="circle">⚬</option>
+                          <option value="triangle">▵</option>
+                          <option value="rect">□</option>
+                          <option value="rectRot">◇</option>
+                          <option value="cross">+</option>
+                          <option value="crossRot">⨉</option>
+                          <option value="star">✱</option>
+                          <option value="line">―</option>
+                          <option value="dash">┄</option>
+                        </select>
+
+                        <label> <things-i18n-msg msgid="label.point-size">point size</things-i18n-msg> </label>
+                        <input type="number" value-key="series.pointRadius" value=${this.series.pointRadius} />
+
+                        <label> <things-i18n-msg msgid="label.point-bg-color">point BG color</things-i18n-msg> </label>
+                        <things-editor-color
+                          value-key="series.pointBackgroundColor"
+                          .value=${this.series.pointBackgroundColor}
+                        ></things-editor-color>
+                      `
+                    : html``
+                } <label> <things-i18n-msg msgid="label.stack-group">Stack group</things-i18n-msg> </label>
+                <input type="text" value-key="series.stack" value=${this.series.stack || ''} /> ${
+                  this.series.type == 'line'
+                    ? html`
+                        <input type="checkbox" value-key="series.fill" ?checked=${this.series.fill} />
+                        <label> <things-i18n-msg msgid="label.fill">fill</things-i18n-msg> </label>
+                      `
+                    : html``
+                }
+                ${
+                  this.multiAxis
+                    ? html`
+                        <label> <things-i18n-msg msgid="label.target-axis">target axis</things-i18n-msg> </label>
+                        <select class="select-content" value-key="series.yAxisID" value=${this.series.yAxisID}>
+                          <option value="left">left</option>
+                          <option value="right">right</option>
+                        </select>
+                      `
+                    : html``
+                }
+                ${this.displayValueTemplate()}
+              </div>
+            `
+          )
+        }
+      </iron-pages>
     `
   }
 
@@ -229,5 +370,3 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSMul
     this.currentSeriesIndex = lastSeriesIndex
   }
 }
-
-customElements.define(PropertyEditorChartJSMixed.is, PropertyEditorChartJSMixed)

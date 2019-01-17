@@ -5,11 +5,10 @@
 import { LitElement, html } from '@polymer/lit-element'
 import { Chart } from 'chart.js'
 import DataBinderPlugin from './plugins/chartjs-plugin-data-binder'
-import SceneConfigConverterPlugin from './plugins/chartjs-plugin-scene-config-converter'
+import convertChartConfigure from './config-converter'
 import DatalabelsPlugin from 'chartjs-plugin-datalabels'
 
 Chart.plugins.register(DataBinderPlugin)
-Chart.plugins.register(SceneConfigConverterPlugin)
 
 export default class ThingsChartJS extends LitElement {
   static get is() {
@@ -63,6 +62,7 @@ export default class ThingsChartJS extends LitElement {
     options.maintainAspectRatio = false
 
     this.attachPluginOptions(options, type)
+    convertChartConfigure(this.options)
 
     this.canvas = this.shadowRoot.querySelector('#chart')
     this.chart = new Chart(this.canvas, {
@@ -105,6 +105,7 @@ export default class ThingsChartJS extends LitElement {
     options.maintainAspectRatio = false
 
     this.attachPluginOptions(options, type)
+    convertChartConfigure(this.options)
 
     this.chart.type = type
     this.chart.data = data

@@ -36,14 +36,13 @@ export default class ChartJS extends HTMLOverlayElement {
     super.createElement()
 
     var { width, height } = this.bounds
-    var { chart: chartConfig } = this.state
     var element = this.element
     var data = this.data
 
     element.width = width
     element.height = height
 
-    element.options = cloneDeep(chartConfig)
+    this._setChartConfig(element)
     element.data = data
   }
 
@@ -58,8 +57,7 @@ export default class ChartJS extends HTMLOverlayElement {
       element.height = height
 
       if (chartConfig && this._isChartChanged) {
-        element.options = cloneDeep(chartConfig)
-
+        this._setChartConfig(element)
         this._isChartChanged = false
       }
 
@@ -70,6 +68,14 @@ export default class ChartJS extends HTMLOverlayElement {
     } catch (e) {
       error(e)
     }
+  }
+
+  _setChartConfig(element) {
+    var { chart: chartConfig, fontSize = 12, fontFamily } = this.state
+    var cloneChartConf = cloneDeep(chartConfig)
+    cloneChartConf.options.defaultFontSize = fontSize
+    cloneChartConf.options.defaultFontFamily = fontFamily
+    element.options = cloneChartConf
   }
 
   onchange(after, before) {

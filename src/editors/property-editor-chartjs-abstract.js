@@ -215,10 +215,6 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
             `
           : html``
       }
-
-      <label> <things-i18n-msg msgid="label.text-size">Text Size</things-i18n-msg> </label>
-      <input type="number" value-key="value.options.defaultFontSize" value=${this.value.options.defaultFontSize} />
-
       ${this.editorTemplate(this)}
     `
   }

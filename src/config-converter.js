@@ -1,7 +1,7 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-import tinycolor from 'tinycolor2'
+import { TinyColor } from '@ctrl/tinycolor'
 function convertConfigure(chart) {
   if (!chart) return
 
@@ -17,8 +17,8 @@ function convertConfigure(chart) {
 
   var multiAxis = options.multiAxis
   var stacked = options.stacked
-  var fontSize = chart.fontSize || options.defaultFontSize
-  var fontFamily = (options.defaultFontFamily = chart.fontFamily)
+  var fontSize = Number(options.defaultFontSize)
+  var fontFamily = options.defaultFontFamily
   var theme = options.theme
 
   // backward compatible
@@ -27,7 +27,7 @@ function convertConfigure(chart) {
   // setup series configure
   for (let i in datasets) {
     let series = datasets[i]
-    _setSeriesConfigures(series, chart)
+    _setSeriesConfigures(series, chart, stacked)
 
     if (!multiAxis) {
       if (series.yAxisID == 'right') series.yAxisID = 'left'
@@ -46,10 +46,11 @@ function convertConfigure(chart) {
       // 1-1. setup xAxes
       for (let i in xAxes) {
         let axis = xAxes[i]
-        _setStacked(axis, stacked)
+        _setStacked(axis, true)
         _setScalesFontSize(axis, fontSize)
         _setScalesFontFamily(axis, fontFamily)
         _setScalesAutoMinMax(axis)
+        _setScalesTickRotation(axis)
         _setAxisTitle(axis)
         _setScalesTheme(axis, theme)
         _appendTickCallback(axis.ticks)
@@ -64,7 +65,7 @@ function convertConfigure(chart) {
         if (i == 1) {
           _setMultiAxis(axis, multiAxis)
         }
-        _setStacked(axis, stacked)
+        _setStacked(axis, true)
         _setScalesFontSize(axis, fontSize)
         _setScalesFontFamily(axis, fontFamily)
         _setScalesAutoMinMax(axis)
@@ -89,12 +90,14 @@ function convertConfigure(chart) {
   // 2. setup legend
   legend.labels = legend.labels ? legend.labels : {}
   legend.labels.fontSize = fontSize
-  legend.labels.fontFamily = fontFamily
+  if (fontFamily) legend.labels.fontFamily = fontFamily
+  legend.labels.boxWidth = 15
+
   _setLegendTheme(legend, theme)
 
   // 3. setup tooltips
   tooltips.titleFontSize = tooltips.bodyFontSize = tooltips.footerFontSize = fontSize
-  tooltips.titleFontFamily = tooltips.bodyFontFamily = tooltips.footerFontFamily = fontFamily
+  if (fontFamily) tooltips.titleFontFamily = tooltips.bodyFontFamily = tooltips.footerFontFamily = fontFamily
   _setTooltipCallback(tooltips)
 }
 
@@ -161,6 +164,8 @@ function _setScalesFontSize(axis, fontSize) {
 }
 
 function _setScalesFontFamily(axis, fontFamily) {
+  if (!fontFamily) return
+
   axis.ticks = axis.ticks ? axis.ticks : {}
   axis.ticks.fontFamily = fontFamily
 }
@@ -177,6 +182,11 @@ function _setScalesAutoMinMax(axis) {
   if (autoMax === true) {
     delete axis.ticks.max
   }
+}
+
+function _setScalesTickRotation(axis) {
+  axis.ticks = axis.ticks ? axis.ticks : {}
+  axis.ticks.maxRotation = 0
 }
 
 function _setScalesTheme(axis, theme) {
@@ -225,13 +235,14 @@ function _getBaseColorFromTheme(theme) {
       break
   }
 
-  baseColor = tinycolor(baseColor)
+  baseColor = new TinyColor(baseColor)
 
   return baseColor
 }
 
-function _setSeriesConfigures(series, chart) {
-  var type = series.type || chart.type || 'line'
+function _setSeriesConfigures(series, chart, stacked) {
+  var type = series.type || chart.type
+  var stackGroup = stacked ? 'group 1' : series.stack || series.dataKey
 
   switch (type) {
     case 'bar':
@@ -239,15 +250,20 @@ function _setSeriesConfigures(series, chart) {
       series.borderColor = series.backgroundColor
       series.borderWidth = 0
       break
+
     case 'line':
     case 'radar':
-      series.pointBorderColor = series.borderColor
-      series.pointBorderWidth = series.borderWidth
+      series.pointBackgroundColor = series.backgroundColor = series.pointBorderColor = series.borderColor
+      // series.pointBorderColor = series.borderColor
+      series.pointBorderWidth = series.borderWidth * 0.5
       series.pointHoverRadius = series.pointRadius
       break
+
     default:
       break
   }
+
+  series.stack = stackGroup
 }
 
 function _appendTickCallback(ticks) {
@@ -265,9 +281,14 @@ function _appendTickCallback(ticks) {
 
 function _setTooltipCallback(tooltips) {
   tooltips.callbacks = tooltips.callbacks || {}
+
+  tooltips.intersect = false
+  tooltips.mode = 'index'
+
   tooltips.callbacks.label = function(tooltipItem, data) {
-    var label = data.labels[tooltipItem.index]
     var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+    var datasetLabel = data.datasets[tooltipItem.datasetIndex].label
+    var label = datasetLabel || data.labels[tooltipItem.index]
     var toNumValue = Number(value)
     if (!isNaN(toNumValue)) {
       value = toNumValue
@@ -279,10 +300,4 @@ function _setTooltipCallback(tooltips) {
   }
 }
 
-export default {
-  id: 'scene-config-converter',
-  beforeUpdate(chartInstance) {
-    // cancellable
-    convertConfigure(chartInstance)
-  }
-}
+export default convertConfigure
