@@ -47,8 +47,10 @@ function convertConfigure(chart) {
       for (let i in xAxes) {
         let axis = xAxes[i]
         _setStacked(axis, true)
-        _setScalesFontSize(axis, fontSize)
-        _setScalesFontFamily(axis, fontFamily)
+        _setScalesFont(axis, {
+          fontSize,
+          fontFamily
+        })
         _setScalesAutoMinMax(axis)
         _setScalesTickRotation(axis)
         _setAxisTitle(axis)
@@ -66,8 +68,10 @@ function convertConfigure(chart) {
           _setMultiAxis(axis, multiAxis)
         }
         _setStacked(axis, true)
-        _setScalesFontSize(axis, fontSize)
-        _setScalesFontFamily(axis, fontFamily)
+        _setScalesFont(axis, {
+          fontSize,
+          fontFamily
+        })
         _setScalesAutoMinMax(axis)
         _setAxisTitle(axis)
         _setScalesTheme(axis, theme)
@@ -88,16 +92,18 @@ function convertConfigure(chart) {
   }
 
   // 2. setup legend
-  legend.labels = legend.labels ? legend.labels : {}
-  legend.labels.fontSize = fontSize
-  if (fontFamily) legend.labels.fontFamily = fontFamily
+  _setLegendFont(legend, {
+    fontSize,
+    fontFamily
+  })
   legend.labels.boxWidth = 15
-
   _setLegendTheme(legend, theme)
 
   // 3. setup tooltips
-  tooltips.titleFontSize = tooltips.bodyFontSize = tooltips.footerFontSize = fontSize
-  if (fontFamily) tooltips.titleFontFamily = tooltips.bodyFontFamily = tooltips.footerFontFamily = fontFamily
+  _setTooltipFont(tooltips, {
+    fontSize,
+    fontFamily
+  })
   _setTooltipCallback(tooltips)
 }
 
@@ -158,16 +164,10 @@ function _setAxisTitle(axis) {
   axis.scaleLabel.display = axis.axisTitle ? true : false
 }
 
-function _setScalesFontSize(axis, fontSize) {
+function _setScalesFont(axis, { fontSize, fontFamily }) {
   axis.ticks = axis.ticks ? axis.ticks : {}
   axis.ticks.fontSize = fontSize
-}
-
-function _setScalesFontFamily(axis, fontFamily) {
-  if (!fontFamily) return
-
-  axis.ticks = axis.ticks ? axis.ticks : {}
-  axis.ticks.fontFamily = fontFamily
+  if (fontFamily) axis.ticks.fontFamily = fontFamily
 }
 
 function _setScalesAutoMinMax(axis) {
@@ -207,6 +207,12 @@ function _setScalesTheme(axis, theme) {
     .clone()
     .setAlpha(0.5)
     .toString()
+}
+
+function _setLegendFont(legend, { fontFamily, fontSize }) {
+  legend.labels = legend.labels ? legend.labels : {}
+  legend.labels.fontSize = fontSize
+  if (fontFamily) legend.labels.fontFamily = fontFamily
 }
 
 function _setLegendTheme(legend, theme) {
@@ -277,6 +283,11 @@ function _appendTickCallback(ticks) {
 
     if (returnValue) return returnValue
   }
+}
+
+function _setTooltipFont(tooltips, { fontSize, fontFamily }) {
+  tooltips.titleFontSize = tooltips.bodyFontSize = tooltips.footerFontSize = fontSize
+  if (fontFamily) tooltips.titleFontFamily = tooltips.bodyFontFamily = tooltips.footerFontFamily = fontFamily
 }
 
 function _setTooltipCallback(tooltips) {
