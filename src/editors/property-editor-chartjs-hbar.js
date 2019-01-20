@@ -15,6 +15,10 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
     return 'property-editor-chartjs-hbar'
   }
 
+  static get styles() {
+    return PropertyEditorChartJSAbstract.styles
+  }
+
   constructor() {
     super()
 

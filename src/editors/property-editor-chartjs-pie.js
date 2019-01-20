@@ -10,6 +10,10 @@ export default class PropertyEditorChartJSPie extends PropertyEditorChartJSAbstr
     return 'property-editor-chartjs-pie'
   }
 
+  static get styles() {
+    return PropertyEditorChartJSAbstract.styles
+  }
+
   constructor() {
     super()
 

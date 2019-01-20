@@ -16,6 +16,10 @@ export default class PropertyEditorChartJSMixed extends PropertyEditorChartJSMul
     return 'property-editor-chartjs-mixed'
   }
 
+  static get styles() {
+    return PropertyEditorChartJSMultiSeriesAbstract.styles
+  }
+
   constructor() {
     super()
 

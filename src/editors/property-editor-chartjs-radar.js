@@ -15,6 +15,10 @@ export default class PropertyEditorChartJSRadar extends PropertyEditorChartJSMul
     return 'property-editor-chartjs-radar'
   }
 
+  static get styles() {
+    return PropertyEditorChartJSMultiSeriesAbstract.styles
+  }
+
   constructor() {
     super()
 

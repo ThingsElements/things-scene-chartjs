@@ -16,6 +16,10 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
     return 'property-editor-chartjs-multi-series-abstract'
   }
 
+  static get styles() {
+    return PropertyEditorChartJSAbstract.styles
+  }
+
   constructor() {
     super()
 
