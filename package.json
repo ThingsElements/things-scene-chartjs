@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/chartjs",
-  "version": "3.1.3",
+  "version": "3.1.4",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
   "things-scene": true,
