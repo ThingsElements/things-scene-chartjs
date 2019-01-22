@@ -27,12 +27,22 @@ function convertConfigure(chart) {
   // setup series configure
   for (let i in datasets) {
     let series = datasets[i]
-    _setSeriesConfigures(series, chart, stacked)
+    _setSeriesConfigures(series, chart)
 
     if (!multiAxis) {
       if (series.yAxisID == 'right') series.yAxisID = 'left'
     }
   }
+
+  var lineSeries = datasets.filter(d => d.type == 'line')
+
+  lineSeries.forEach(s => {
+    var filtered = lineSeries.filter(ss => s.stack == ss.stack)
+    if (filtered.length > 1) {
+      stacked = true
+      return
+    }
+  })
 
   // setup options
   // 1. setup scales
@@ -46,7 +56,7 @@ function convertConfigure(chart) {
       // 1-1. setup xAxes
       for (let i in xAxes) {
         let axis = xAxes[i]
-        _setStacked(axis, true)
+        _setStacked(axis, stacked)
         _setScalesFont(axis, {
           fontSize,
           fontFamily
@@ -67,7 +77,7 @@ function convertConfigure(chart) {
         if (i == 1) {
           _setMultiAxis(axis, multiAxis)
         }
-        _setStacked(axis, true)
+        _setStacked(axis, stacked)
         _setScalesFont(axis, {
           fontSize,
           fontFamily
@@ -246,16 +256,15 @@ function _getBaseColorFromTheme(theme) {
   return baseColor
 }
 
-function _setSeriesConfigures(series, chart, stacked) {
+function _setSeriesConfigures(series, chart) {
   var type = series.type || chart.type
-  var stackGroup = stacked ? 'group 1' : series.stack || series.dataKey
+  var stackGroup = `${type} ${series.yAxisID} ${series.stack || series.dataKey}`
   var color = series.color ? series.color : series.backgroundColor
 
   switch (type) {
     case 'bar':
     case 'horizontalBar':
       series.borderColor = series.backgroundColor = color
-      series.borderWidth = 0
       break
 
     case 'line':
@@ -264,6 +273,7 @@ function _setSeriesConfigures(series, chart, stacked) {
       series.pointBackgroundColor = series.pointBorderColor = series.borderColor = series.backgroundColor = color
       series.pointBorderWidth = series.borderWidth * 0.5
       series.pointHoverRadius = series.pointRadius
+      if (series.fill == undefined) series.fill = false
       break
 
     default:

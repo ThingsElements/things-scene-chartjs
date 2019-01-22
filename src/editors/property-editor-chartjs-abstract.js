@@ -226,7 +226,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     if (!this.value.data.datasets) return
 
     var lastSeriesIndex = this.value.data.datasets.length
-    var chartType = this.value.type
+    var chartType = this.series.type || this.value.type
     var lastSeriesColor = new TinyColor(this.datasets[lastSeriesIndex - 1].backgroundColor)
 
     var seriesModel = this._getSeriesModel({
@@ -260,7 +260,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     var addSeriesOption = {
       label: `series ${datasetsLength + 1}`,
       data: [],
-      borderWidth: 0,
+      borderWidth: 1,
       dataKey: '',
       yAxisID: 'left',
       color: randomColor({
@@ -268,17 +268,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
       }).toRgbString()
     }
 
-    if (chartType) addSeriesOption.chartType = chartType
-
-    switch (chartType) {
-      case 'line':
-        addSeriesOption.borderWidth = 4
-        addSeriesOption.borderPointRadius = 4
-      case 'radar':
-        addSeriesOption.fill = false
-        break
-    }
-
+    addSeriesOption.chartType = chartType
     return addSeriesOption
   }
 
