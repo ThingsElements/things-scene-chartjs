@@ -16,7 +16,8 @@ function convertConfigure(chart) {
   var tooltips = (options.tooltips = options.tooltips || {})
 
   var multiAxis = options.multiAxis
-  var stacked = options.stacked
+  var stacked = false
+  var yStacked = [false, false]
   var fontSize = Number(options.defaultFontSize)
   var fontFamily = options.defaultFontFamily
   var theme = options.theme
@@ -27,6 +28,10 @@ function convertConfigure(chart) {
   // setup series configure
   for (let i in datasets) {
     let series = datasets[i]
+
+    if (options.stacked && !series.stack) {
+      series.stack = 'A'
+    }
     _setSeriesConfigures(series, chart)
 
     if (!multiAxis) {
@@ -34,15 +39,28 @@ function convertConfigure(chart) {
     }
   }
 
-  var lineSeries = datasets.filter(d => d.type == 'line')
+  delete options.stacked
 
-  lineSeries.forEach(s => {
-    var filtered = lineSeries.filter(ss => s.stack == ss.stack)
+  var leftSeries = datasets.filter(d => d.yAxisID == 'left')
+  var rightSeries = datasets.filter(d => d.yAxisID == 'right')
+
+  leftSeries.forEach(s => {
+    var filtered = leftSeries.filter(ss => s.stack == ss.stack)
     if (filtered.length > 1) {
-      stacked = true
+      yStacked[0] = true
       return
     }
   })
+
+  rightSeries.forEach(s => {
+    var filtered = rightSeries.filter(ss => s.stack == ss.stack)
+    if (filtered.length > 1) {
+      yStacked[1] = true
+      return
+    }
+  })
+
+  stacked = yStacked[0] || yStacked[1]
 
   // setup options
   // 1. setup scales
@@ -77,7 +95,7 @@ function convertConfigure(chart) {
         if (i == 1) {
           _setMultiAxis(axis, multiAxis)
         }
-        _setStacked(axis, stacked)
+        _setStacked(axis, yStacked[i])
         _setScalesFont(axis, {
           fontSize,
           fontFamily
