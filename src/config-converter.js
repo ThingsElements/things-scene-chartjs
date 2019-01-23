@@ -71,6 +71,11 @@ function convertConfigure(chart) {
       xAxes = scales.xAxes || []
       yAxes = scales.yAxes || []
 
+      if (chart.type == 'horizontalBar') {
+        xAxes = scales.yAxes || []
+        yAxes = scales.xAxes || []
+      }
+
       // 1-1. setup xAxes
       for (let i in xAxes) {
         let axis = xAxes[i]
@@ -85,6 +90,8 @@ function convertConfigure(chart) {
         _setScalesTheme(axis, theme)
         _appendTickCallback(axis.ticks)
 
+        axis.categoryPercentage = 1 - axis.categorySpacing || 1
+        axis.barPercentage = 1 - axis.barSpacing || 0.8
         axis.gridLines.display = options.xGridLine
       }
 
@@ -108,6 +115,9 @@ function convertConfigure(chart) {
         if (i == 0) axis.gridLines.display = options.yGridLine
 
         if (i == 1) axis.gridLines.display = options.y2ndGridLine
+
+        axis.categoryPercentage = 1 - axis.categorySpacing || 1
+        axis.barPercentage = 1 - axis.barSpacing || 0.8
       }
 
       break
@@ -116,6 +126,10 @@ function convertConfigure(chart) {
       break
     default:
       scale = options.scale || {}
+      _setScalesFont(scale, {
+        fontSize,
+        fontFamily
+      })
       break
   }
 
@@ -196,6 +210,10 @@ function _setScalesFont(axis, { fontSize, fontFamily }) {
   axis.ticks = axis.ticks ? axis.ticks : {}
   axis.ticks.fontSize = fontSize
   if (fontFamily) axis.ticks.fontFamily = fontFamily
+
+  axis.pointLabels = axis.pointLabels || {}
+  axis.pointLabels.fontSize = fontSize
+  if (fontFamily) axis.pointLabels.fontFamily = fontFamily
 }
 
 function _setScalesAutoMinMax(axis) {
