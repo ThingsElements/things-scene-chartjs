@@ -1,4 +1,4 @@
-import { html } from '@polymer/lit-element'
+import { html } from 'lit-element'
 
 import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract'
 

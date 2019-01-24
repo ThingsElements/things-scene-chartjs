@@ -1,4 +1,4 @@
-import { html } from '@polymer/lit-element'
+import { html } from 'lit-element'
 import { ThingsEditorProperty } from '@hatiolab/things-shell/things-module'
 
 import './property-editor-chartjs-hbar'

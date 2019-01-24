@@ -27,7 +27,8 @@ const NATURE = {
       label: '',
       name: 'chart'
     }
-  ]
+  ],
+  'value-property': 'data'
 }
 
 export default class ChartJSWrapper extends RectPath(Component) {
