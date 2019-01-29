@@ -1,4 +1,10 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
 import { LitElement, html } from 'lit-element'
+import { TinyColor, random as randomColor } from '@ctrl/tinycolor'
+
+import { PropertyEditorChartJSStyles } from './property-editor-chartjs-styles'
 
 export default class PropertyEditorChartJSAbstract extends LitElement {
   static get properties() {
@@ -8,138 +14,21 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     }
   }
 
+  static get styles() {
+    return [PropertyEditorChartJSStyles]
+  }
+
   constructor() {
     super()
 
     this.value = {}
     this.currentSeriesIndex = 0
 
-    this.addEventListener('change', this.onValuesChanged.bind(this))
+    this.shadowRoot.addEventListener('change', this.onValuesChanged.bind(this))
   }
-
-  // connectedCallback() {
-  //   super.connectedCallback()
-
-  // }
 
   render() {
     return html`
-      <style>
-        :host {
-          display: grid;
-          grid-template-columns: repeat(10, 1fr);
-          grid-gap: 5px;
-        }
-
-        :host > * {
-          box-sizing: border-box;
-
-          grid-column: span 7;
-        }
-
-        legend {
-          @apply (--things-fieldset-legend);
-
-          grid-column: 1 / -1;
-
-          display: inline-block;
-
-          text-align: left;
-          text-transform: capitalize;
-        }
-
-        .tab-content {
-          background-color: rgba(255, 255, 255, 0.5);
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          border-width: 0 1px 1px 1px;
-
-          padding: 5px;
-
-          display: grid;
-          grid-template-columns: repeat(10, 1fr);
-          grid-gap: 5px;
-        }
-
-        .tab-content > * {
-          box-sizing: border-box;
-
-          grid-column: span 7;
-        }
-
-        label,
-        .tab-content > label {
-          grid-column: span 3;
-
-          text-align: right;
-
-          color: var(--primary-text-color);
-          font-size: 0.8em;
-          line-height: 2;
-          text-transform: capitalize;
-        }
-
-        input[type='checkbox'],
-        .tab-content > input[type='checkbox'] {
-          grid-column: span 4;
-
-          justify-self: end;
-          align-self: center;
-        }
-
-        input[type='checkbox'] + label,
-        .tab-content > input[type='checkbox'] + label {
-          grid-column: span 6;
-
-          text-align: left;
-        }
-
-        [fullwidth] {
-          grid-column: 1 / -1;
-          margin: 0;
-          border: 0;
-        }
-
-        select {
-          @apply (--things-select);
-          background: url(/images/bg-input-select.png) 100% 50% no-repeat #fff;
-        }
-
-        things-editor-script {
-          width: 94%;
-          height: 300px;
-          margin: 0 0 7px 7px;
-          overflow: auto;
-        }
-
-        paper-tabs {
-          border: 0 solid rgba(0, 0, 0, 0.2);
-          border-width: 1px 1px 0 1px;
-        }
-
-        paper-tab {
-          background-color: rgba(0, 0, 0, 0.2);
-          border: 1px solid rgba(0, 0, 0, 0.07);
-          border-width: 1px 1px 0 1px;
-          padding: 0 5px;
-          color: #fff;
-          font-size: 13px;
-        }
-
-        paper-tab[disabled] {
-          background-color: rgba(0, 0, 0, 0.1);
-        }
-
-        paper-tab:last-child {
-          border-width: 0;
-        }
-
-        paper-tab.iron-selected {
-          background-color: rgba(255, 255, 255, 0.5);
-          border: 1px solid rgba(0, 0, 0, 0.2);
-          color: #585858;
-        }
-      </style>
-
       <legend><things-i18n-msg msgid="label.chart">Chart</things-i18n-msg></legend>
 
       <label> <things-i18n-msg msgid="label.theme">theme</things-i18n-msg> </label>
@@ -148,7 +37,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
         <option value="light">light</option>
       </select>
 
-      <input type="checkbox" value-key="display" checked=${this.display} />
+      <input type="checkbox" value-key="display" ?checked=${this.display} />
       <label> <things-i18n-msg msgid="label.legend">Legend</things-i18n-msg> </label>
 
       ${
@@ -164,11 +53,40 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
             `
           : html``
       }
-
-      <label> <things-i18n-msg msgid="label.text-size">Text Size</things-i18n-msg> </label>
-      <input type="number" value-key="value.options.defaultFontSize" value=${this.value.options.defaultFontSize} />
-
       ${this.editorTemplate(this)}
+    `
+  }
+
+  displayValueTemplate() {
+    return html`
+      <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
+      <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix || ''} />
+
+      <label> <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg> </label>
+      <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix || ''} />
+
+      <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue || false} />
+      <label> <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg> </label>
+
+      ${
+        this.series.displayValue
+          ? html`
+              <label> <things-i18n-msg msgid="label.font-color">Font Color</things-i18n-msg> </label>
+              <things-editor-color
+                value-key="series.defaultFontColor"
+                .value=${this.series.defaultFontColor || '#000'}
+              ></things-editor-color>
+              <label> <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg> </label>
+              <input type="number" value-key="series.defaultFontSize" .value=${this.series.defaultFontSize || 10} />
+              <label> <things-i18n-msg msgid="label.position">Position</things-i18n-msg> </label>
+              <select value-key="series.dataLabelAnchor" value=${this.series.dataLabelAnchor || 'center'}>
+                <option value="start">Start</option>
+                <option value="center" selected>Center</option>
+                <option value="end">End</option>
+              </select>
+            `
+          : html``
+      }
     `
   }
 
@@ -184,14 +102,31 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     this.value.data = data
   }
 
+  get datasets() {
+    if (!this.data.datasets) this.data.datasets = []
+
+    return this.data.datasets
+  }
+
+  set datasets(datasets) {
+    this.datasets = datasets
+  }
+
   get series() {
-    return (this.value.data && this.value.data.datasets[this.currentSeriesIndex]) || {}
+    if (!this.datasets[this.currentSeriesIndex]) this.datasets[this.currentSeriesIndex] = {}
+    return this.datasets[this.currentSeriesIndex]
   }
 
   set series(series) {
-    !this.value.data
-      ? (this.value.data = { dataset: [series] })
-      : (this.value.data.datasets[this.currentSeriesIndex] = series)
+    !this.data ? (this.data = { dataset: [series] }) : (this.datasets[this.currentSeriesIndex] = series)
+  }
+
+  set dataKey(key) {
+    this.series.dataKey = key
+  }
+
+  get dataKey() {
+    return this.series.dataKey
   }
 
   get legend() {
@@ -253,6 +188,14 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     this.data.labelDataKey = labelDataKey
   }
 
+  set options(options) {
+    this.value.options = options
+  }
+
+  get options() {
+    return this.value.options
+  }
+
   onValuesChanged(e) {
     var element = e.target
     var key = element.getAttribute('value-key')
@@ -262,36 +205,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
       return
     }
 
-    switch (element.tagName) {
-      case 'THINGS-EDITOR-ANGLE-INPUT':
-        value = Number(element.radian) || 0
-        break
-
-      case 'INPUT':
-        switch (element.type) {
-          case 'checkbox':
-            value = element.checked
-            break
-          case 'number':
-            value = Number(element.value) || 0
-            break
-          case 'text':
-            value = String(element.value)
-        }
-        break
-
-      case 'PAPER-BUTTON':
-        value = element.active
-        break
-
-      case 'PAPER-LISTBOX':
-        value = element.selected
-        break
-
-      default:
-        value = element.value
-        break
-    }
+    value = this._getElementValue(element)
 
     var attrs = key.split('.')
     var attr = attrs.shift()
@@ -304,27 +218,25 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
 
     variable[attr] = value
 
-    console.log('changed', this.value)
-
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
+    this.requestUpdate()
   }
 
   onTapAddTab(e) {
     if (!this.value.data.datasets) return
 
     var lastSeriesIndex = this.value.data.datasets.length
+    var chartType = this.series.type || this.value.type
+    var lastSeriesColor = new TinyColor(this.datasets[lastSeriesIndex - 1].backgroundColor)
 
-    this.value.data.datasets.push({
-      label: 'new series',
-      data: [],
-      borderWidth: 0,
-      dataKey: '',
-      yAxisID: 'left',
-      fill: false
+    var seriesModel = this._getSeriesModel({
+      chartType,
+      datasetsLength: lastSeriesIndex,
+      lastSeriesColor
     })
 
+    this.value.data.datasets.push(seriesModel)
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
-
     this.currentSeriesIndex = lastSeriesIndex
   }
 
@@ -339,7 +251,53 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     if (currIndex < 0) currIndex = 0
 
     this.dispatchEvent(new CustomEvent('change', { bubbles: true, composed: true }))
-
     this.currentSeriesIndex = currIndex
+
+    this.requestUpdate()
+  }
+
+  _getSeriesModel({ chartType, datasetsLength, lastSeriesColor }) {
+    var addSeriesOption = {
+      label: `series ${datasetsLength + 1}`,
+      data: [],
+      borderWidth: 1,
+      dataKey: '',
+      yAxisID: 'left',
+      color: randomColor({
+        hue: lastSeriesColor
+      }).toRgbString()
+    }
+
+    addSeriesOption.chartType = chartType
+    return addSeriesOption
+  }
+
+  _getElementValue(element) {
+    switch (element.tagName) {
+      case 'INPUT':
+        switch (element.type) {
+          case 'checkbox':
+            return element.checked
+          case 'number':
+            return Number(element.value) || 0
+          case 'text':
+            return String(element.value)
+        }
+
+      case 'PAPER-BUTTON':
+        return element.active
+
+      case 'PAPER-LISTBOX':
+        return element.selected
+
+      case 'THINGS-EDITOR-MULTIPLE-COLOR':
+        return element.values
+
+      case 'THINGS-EDITOR-ANGLE-INPUT':
+        return Number(element.radian) || 0
+
+      default:
+        return element.value
+    }
   }
 }

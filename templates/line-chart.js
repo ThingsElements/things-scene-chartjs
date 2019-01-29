@@ -1,3 +1,6 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
 import icon from '../assets/line-chart.png'
 
 export default {
@@ -12,7 +15,6 @@ export default {
     left: 0,
     width: 200,
     height: 200,
-    lineWidth: 5,
     chart: {
       type: 'line',
       data: {
