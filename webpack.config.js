@@ -19,9 +19,7 @@ module.exports = {
     modules: ['./node_modules']
   },
   externals: {
-    '@hatiolab/things-scene': 'scene',
-    'chart.js': 'Chart',
-    tinycolor2: 'tinycolor'
+    '@hatiolab/things-scene': 'scene'
   },
   optimization: {
     minimize: true

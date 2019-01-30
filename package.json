@@ -34,10 +34,9 @@
     "@ctrl/tinycolor": "^2.2.1",
     "@hatiolab/things-scene": "^2.2.76",
     "chart.js": "^2.7.3",
-    "chartjs-plugin-colorschemes": "^0.2.0",
+    "chartjs-plugin-colorschemes": "^0.3.0",
     "chartjs-plugin-crosshair": "^1.1.1",
     "chartjs-plugin-datalabels": "^0.5.0",
-    "lit-element": "^2.0.0-rc.2",
-    "tinycolor2": "^1.4.1"
+    "lit-element": "^2.0.0-rc.5"
   }
 }
