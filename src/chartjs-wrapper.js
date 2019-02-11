@@ -214,6 +214,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     var stacked = options.stacked
     var fontSize = this.model.fontSize || options.defaultFontSize
     var fontFamily = (options.defaultFontFamily = this.model.fontFamily)
+    var fontColor = (options.defaultFontColor = this.model.fontColor)
     var theme = options.theme
 
     // backward compatible
@@ -246,7 +247,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
           this._setScalesFontFamily(axis, fontFamily)
           this._setScalesAutoMinMax(axis)
           this._setAxisTitle(axis)
-          this._setScalesTheme(axis, theme)
+          this._setScalesTheme(axis, theme, fontColor)
           this._appendTickCallback(axis.ticks)
 
           axis.gridLines.display = options.xGridLine
@@ -264,7 +265,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
           this._setScalesFontFamily(axis, fontFamily)
           this._setScalesAutoMinMax(axis)
           this._setAxisTitle(axis)
-          this._setScalesTheme(axis, theme)
+          this._setScalesTheme(axis, theme, fontColor)
           this._appendTickCallback(axis.ticks)
 
           if (i == 0) axis.gridLines.display = options.yGridLine
@@ -285,7 +286,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     legend.labels = legend.labels ? legend.labels : {}
     legend.labels.fontSize = fontSize
     legend.labels.fontFamily = fontFamily
-    this._setLegendTheme(legend, theme)
+    this._setLegendTheme(legend, theme, fontColor)
 
     // 3. setup tooltips
     tooltips.titleFontSize = tooltips.bodyFontSize = tooltips.footerFontSize = fontSize
@@ -374,7 +375,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     }
   }
 
-  _setScalesTheme(axis, theme) {
+  _setScalesTheme(axis, theme, fontColor) {
     var baseColor = this._getBaseColorFromTheme(theme)
 
     axis.gridLines = axis.gridLines ? axis.gridLines : {}
@@ -388,20 +389,24 @@ export default class ChartJSWrapper extends RectPath(Component) {
       .toString()
 
     axis.ticks = axis.ticks ? axis.ticks : {}
-    axis.ticks.fontColor = baseColor
-      .clone()
-      .setAlpha(0.5)
-      .toString()
+    axis.ticks.fontColor = fontColor
+      ? fontColor
+      : baseColor
+          .clone()
+          .setAlpha(0.5)
+          .toString()
   }
 
-  _setLegendTheme(legend, theme) {
+  _setLegendTheme(legend, theme, fontColor) {
     var baseColor = this._getBaseColorFromTheme(theme)
 
     legend.labels = legend.labels ? legend.labels : {}
-    legend.labels.fontColor = baseColor
-      .clone()
-      .setAlpha(0.5)
-      .toString()
+    legend.labels.fontColor = fontColor
+      ? fontColor
+      : baseColor
+          .clone()
+          .setAlpha(0.5)
+          .toString()
   }
 
   _getBaseColorFromTheme(theme) {
@@ -486,7 +491,7 @@ export default class ChartJSWrapper extends RectPath(Component) {
     var key = keys && keys[0]
     var keySplit = key.split('.')
 
-    if ('chart' in after || key[0] == 'chart' || 'fontSize' in after || 'fontFamily' in after) {
+    if ('chart' in after || key[0] == 'chart' || 'fontSize' in after || 'fontFamily' in after || 'fontColor' in after) {
       isChartChanged = true
     }
 
