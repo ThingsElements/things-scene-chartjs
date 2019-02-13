@@ -3,6 +3,7 @@
   "version": "3.1.7",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
+  "module": "dist/things-scene-chartjs.mjs",
   "things-scene": true,
   "directories": {
     "test": "test"
@@ -11,8 +12,8 @@
     "serve": "things-shell",
     "serve:dev": "things-shell-dev",
     "build:client": "webpack --config node_modules/@hatiolab/things-shell/webpack.config.js",
-    "build": "webpack",
-    "prepublish": "webpack"
+    "build": "rollup -c",
+    "prepublish": "rollup -c"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,15 @@
   },
   "homepage": "https://github.com/ThingsElements/things-scene-chartjs#readme",
   "devDependencies": {
-    "@hatiolab/things-shell": "*"
+    "@hatiolab/things-shell": "^0.6.3",
+    "@things-scene/form": "^0.3.5",
+    "@things-scene/indoor-map": "^2.3.3",
+    "lodash": "^4.17.11",
+    "rollup": "^1.1.2",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-terser": "^4.0.4"
   },
   "dependencies": {
     "@hatiolab/things-scene": "^2.2.89",

@@ -1,3 +1,6 @@
+/*
+ * Copyright © HatioLab Inc. All rights reserved.
+ */
 import icon from '../assets/radar-chart.png'
 
 export default {
@@ -12,8 +15,6 @@ export default {
     left: 0,
     width: 200,
     height: 200,
-    fontColor: '#FF0000',
-    lineWidth: 5,
     chart: {
       type: 'radar',
       data: {
