@@ -48,6 +48,8 @@ export default class ChartJS extends HTMLOverlayElement {
 
   /* component.property => element.property */
   setElementProperties(element) {
+    this.set('lineWidth', 0) // border 표현이 자연스럽게 바뀌면 지울것.
+
     var { chart: chartConfig } = this.state
     var { width, height } = this.bounds
     var data = this.data
