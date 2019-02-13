@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/chartjs",
-  "version": "4.0.2",
+  "version": "3.1.7",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
   "module": "dist/things-scene-chartjs.mjs",
@@ -37,12 +37,8 @@
     "rollup-plugin-terser": "^4.0.4"
   },
   "dependencies": {
-    "@ctrl/tinycolor": "^2.2.1",
-    "@hatiolab/things-scene": "^2.5.0-rc.21",
-    "chart.js": "^2.7.3",
-    "chartjs-plugin-colorschemes": "^0.3.0",
-    "chartjs-plugin-crosshair": "^1.1.1",
-    "chartjs-plugin-datalabels": "^0.5.0",
-    "lit-element": "^2.0.0-rc.5"
+    "@hatiolab/things-scene": "^2.2.89",
+    "chart.js": "2.4.0",
+    "tinycolor2": "^1.4.1"
   }
 }
