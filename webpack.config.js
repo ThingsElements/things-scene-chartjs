@@ -6,7 +6,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
   mode: 'production',
   entry: {
-    'things-scene-chartjs': ['./src/index.js']
+    'things-scene-chartjs-ie': ['@babel/polyfill', '@webcomponents/template', './src/index.js']
   },
   output: {
     path: path.resolve('./dist'),
@@ -19,16 +19,20 @@ module.exports = {
     modules: ['./node_modules']
   },
   externals: {
-    '@hatiolab/things-scene': 'scene'
+    '@hatiolab/things-scene': 'scene',
+    'chart.js': 'Chart',
+    tinycolor2: 'tinycolor'
+    // 'lit-element': 'LitElement'
   },
   optimization: {
-    minimize: true
+    minimize: false
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /(node_modules)/,
+        exclude: /node_modules\/(?!(lit-))/,
+        // exclude: /(node_modules\/[^lit\-])/,
         loader: 'babel-loader',
         options: {
           presets: [
@@ -36,10 +40,15 @@ module.exports = {
               '@babel/preset-env',
               {
                 targets: {
-                  browsers: ['last 2 versions', 'safari >= 7', 'ie 11']
+                  browsers: ['ie 11']
                 }
               }
             ]
+          ],
+          plugins: [
+            ['@babel/plugin-proposal-async-generator-functions'],
+            ['@babel/plugin-transform-async-to-generator'],
+            ['@babel/plugin-transform-runtime']
           ]
         }
       },
@@ -63,9 +72,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new UglifyJsPlugin({
-      test: /\-min\.js$/
-    })
+    // new UglifyJsPlugin({
+    //   test: /\-min\.js$/
+    // })
   ],
   devtool: 'cheap-module-source-map'
 }

@@ -11,8 +11,8 @@
     "serve": "things-shell",
     "serve:dev": "things-shell-dev",
     "build:client": "webpack --config node_modules/@hatiolab/things-shell/webpack.config.js",
-    "build": "webpack",
-    "prepublish": "webpack"
+    "build": "webpack && rollup -c",
+    "prepublish": "webpack && rollup -c"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,9 @@
   },
   "homepage": "https://github.com/ThingsElements/things-scene-chartjs#readme",
   "devDependencies": {
+    "@babel/plugin-proposal-async-generator-functions": "^7.2.0",
+    "@babel/plugin-transform-async-to-generator": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
     "@hatiolab/things-shell": "^0.6.3",
     "@things-scene/form": "^0.3.5",
     "@things-scene/indoor-map": "^2.3.3",
@@ -38,6 +41,8 @@
   "dependencies": {
     "@ctrl/tinycolor": "^2.2.1",
     "@hatiolab/things-scene": "^2.5.0-rc.21",
+    "@webcomponents/template": "^1.4.0",
+    "@webcomponents/webcomponentsjs": "^2.2.7",
     "chart.js": "^2.7.3",
     "chartjs-plugin-colorschemes": "^0.3.0",
     "chartjs-plugin-crosshair": "^1.1.1",
