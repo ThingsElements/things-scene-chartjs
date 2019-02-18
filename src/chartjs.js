@@ -73,17 +73,19 @@ export default class ChartJS extends HTMLOverlayElement {
   }
 
   _setChartConfig(element) {
-    var { chart: chartConfig, fontSize = 12, fontFamily } = this.state
+    var { chart: chartConfig, fontSize = 12, fontFamily, fontColor } = this.state
     var cloneChartConf = cloneDeep(chartConfig)
     cloneChartConf.options.defaultFontSize = fontSize
     cloneChartConf.options.defaultFontFamily = fontFamily
+    cloneChartConf.options.defaultFontColor = fontColor
     element.options = cloneChartConf
   }
 
   onchange(after, before) {
     this._isChartChanged = false
 
-    if ('chart' in after || 'fontSize' in after || 'fontFamily' in after) this._isChartChanged = true
+    if ('chart' in after || 'fontSize' in after || 'fontFamily' in after || 'fontColor' in after)
+      this._isChartChanged = true
 
     super.onchange(after, before)
   }

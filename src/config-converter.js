@@ -20,6 +20,7 @@ function convertConfigure(chart) {
   var yStacked = [false, false]
   var fontSize = Number(options.defaultFontSize)
   var fontFamily = options.defaultFontFamily
+  var fontColor = options.defaultFontColor
   var theme = options.theme
 
   // backward compatible
@@ -87,7 +88,7 @@ function convertConfigure(chart) {
         _setScalesAutoMinMax(axis)
         _setScalesTickRotation(axis)
         _setAxisTitle(axis)
-        _setScalesTheme(axis, theme)
+        _setScalesTheme(axis, theme, fontColor)
         _appendTickCallback(axis.ticks)
 
         axis.categoryPercentage = 1 - axis.categorySpacing || 1
@@ -109,7 +110,7 @@ function convertConfigure(chart) {
         })
         _setScalesAutoMinMax(axis)
         _setAxisTitle(axis)
-        _setScalesTheme(axis, theme)
+        _setScalesTheme(axis, theme, fontColor)
         _appendTickCallback(axis.ticks)
 
         if (i == 0) axis.gridLines.display = options.yGridLine
@@ -139,7 +140,7 @@ function convertConfigure(chart) {
     fontFamily
   })
   legend.labels.boxWidth = 15
-  _setLegendTheme(legend, theme)
+  _setLegendTheme(legend, theme, fontColor)
 
   // 3. setup tooltips
   _setTooltipFont(tooltips, {
@@ -235,7 +236,7 @@ function _setScalesTickRotation(axis) {
   axis.ticks.maxRotation = 0
 }
 
-function _setScalesTheme(axis, theme) {
+function _setScalesTheme(axis, theme, fontColor) {
   var baseColor = _getBaseColorFromTheme(theme)
 
   axis.gridLines = axis.gridLines ? axis.gridLines : {}
@@ -249,10 +250,12 @@ function _setScalesTheme(axis, theme) {
     .toString()
 
   axis.ticks = axis.ticks ? axis.ticks : {}
-  axis.ticks.fontColor = baseColor
-    .clone()
-    .setAlpha(0.5)
-    .toString()
+  axis.ticks.fontColor = fontColor
+    ? fontColor
+    : baseColor
+        .clone()
+        .setAlpha(0.5)
+        .toString()
 }
 
 function _setLegendFont(legend, { fontFamily, fontSize }) {
@@ -261,14 +264,16 @@ function _setLegendFont(legend, { fontFamily, fontSize }) {
   if (fontFamily) legend.labels.fontFamily = fontFamily
 }
 
-function _setLegendTheme(legend, theme) {
+function _setLegendTheme(legend, theme, fontColor) {
   var baseColor = _getBaseColorFromTheme(theme)
 
   legend.labels = legend.labels ? legend.labels : {}
-  legend.labels.fontColor = baseColor
-    .clone()
-    .setAlpha(0.5)
-    .toString()
+  legend.labels.fontColor = fontColor
+    ? fontColor
+    : baseColor
+        .clone()
+        .setAlpha(0.5)
+        .toString()
 }
 
 function _getBaseColorFromTheme(theme) {
