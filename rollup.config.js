@@ -4,7 +4,7 @@ import commonjs from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 
 let pkg = require('./package.json')
-let external = ['@hatiolab/things-scene', 'chart.js', 'tinycolor']
+let external = ['@hatiolab/things-scene']
 // let externalForESM = ['@hatiolab/things-scene']
 let plugins = [
   resolve(),
@@ -39,9 +39,7 @@ export default [
         name: PACKAGE_NAME,
         format: 'umd',
         globals: {
-          '@hatiolab/things-scene': 'scene',
-          'chart.js': 'Chart',
-          tinycolor2: 'tinycolor'
+          '@hatiolab/things-scene': 'scene'
         }
       }
     ]
