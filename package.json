@@ -28,9 +28,9 @@
     "@babel/plugin-proposal-async-generator-functions": "^7.2.0",
     "@babel/plugin-transform-async-to-generator": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
-    "@hatiolab/things-shell": "^0.6.112",
-    "@things-scene/form": "^0.3.19",
-    "@things-scene/indoor-map": "^2.3.11",
+    "@hatiolab/things-shell": "*",
+    "@things-scene/form": "*",
+    "@things-scene/indoor-map": "*",
     "lodash": "^4.17.11",
     "rollup": "^1.2.1",
     "rollup-plugin-babel": "^4.3.2",
@@ -40,13 +40,13 @@
   },
   "dependencies": {
     "@ctrl/tinycolor": "^2.2.1",
-    "@hatiolab/things-scene": "^2.5.6",
+    "@hatiolab/things-scene": "*",
     "@webcomponents/template": "^1.4.0",
     "@webcomponents/webcomponentsjs": "^2.2.7",
     "chart.js": "^2.7.3",
     "chartjs-plugin-colorschemes": "^0.3.0",
     "chartjs-plugin-crosshair": "^1.1.1",
     "chartjs-plugin-datalabels": "^0.5.0",
-    "lit-element": "^2.0.0-rc.5"
+    "lit-element": "^2.0.1"
   }
 }
