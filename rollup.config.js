@@ -11,7 +11,7 @@ let plugins = [
   babel(),
   commonjs({
     namedExports: {
-      'node_modules/chart.js/src/chart.js': ['Chart']
+      'node_modules/chart.js/dist/Chart.js': ['Chart']
     }
   }),
   terser({
