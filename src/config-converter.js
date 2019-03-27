@@ -233,7 +233,7 @@ function _setScalesAutoMinMax(axis) {
 
 function _setScalesTickRotation(axis) {
   axis.ticks = axis.ticks ? axis.ticks : {}
-  axis.ticks.maxRotation = 0
+  // axis.ticks.maxRotation = 0
 }
 
 function _setScalesTheme(axis, theme, fontColor) {

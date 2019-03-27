@@ -114,9 +114,14 @@ function updateLabelDatas(chartInstance) {
 export default {
   id: 'data-binder',
   beforeUpdate: function(chartInstance) {
-    if (!chartInstance.data.rawData) return
+    if (!chartInstance.data) return
 
-    chartInstance.data.rawData = convertObject(chartInstance.data.rawData, chartInstance)
+    if (!chartInstance.data.rawData) chartInstance.data.rawData = []
+
+    chartInstance.data.rawData = convertObject(chartInstance.data.rawData, chartInstance) || {
+      seriesData: [],
+      labelData: []
+    }
 
     let seriesData = chartInstance.data.rawData.seriesData
     updateLabelDatas(chartInstance)
