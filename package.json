@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/chartjs",
-  "version": "4.0.9",
+  "version": "4.0.10",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
   "things-scene": true,
@@ -26,25 +26,25 @@
   "homepage": "https://github.com/ThingsElements/things-scene-chartjs#readme",
   "devDependencies": {
     "@babel/plugin-proposal-async-generator-functions": "^7.2.0",
-    "@babel/plugin-transform-async-to-generator": "^7.4.0",
-    "@babel/plugin-transform-runtime": "^7.4.0",
+    "@babel/plugin-transform-async-to-generator": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
     "@hatiolab/things-shell": "*",
     "@things-scene/form": "*",
     "@things-scene/indoor-map": "*",
     "lodash": "^4.17.11",
-    "rollup": "^1.7.3",
+    "rollup": "^1.14.6",
     "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-commonjs": "^9.2.2",
-    "rollup-plugin-node-resolve": "^4.0.1",
-    "rollup-plugin-terser": "^4.0.4"
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-node-resolve": "^5.0.1",
+    "rollup-plugin-terser": "^5.0.0"
   },
   "dependencies": {
-    "@ctrl/tinycolor": "^2.4.0",
-    "@hatiolab/things-scene": "2.5.18",
+    "@ctrl/tinycolor": "^2.5.2",
+    "@hatiolab/things-scene": "*",
     "@webcomponents/template": "^1.4.0",
-    "@webcomponents/webcomponentsjs": "^2.2.7",
+    "@webcomponents/webcomponentsjs": "^2.2.10",
     "chart.js": "^2.8.0",
-    "chartjs-plugin-colorschemes": "^0.3.0",
+    "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-crosshair": "^1.1.2",
     "chartjs-plugin-datalabels": "^0.6.0",
     "lit-element": "^2.1.0"
