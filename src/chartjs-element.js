@@ -3,7 +3,7 @@
  */
 
 import { LitElement, html } from 'lit-element'
-import { Chart } from 'chart.js/dist/Chart'
+import { Chart } from 'chart.js'
 import DataBinderPlugin from './plugins/chartjs-plugin-data-binder'
 import convertChartConfigure from './config-converter'
 import DatalabelsPlugin from 'chartjs-plugin-datalabels'

@@ -6,7 +6,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
   mode: 'production',
   entry: {
-    'things-scene-chartjs-ie': ['@babel/polyfill', '@webcomponents/template', './src/index.js']
+    'things-scene-chartjs-ie': ['./src/index.js']
   },
   output: {
     path: path.resolve('./dist'),
@@ -19,9 +19,9 @@ module.exports = {
     modules: ['./node_modules']
   },
   externals: {
-    '@hatiolab/things-scene': 'scene',
-    'chart.js': 'Chart',
-    tinycolor2: 'tinycolor'
+    '@hatiolab/things-scene': 'scene'
+    // 'chart.js': 'Chart',
+    // tinycolor2: 'tinycolor'
     // 'lit-element': 'LitElement'
   },
   optimization: {
