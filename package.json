@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/chartjs",
-  "version": "4.0.10",
+  "version": "4.0.11",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
   "things-scene": true,
@@ -11,8 +11,8 @@
     "serve": "things-shell",
     "serve:dev": "things-shell-dev",
     "build:client": "webpack --config node_modules/@hatiolab/things-shell/webpack.config.js",
-    "build": "webpack && rollup -c",
-    "prepublish": "webpack && rollup -c"
+    "build": "webpack",
+    "prepublish": "webpack"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
     "@hatiolab/things-shell": "*",
     "@things-scene/form": "*",
     "@things-scene/indoor-map": "*",
+    "chart.js": "2.7.3",
     "lodash": "^4.17.11",
     "rollup": "^1.14.6",
     "rollup-plugin-babel": "^4.3.2",
@@ -43,7 +44,6 @@
     "@hatiolab/things-scene": "*",
     "@webcomponents/template": "^1.4.0",
     "@webcomponents/webcomponentsjs": "^2.2.10",
-    "chart.js": "^2.8.0",
     "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-crosshair": "^1.1.2",
     "chartjs-plugin-datalabels": "^0.6.0",
