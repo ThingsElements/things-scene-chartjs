@@ -25,7 +25,7 @@ module.exports = {
     // 'lit-element': 'LitElement'
   },
   optimization: {
-    minimize: false
+    minimize: true
   },
   module: {
     rules: [
