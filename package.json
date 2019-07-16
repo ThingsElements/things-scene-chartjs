@@ -47,6 +47,8 @@
     "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-crosshair": "^1.1.2",
     "chartjs-plugin-datalabels": "^0.6.0",
-    "lit-element": "^2.1.0"
+    "core-js": "^3.1.4",
+    "lit-element": "^2.1.0",
+    "regenerator-runtime": "^0.13.2"
   }
 }
