@@ -29,21 +29,21 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
 
   render() {
     return html`
-      <legend><things-i18n-msg msgid="label.chart">Chart</things-i18n-msg></legend>
+      <legend><i18n-msg msgid="label.chart">Chart</i18n-msg></legend>
 
-      <label> <things-i18n-msg msgid="label.theme">theme</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.theme">theme</i18n-msg> </label>
       <select value-key="theme" class="select-content" value=${this.theme}>
         <option value="dark">dark</option>
         <option value="light">light</option>
       </select>
 
       <input type="checkbox" value-key="display" ?checked=${this.display} />
-      <label> <things-i18n-msg msgid="label.legend">Legend</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.legend">Legend</i18n-msg> </label>
 
       ${
         this.display
           ? html`
-              <label> <things-i18n-msg msgid="label.position">Position</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.position">Position</i18n-msg> </label>
               <select value-key="position" class="select-content" value=${this.position}>
                 <option value="top">top</option>
                 <option value="right">right</option>
@@ -59,26 +59,26 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
 
   displayValueTemplate() {
     return html`
-      <label> <things-i18n-msg msgid="label.value-prefix">Value Prefix</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.value-prefix">Value Prefix</i18n-msg> </label>
       <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix || ''} />
 
-      <label> <things-i18n-msg msgid="label.value-suffix">Value suffix</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.value-suffix">Value suffix</i18n-msg> </label>
       <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix || ''} />
 
       <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue || false} />
-      <label> <things-i18n-msg msgid="label.value-display">Value Display</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.value-display">Value Display</i18n-msg> </label>
 
       ${
         this.series.displayValue
           ? html`
-              <label> <things-i18n-msg msgid="label.font-color">Font Color</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.font-color">Font Color</i18n-msg> </label>
               <things-editor-color
                 value-key="series.defaultFontColor"
                 .value=${this.series.defaultFontColor || '#000'}
               ></things-editor-color>
-              <label> <things-i18n-msg msgid="label.font-size">Font Size</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.font-size">Font Size</i18n-msg> </label>
               <input type="number" value-key="series.defaultFontSize" .value=${this.series.defaultFontSize || 10} />
-              <label> <things-i18n-msg msgid="label.position">Position</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.position">Position</i18n-msg> </label>
               <select value-key="series.dataLabelAnchor" value=${this.series.dataLabelAnchor || 'center'}>
                 <option value="start">Start</option>
                 <option value="center" selected>Center</option>

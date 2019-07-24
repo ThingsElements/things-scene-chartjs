@@ -87,8 +87,8 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
   editorTemplate(props) {
     return html`
       <input type="checkbox" value-key="stacked" ?checked=${this.stacked} />
-      <label> <things-i18n-msg msgid="label.stacked">Stacked</things-i18n-msg> </label>
-      <legend><things-i18n-msg msgid="label.series">Series</things-i18n-msg></legend>
+      <label> <i18n-msg msgid="label.stacked">Stacked</i18n-msg> </label>
+      <legend><i18n-msg msgid="label.series">Series</i18n-msg></legend>
       <div fullwidth>
         <div class="tab-header">
           <paper-tabs
@@ -121,48 +121,48 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
         </div>
 
         <div class="tab-content">
-          <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
+          <label> <i18n-msg msgid="label.data-key">Data Key</i18n-msg> </label>
           <input type="text" value-key="series.dataKey" value=${this.series.dataKey} />
-          <label> <things-i18n-msg msgid="label.label">label</things-i18n-msg> </label>
+          <label> <i18n-msg msgid="label.label">label</i18n-msg> </label>
           <input type="text" value-key="series.label" value=${this.series.label} />
-          <label> <things-i18n-msg msgid="label.color">color</things-i18n-msg> </label>
+          <label> <i18n-msg msgid="label.color">color</i18n-msg> </label>
           <things-editor-color value-key="color" .value=${this.color}></things-editor-color>
           ${this.displayValueTemplate()}
         </div>
       </div>
 
-      <legend><things-i18n-msg msgid="label.y-axes">Y Axes</things-i18n-msg></legend>
+      <legend><i18n-msg msgid="label.y-axes">Y Axes</i18n-msg></legend>
 
-      <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.data-key">Data Key</i18n-msg> </label>
       <input type="text" value-key="labelDataKey" value=${this.labelDataKey} />
 
-      <label> <things-i18n-msg msgid="label.title">Title</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.title">Title</i18n-msg> </label>
       <input type="text" value-key="yAxes0.axisTitle" value=${this.yAxes0.axisTitle || ''} />
 
-      <label> <things-i18n-msg msgid="label.thickness">Thickness</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.thickness">Thickness</i18n-msg> </label>
       <input type="number" value-key="yAxes0.barThickness" value=${this.yAxes0.barThickness} />
 
       <input type="checkbox" value-key="value.options.xGridLine" ?checked=${props.value.options.xGridLine} />
-      <label> <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.grid-line">Grid Line</i18n-msg> </label>
 
       <input type="checkbox" value-key="xAxes0.ticks.display" ?checked=${this.xAxes0.ticks.display} />
-      <label> <things-i18n-msg msgid="label.display-tick">Display Tick</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.display-tick">Display Tick</i18n-msg> </label>
 
-      <legend><things-i18n-msg msgid="label.x-axes">X Axes</things-i18n-msg></legend>
+      <legend><i18n-msg msgid="label.x-axes">X Axes</i18n-msg></legend>
 
-      <label> <things-i18n-msg msgid="label.title">Title</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.title">Title</i18n-msg> </label>
       <input type="text" value-key="x0AxisTitle" value=${this.xAxes0.axisTitle || ''} />
 
       <input type="checkbox" value-key="xAxes0.ticks.autoMin" ?checked=${this.xAxes0.ticks.autoMin} />
-      <label> <things-i18n-msg msgid="label.axis-min-auto">Min Auto</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.axis-min-auto">Min Auto</i18n-msg> </label>
 
       <input type="checkbox" value-key="xAxes0.ticks.autoMax" ?checked=${this.xAxes0.ticks.autoMax} />
-      <label> <things-i18n-msg msgid="label.axis-max-auto">Max Auto</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.axis-max-auto">Max Auto</i18n-msg> </label>
 
       ${
         !this.xAxes0.ticks.autoMin
           ? html`
-              <label> <things-i18n-msg msgid="label.axis-min">Min</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.axis-min">Min</i18n-msg> </label>
               <input type="number" value-key="xAxes0.ticks.min" value=${this.xAxes0.ticks.min} />
             `
           : html``
@@ -170,20 +170,20 @@ export default class PropertyEditorChartJSHBar extends PropertyEditorChartJSAbst
       ${
         !this.xAxes0.ticks.autoMax
           ? html`
-              <label> <things-i18n-msg msgid="label.axis-max">Max</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.axis-max">Max</i18n-msg> </label>
               <input type="number" value-key="xAxes0.ticks.max" value=${this.xAxes0.ticks.max} />
             `
           : html``
       }
 
-      <label> <things-i18n-msg msgid="label.axis-step-size">StepSize</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.axis-step-size">StepSize</i18n-msg> </label>
       <input type="number" value-key="yAxes0.ticks.stepSize" value=${this.yAxes0.ticks.stepSize} />
 
       <input type="checkbox" ?checked=${props.value.options.yGridLine} />
-      <label> <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.grid-line">Grid Line</i18n-msg> </label>
 
       <input type="checkbox" value-key="yAxes0.ticks.display" ?checked=${this.yAxes0.ticks.display} />
-      <label> <things-i18n-msg msgid="label.display-tick">Display Tick</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.display-tick">Display Tick</i18n-msg> </label>
     `
   }
 }

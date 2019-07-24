@@ -64,19 +64,19 @@ export default class PropertyEditorChartJSPie extends PropertyEditorChartJSAbstr
 
   editorTemplate(props) {
     return html`
-      <legend><things-i18n-msg msgid="label.series">Series</things-i18n-msg></legend>
+      <legend><i18n-msg msgid="label.series">Series</i18n-msg></legend>
 
-      <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.data-key">Data Key</i18n-msg> </label>
       <input type="text" value-key="dataKey" value=${this.series.dataKey} />
 
-      <label> <things-i18n-msg msgid="label.color">color</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.color">color</i18n-msg> </label>
       <things-editor-multiple-color value-key="color" .values=${this.color}></things-editor-multiple-color>
 
       ${this.displayValueTemplate()}
 
-      <legend><things-i18n-msg msgid="label.axes">Axes</things-i18n-msg></legend>
+      <legend><i18n-msg msgid="label.axes">Axes</i18n-msg></legend>
 
-      <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.data-key">Data Key</i18n-msg> </label>
       <input type="text" value-key="labelDataKey" value=${this.labelDataKey} />
     `
   }
