@@ -4,12 +4,13 @@ logs
 npm-debug.log*
 coverage
 node_modules
+dist
 dist-client
+dist-server
 bower_components
 *.report.html
 licenses/*.js
-dist
-
 yarn.lock
 package-lock.json
 db.sqlite
+db.sqlite-journal

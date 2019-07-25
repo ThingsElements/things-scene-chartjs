@@ -2,27 +2,19 @@
   "name": "@things-scene/chartjs",
   "version": "4.0.13",
   "description": "Things Scene ChartJS Component",
-  "main": "dist-server/index.js",
-  "browser": "src/index.js",
+  "main": "src/index.js",
   "things-scene": true,
   "directories": {
     "test": "test"
   },
   "scripts": {
     "serve": "things-factory",
-    "serve:dev": "npm run build:server && things-factory-dev",
-    "build": "npm run build:server && npm run build:client",
+    "serve:dev": "things-factory-dev",
+    "build": "webpack",
+    "prepublish": "webpack",
     "build:client": "npm run clean:client && webpack --config node_modules/@things-factory/shell/webpack.config.js",
-    "build:server": "npm run clean:server && tsc",
-    "clean:server": "rm -rf dist-server",
     "clean:client": "rm -rf dist-client",
-    "clean": "npm run clean:server && npm run clean:client",
-    "prepublish": "npm run build:server",
-    "migration": "npm run build:server && things-factory-migration",
-    "migration:create": "node ./node_modules/typeorm/cli.js migration:create",
-    "migration:generate": "node ./node_modules/typeorm/cli.js migration:generate",
-    "migration:run": "node ./node_modules/typeorm/cli.js migration:run",
-    "migration:revert": "node ./node_modules/typeorm/cli.js migration:revert"
+    "migration": "things-factory-migration"
   },
   "repository": {
     "type": "git",
@@ -39,15 +31,14 @@
     "@babel/plugin-transform-async-to-generator": "^7.4.4",
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@things-factory/board-app": "*",
-    "@things-factory/board-test": "*",
+    "@things-factory/board-test": "^0.1.1",
     "@things-scene/form": "*",
     "lodash": "^4.17.11",
     "rollup": "^1.14.6",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.1",
-    "rollup-plugin-terser": "^5.0.0",
-    "uglifyjs-webpack-plugin": "^2.1.3"
+    "rollup-plugin-terser": "^5.0.0"
   },
   "dependencies": {
     "@ctrl/tinycolor": "^2.5.2",
@@ -58,8 +49,6 @@
     "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-crosshair": "^1.1.2",
     "chartjs-plugin-datalabels": "^0.6.0",
-    "core-js": "^3.1.4",
-    "lit-element": "^2.1.0",
-    "regenerator-runtime": "^0.13.2"
+    "lit-element": "^2.1.0"
   }
 }
