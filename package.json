@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/chartjs",
-  "version": "4.0.14",
+  "version": "4.0.15",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
   "things-scene": true,
@@ -43,6 +43,8 @@
   "dependencies": {
     "@ctrl/tinycolor": "^2.5.2",
     "@hatiolab/things-scene": "*",
+    "@polymer/paper-icon-button": "^3.0.2",
+    "@polymer/paper-tabs": "^3.1.0",
     "@webcomponents/template": "^1.4.0",
     "@webcomponents/webcomponentsjs": "^2.2.10",
     "chart.js": "2.7.3",
