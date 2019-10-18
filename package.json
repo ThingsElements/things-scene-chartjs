@@ -1,6 +1,6 @@
 {
   "name": "@things-scene/chartjs",
-  "version": "4.0.13",
+  "version": "4.0.17",
   "description": "Things Scene ChartJS Component",
   "main": "src/index.js",
   "things-scene": true,
@@ -8,11 +8,13 @@
     "test": "test"
   },
   "scripts": {
-    "serve": "things-shell",
-    "serve:dev": "things-shell-dev",
-    "build:client": "webpack --config node_modules/@hatiolab/things-shell/webpack.config.js",
+    "serve": "things-factory",
+    "serve:dev": "things-factory-dev",
     "build": "webpack",
-    "prepublish": "webpack"
+    "prepublish": "webpack",
+    "build:client": "npm run clean:client && webpack --config node_modules/@things-factory/shell/webpack.config.js",
+    "clean:client": "rm -rf dist-client",
+    "migration": "things-factory-migration"
   },
   "repository": {
     "type": "git",
@@ -28,9 +30,9 @@
     "@babel/plugin-proposal-async-generator-functions": "^7.2.0",
     "@babel/plugin-transform-async-to-generator": "^7.4.4",
     "@babel/plugin-transform-runtime": "^7.4.4",
-    "@hatiolab/things-shell": "*",
+    "@things-factory/board-app": "*",
+    "@things-factory/board-test": "*",
     "@things-scene/form": "*",
-    "@things-scene/indoor-map": "*",
     "lodash": "^4.17.11",
     "rollup": "^1.14.6",
     "rollup-plugin-babel": "^4.3.2",
@@ -41,14 +43,19 @@
   "dependencies": {
     "@ctrl/tinycolor": "^2.5.2",
     "@hatiolab/things-scene": "*",
+    "@polymer/iron-icon": "^3.0.1",
+    "@polymer/iron-pages": "^3.0.1",
+    "@polymer/paper-button": "^3.0.1",
+    "@polymer/paper-icon-button": "^3.0.2",
+    "@polymer/paper-tabs": "^3.1.0",
     "@webcomponents/template": "^1.4.0",
     "@webcomponents/webcomponentsjs": "^2.2.10",
     "chart.js": "2.7.3",
     "chartjs-plugin-colorschemes": "^0.4.0",
     "chartjs-plugin-crosshair": "^1.1.2",
     "chartjs-plugin-datalabels": "^0.6.0",
-    "core-js": "^3.1.4",
+    "core-js": "^3.2.1",
     "lit-element": "^2.1.0",
-    "regenerator-runtime": "^0.13.2"
+    "regenerator-runtime": "^0.13.3"
   }
 }

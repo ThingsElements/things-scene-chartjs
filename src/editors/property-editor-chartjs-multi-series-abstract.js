@@ -93,44 +93,44 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
   editorTemplate(props) {
     return html`
       <input type="checkbox" value-key="multiAxis" ?checked=${this.multiAxis} />
-      <label> <things-i18n-msg msgid="label.multi-axis">Multi Axis</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.multi-axis">Multi Axis</i18n-msg> </label>
 
-      <legend><things-i18n-msg msgid="label.series">Series</things-i18n-msg></legend>
+      <legend><i18n-msg msgid="label.series">Series</i18n-msg></legend>
 
       <div fullwidth>${this.multiSeriesTabTemplate()}</div>
 
-      <legend><things-i18n-msg msgid="label.x-axes">X Axes</things-i18n-msg></legend>
+      <legend><i18n-msg msgid="label.x-axes">X Axes</i18n-msg></legend>
 
-      <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.data-key">Data Key</i18n-msg> </label>
       <input type="text" value-key="labelDataKey" value=${this.labelDataKey} />
 
-      <label> <things-i18n-msg msgid="label.title">Title</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.title">Title</i18n-msg> </label>
       <input type="text" value-key="xAxes0.axisTitle" value=${this.xAxes0.axisTitle || ''} />
 
-      <label> <things-i18n-msg msgid="label.thickness">Thickness</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.thickness">Thickness</i18n-msg> </label>
       <input type="number" value-key="xAxes0.barPercentage" value=${this.xAxes0.barPercentage} />
 
       <input type="checkbox" value-key="value.options.xGridLine" ?checked=${this.value.options.xGridLine} />
-      <label> <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.grid-line">Grid Line</i18n-msg> </label>
 
       <input type="checkbox" value-key="xAxes0.ticks.display" ?checked=${this.xAxes0.ticks.display} />
-      <label> <things-i18n-msg msgid="label.display-tick">Display Tick</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.display-tick">Display Tick</i18n-msg> </label>
 
-      <legend><things-i18n-msg msgid="label.y-axes">Y Axes</things-i18n-msg></legend>
+      <legend><i18n-msg msgid="label.y-axes">Y Axes</i18n-msg></legend>
 
-      <label> <things-i18n-msg msgid="label.title">Title</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.title">Title</i18n-msg> </label>
       <input type="text" value-key="yAxes0.axisTitle" value=${this.yAxes0.axisTitle || ''} />
 
       <input type="checkbox" value-key="yAxes0.ticks.autoMin" ?checked=${this.yAxes0.ticks.autoMin} />
-      <label> <things-i18n-msg msgid="label.axis-min-auto">Min Auto</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.axis-min-auto">Min Auto</i18n-msg> </label>
 
       <input type="checkbox" value-key="yAxes0.ticks.autoMax" ?checked=${this.yAxes0.ticks.autoMax} />
-      <label> <things-i18n-msg msgid="label.axis-max-auto">Max Auto</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.axis-max-auto">Max Auto</i18n-msg> </label>
 
       ${
         !this.yAxes0.ticks.autoMin
           ? html`
-              <label> <things-i18n-msg msgid="label.axis-min">Min</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.axis-min">Min</i18n-msg> </label>
               <input type="number" value-key="yAxes0.ticks.min" value=${this.yAxes0.ticks.min} />
             `
           : html``
@@ -138,39 +138,39 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
       ${
         !this.yAxes0.ticks.autoMax
           ? html`
-              <label> <things-i18n-msg msgid="label.axis-max">Max</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.axis-max">Max</i18n-msg> </label>
               <input type="number" value-key="yAxes0.ticks.max" value=${this.yAxes0.ticks.max} />
             `
           : html``
       }
 
-      <label> <things-i18n-msg msgid="label.axis-step-size">StepSize</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.axis-step-size">StepSize</i18n-msg> </label>
       <input type="number" value-key="yAxes0.ticks.stepSize" value=${this.yAxes0.ticks.stepSize} />
 
       <input type="checkbox" value-key="value.options.yGridLine" ?checked=${this.value.options.yGridLine} />
-      <label> <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.grid-line">Grid Line</i18n-msg> </label>
 
       <input type="checkbox" value-key="yAxes0.ticks.display" ?checked=${this.yAxes0.ticks.display} />
-      <label> <things-i18n-msg msgid="label.display-tick">Display Tick</things-i18n-msg> </label>
+      <label> <i18n-msg msgid="label.display-tick">Display Tick</i18n-msg> </label>
 
       ${
         this.value.options.multiAxis
           ? html`
-              <legend><things-i18n-msg msgid="label.y-2nd-axes">Y 2nd Axes</things-i18n-msg></legend>
+              <legend><i18n-msg msgid="label.y-2nd-axes">Y 2nd Axes</i18n-msg></legend>
 
-              <label> <things-i18n-msg msgid="label.title">Title</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.title">Title</i18n-msg> </label>
               <input type="text" value-key="yAxes1.axisTitle" value=${this.yAxes1.axisTitle || ''} />
 
               <input type="checkbox" value-key="yAxes1.ticks.autoMin" ?checked=${this.yAxes1.ticks.autoMin} />
-              <label> <things-i18n-msg msgid="label.axis-min-auto">Min Auto</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.axis-min-auto">Min Auto</i18n-msg> </label>
 
               <input type="checkbox" value-key="yAxes1.ticks.autoMax" ?checked=${this.yAxes1.ticks.autoMax} />
-              <label> <things-i18n-msg msgid="label.axis-max-auto">Max Auto</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.axis-max-auto">Max Auto</i18n-msg> </label>
 
               ${
                 !this.yAxes1.ticks.autoMin
                   ? html`
-                      <label> <things-i18n-msg msgid="label.axis-min">Min</things-i18n-msg> </label>
+                      <label> <i18n-msg msgid="label.axis-min">Min</i18n-msg> </label>
                       <input type="number" value-key="yAxes1.ticks.min" value=${this.yAxes1.ticks.min} />
                     `
                   : html``
@@ -178,13 +178,13 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
               ${
                 !this.yAxes1.ticks.autoMax
                   ? html`
-                      <label> <things-i18n-msg msgid="label.axis-max">Max</things-i18n-msg> </label>
+                      <label> <i18n-msg msgid="label.axis-max">Max</i18n-msg> </label>
                       <input type="number" value-key="yAxes1.ticks.max" value=${this.yAxes1.ticks.max} />
                     `
                   : html``
               }
 
-              <label> <things-i18n-msg msgid="label.axis-step-size">StepSize</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.axis-step-size">StepSize</i18n-msg> </label>
               <input type="number" value-key="yAxes1.ticks.stepSize" value=${this.yAxes1.ticks.stepSize} />
 
               <input
@@ -192,10 +192,10 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
                 value-key="value.options.y2ndGridLine"
                 ?checked=${this.value.options.y2ndGridLine}
               />
-              <label> <things-i18n-msg msgid="label.grid-line">Grid Line</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.grid-line">Grid Line</i18n-msg> </label>
 
               <input type="checkbox" value-key="yAxes1.ticks.display" ?checked=${this.yAxes1.ticks.display} />
-              <label> <things-i18n-msg msgid="label.display-tick">Display Tick</things-i18n-msg> </label>
+              <label> <i18n-msg msgid="label.display-tick">Display Tick</i18n-msg> </label>
             `
           : html``
       }
@@ -239,13 +239,13 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
           this.datasets.map(
             (dataset, index) => html`
               <div class="tab-content" series-index="${index}">
-                <label> <things-i18n-msg msgid="label.data-key">Data Key</things-i18n-msg> </label>
+                <label> <i18n-msg msgid="label.data-key">Data Key</i18n-msg> </label>
                 <input type="text" value-key="dataKey" value=${this.dataKey} />
 
                 ${
                   this.value.type == 'bar'
                     ? html`
-                        <label> <things-i18n-msg msgid="label.type">type</things-i18n-msg> </label>
+                        <label> <i18n-msg msgid="label.type">type</i18n-msg> </label>
                         <select class="select-content" value-key="series.type" value=${this.series.type}>
                           <option value="bar" selected>bar</option>
                           <option value="line">line</option>
@@ -254,13 +254,13 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
                     : html``
                 }
 
-                <label> <things-i18n-msg msgid="label.label">label</things-i18n-msg> </label>
+                <label> <i18n-msg msgid="label.label">label</i18n-msg> </label>
                 <input type="text" value-key="series.label" value=${this.series.label} />
 
                 ${
                   this.series.type == 'line'
                     ? html`
-                        <label> <things-i18n-msg msgid="label.line-tension">line tension</things-i18n-msg> </label>
+                        <label> <i18n-msg msgid="label.line-tension">line tension</i18n-msg> </label>
                         <select class="select-content" value-key="series.lineTension" value=${this.series.lineTension}>
                           <option value="0.4">smooth</option>
                           <option value="0">angled</option>
@@ -271,19 +271,19 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
                 ${
                   this.series.type == 'line'
                     ? html`
-                        <label> <things-i18n-msg msgid="label.border-width">border width</things-i18n-msg> </label>
+                        <label> <i18n-msg msgid="label.border-width">border width</i18n-msg> </label>
                         <input type="number" value-key="series.borderWidth" value=${this.series.borderWidth} />
                       `
                     : html``
                 }
 
-                <label> <things-i18n-msg msgid="label.color">color</things-i18n-msg> </label>
+                <label> <i18n-msg msgid="label.color">color</i18n-msg> </label>
                 <things-editor-color value-key="color" .value=${this.color}></things-editor-color>
 
                 ${
                   this.series.type == 'line'
                     ? html`
-                        <label> <things-i18n-msg msgid="label.point-shape">point shape</things-i18n-msg> </label>
+                        <label> <i18n-msg msgid="label.point-shape">point shape</i18n-msg> </label>
                         <select class="select-content" value-key="series.pointStyle" value=${this.series.pointStyle}>
                           <option value="circle">⚬</option>
                           <option value="triangle">▵</option>
@@ -296,23 +296,23 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
                           <option value="dash">┄</option>
                         </select>
 
-                        <label> <things-i18n-msg msgid="label.point-size">point size</things-i18n-msg> </label>
+                        <label> <i18n-msg msgid="label.point-size">point size</i18n-msg> </label>
                         <input type="number" value-key="series.pointRadius" value=${this.series.pointRadius} />
                       `
                     : html``
-                } <label> <things-i18n-msg msgid="label.stack-group">Stack group</things-i18n-msg> </label>
+                } <label> <i18n-msg msgid="label.stack-group">Stack group</i18n-msg> </label>
                 <input type="text" value-key="series.stack" value=${this.series.stack || ''} /> ${
                   this.series.type == 'line'
                     ? html`
                         <input type="checkbox" value-key="series.fill" ?checked=${this.series.fill} />
-                        <label> <things-i18n-msg msgid="label.fill">fill</things-i18n-msg> </label>
+                        <label> <i18n-msg msgid="label.fill">fill</i18n-msg> </label>
                       `
                     : html``
                 }
                 ${
                   this.multiAxis
                     ? html`
-                        <label> <things-i18n-msg msgid="label.target-axis">target axis</things-i18n-msg> </label>
+                        <label> <i18n-msg msgid="label.target-axis">target axis</i18n-msg> </label>
                         <select class="select-content" value-key="series.yAxisID" value=${this.series.yAxisID}>
                           <option value="left">left</option>
                           <option value="right">right</option>

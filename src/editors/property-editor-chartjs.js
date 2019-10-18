@@ -2,7 +2,7 @@
  * Copyright © HatioLab Inc. All rights reserved.
  */
 import { html, css } from 'lit-element'
-import { ThingsEditorProperty } from '@hatiolab/things-shell/things-module'
+import { ThingsEditorProperty } from '@things-factory/board-ui/client/modeller-module'
 
 import './property-editor-chartjs-hbar'
 import './property-editor-chartjs-mixed'
@@ -50,49 +50,45 @@ export default class ChartJSEditor extends ThingsEditorProperty {
 
   editorTemplate(props) {
     return html`
-      ${
-        props.value
-          ? html`
-              <div id="chart-type">
-                <label> <things-i18n-msg msgid="label.chart-type">Chart Type</things-i18n-msg> </label>
-                <input type="text" value=${props.value.type} readonly />
-              </div>
-            `
-          : html``
-      }
-      ${
-        !props.value
-          ? html``
-          : props.value.type == 'line'
-          ? html`
-              <property-editor-chartjs-mixed .value=${props.value} fullwidth></property-editor-chartjs-mixed>
-            `
-          : props.value.type == 'horizontalBar'
-          ? html`
-              <property-editor-chartjs-hbar .value=${props.value} fullwidth></property-editor-chartjs-hbar>
-            `
-          : props.value.type == 'bar'
-          ? html`
-              <property-editor-chartjs-mixed .value=${props.value} fullwidth></property-editor-chartjs-mixed>
-            `
-          : props.value.type == 'pie'
-          ? html`
-              <property-editor-chartjs-pie .value=${props.value} fullwidth></property-editor-chartjs-pie>
-            `
-          : props.value.type == 'doughnut'
-          ? html`
-              <property-editor-chartjs-pie .value=${props.value} fullwidth></property-editor-chartjs-pie>
-            `
-          : props.value.type == 'polarArea'
-          ? html`
-              <property-editor-chartjs-pie .value=${props.value} fullwidth></property-editor-chartjs-pie>
-            `
-          : props.value.type == 'radar'
-          ? html`
-              <property-editor-chartjs-radar .value=${props.value} fullwidth></property-editor-chartjs-radar>
-            `
-          : html``
-      }
+      ${props.value
+        ? html`
+            <div id="chart-type">
+              <label> <i18n-msg msgid="label.chart-type">Chart Type</i18n-msg> </label>
+              <input type="text" value=${props.value.type} readonly />
+            </div>
+          `
+        : html``}
+      ${!props.value
+        ? html``
+        : props.value.type == 'line'
+        ? html`
+            <property-editor-chartjs-mixed .value=${props.value} fullwidth></property-editor-chartjs-mixed>
+          `
+        : props.value.type == 'horizontalBar'
+        ? html`
+            <property-editor-chartjs-hbar .value=${props.value} fullwidth></property-editor-chartjs-hbar>
+          `
+        : props.value.type == 'bar'
+        ? html`
+            <property-editor-chartjs-mixed .value=${props.value} fullwidth></property-editor-chartjs-mixed>
+          `
+        : props.value.type == 'pie'
+        ? html`
+            <property-editor-chartjs-pie .value=${props.value} fullwidth></property-editor-chartjs-pie>
+          `
+        : props.value.type == 'doughnut'
+        ? html`
+            <property-editor-chartjs-pie .value=${props.value} fullwidth></property-editor-chartjs-pie>
+          `
+        : props.value.type == 'polarArea'
+        ? html`
+            <property-editor-chartjs-pie .value=${props.value} fullwidth></property-editor-chartjs-pie>
+          `
+        : props.value.type == 'radar'
+        ? html`
+            <property-editor-chartjs-radar .value=${props.value} fullwidth></property-editor-chartjs-radar>
+          `
+        : html``}
     `
   }
 }
