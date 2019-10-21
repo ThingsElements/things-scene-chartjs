@@ -1,14 +1,16 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-import { html, css } from 'lit-element'
+import '@polymer/iron-icon'
+import '@polymer/iron-icons'
+import '@polymer/paper-icon-button'
+import '@polymer/paper-tabs'
 import { ThingsEditorProperty } from '@things-factory/board-ui/client/modeller-module'
-
+import { css, html } from 'lit-element'
 import './property-editor-chartjs-hbar'
 import './property-editor-chartjs-mixed'
 import './property-editor-chartjs-pie'
 import './property-editor-chartjs-radar'
-
 export default class ChartJSEditor extends ThingsEditorProperty {
   static get is() {
     return 'property-editor-chartjs'
@@ -54,7 +56,7 @@ export default class ChartJSEditor extends ThingsEditorProperty {
         ? html`
             <div id="chart-type">
               <label> <i18n-msg msgid="label.chart-type">Chart Type</i18n-msg> </label>
-              <input type="text" value=${props.value.type} readonly />
+              <input type="text" .value=${props.value.type} readonly />
             </div>
           `
         : html``}

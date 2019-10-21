@@ -64,7 +64,7 @@ export default class ThingsChartJS extends LitElement {
     this.attachPluginOptions(options, type)
     convertChartConfigure(this.options)
 
-    this.canvas = this.shadowRoot.querySelector('#chart')
+    this.canvas = this.renderRoot.querySelector('#chart')
     this.chart = new Chart(this.canvas, {
       type,
       data,

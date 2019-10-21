@@ -2,7 +2,6 @@
  * Copyright © HatioLab Inc. All rights reserved.
  */
 import { html } from 'lit-element'
-
 import PropertyEditorChartJSAbstract from './property-editor-chartjs-abstract'
 
 export default class PropertyEditorChartJSPie extends PropertyEditorChartJSAbstract {
@@ -67,7 +66,7 @@ export default class PropertyEditorChartJSPie extends PropertyEditorChartJSAbstr
       <legend><i18n-msg msgid="label.series">Series</i18n-msg></legend>
 
       <label> <i18n-msg msgid="label.data-key">Data Key</i18n-msg> </label>
-      <input type="text" value-key="dataKey" value=${this.series.dataKey} />
+      <input type="text" value-key="dataKey" .value=${this.series.dataKey} />
 
       <label> <i18n-msg msgid="label.color">color</i18n-msg> </label>
       <things-editor-multiple-color value-key="color" .values=${this.color}></things-editor-multiple-color>
@@ -77,7 +76,7 @@ export default class PropertyEditorChartJSPie extends PropertyEditorChartJSAbstr
       <legend><i18n-msg msgid="label.axes">Axes</i18n-msg></legend>
 
       <label> <i18n-msg msgid="label.data-key">Data Key</i18n-msg> </label>
-      <input type="text" value-key="labelDataKey" value=${this.labelDataKey} />
+      <input type="text" value-key="labelDataKey" .value=${this.labelDataKey} />
     `
   }
 }

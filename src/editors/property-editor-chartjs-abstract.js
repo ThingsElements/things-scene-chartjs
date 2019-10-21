@@ -1,9 +1,8 @@
 /*
  * Copyright © HatioLab Inc. All rights reserved.
  */
-import { LitElement, html } from 'lit-element'
-import { TinyColor, random as randomColor } from '@ctrl/tinycolor'
-
+import { random as randomColor, TinyColor } from '@ctrl/tinycolor'
+import { html, LitElement } from 'lit-element'
 import { PropertyEditorChartJSStyles } from './property-editor-chartjs-styles'
 
 export default class PropertyEditorChartJSAbstract extends LitElement {
@@ -24,7 +23,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
     this.value = {}
     this.currentSeriesIndex = 0
 
-    this.shadowRoot.addEventListener('change', this.onValuesChanged.bind(this))
+    this.renderRoot.addEventListener('change', this.onValuesChanged.bind(this))
   }
 
   render() {
@@ -32,27 +31,25 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
       <legend><i18n-msg msgid="label.chart">Chart</i18n-msg></legend>
 
       <label> <i18n-msg msgid="label.theme">theme</i18n-msg> </label>
-      <select value-key="theme" class="select-content" value=${this.theme}>
+      <select value-key="theme" class="select-content" .value=${this.theme}>
         <option value="dark">dark</option>
         <option value="light">light</option>
       </select>
 
-      <input type="checkbox" value-key="display" ?checked=${this.display} />
+      <input type="checkbox" value-key="display" .checked=${this.display} />
       <label> <i18n-msg msgid="label.legend">Legend</i18n-msg> </label>
 
-      ${
-        this.display
-          ? html`
-              <label> <i18n-msg msgid="label.position">Position</i18n-msg> </label>
-              <select value-key="position" class="select-content" value=${this.position}>
-                <option value="top">top</option>
-                <option value="right">right</option>
-                <option value="bottom">bottom</option>
-                <option value="left">left</option>
-              </select>
-            `
-          : html``
-      }
+      ${this.display
+        ? html`
+            <label> <i18n-msg msgid="label.position">Position</i18n-msg> </label>
+            <select value-key="position" class="select-content" .value=${this.position}>
+              <option value="top">top</option>
+              <option value="right">right</option>
+              <option value="bottom">bottom</option>
+              <option value="left">left</option>
+            </select>
+          `
+        : html``}
       ${this.editorTemplate(this)}
     `
   }
@@ -60,33 +57,31 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
   displayValueTemplate() {
     return html`
       <label> <i18n-msg msgid="label.value-prefix">Value Prefix</i18n-msg> </label>
-      <input type="text" value-key="series.valuePrefix" value=${this.series.valuePrefix || ''} />
+      <input type="text" value-key="series.valuePrefix" .value=${this.series.valuePrefix || ''} />
 
       <label> <i18n-msg msgid="label.value-suffix">Value suffix</i18n-msg> </label>
-      <input type="text" value-key="series.valueSuffix" value=${this.series.valueSuffix || ''} />
+      <input type="text" value-key="series.valueSuffix" .value=${this.series.valueSuffix || ''} />
 
-      <input type="checkbox" value-key="series.displayValue" ?checked=${this.series.displayValue || false} />
+      <input type="checkbox" value-key="series.displayValue" .checked=${this.series.displayValue || false} />
       <label> <i18n-msg msgid="label.value-display">Value Display</i18n-msg> </label>
 
-      ${
-        this.series.displayValue
-          ? html`
-              <label> <i18n-msg msgid="label.font-color">Font Color</i18n-msg> </label>
-              <things-editor-color
-                value-key="series.defaultFontColor"
-                .value=${this.series.defaultFontColor || '#000'}
-              ></things-editor-color>
-              <label> <i18n-msg msgid="label.font-size">Font Size</i18n-msg> </label>
-              <input type="number" value-key="series.defaultFontSize" .value=${this.series.defaultFontSize || 10} />
-              <label> <i18n-msg msgid="label.position">Position</i18n-msg> </label>
-              <select value-key="series.dataLabelAnchor" value=${this.series.dataLabelAnchor || 'center'}>
-                <option value="start">Start</option>
-                <option value="center" selected>Center</option>
-                <option value="end">End</option>
-              </select>
-            `
-          : html``
-      }
+      ${this.series.displayValue
+        ? html`
+            <label> <i18n-msg msgid="label.font-color">Font Color</i18n-msg> </label>
+            <things-editor-color
+              value-key="series.defaultFontColor"
+              .value=${this.series.defaultFontColor || '#000'}
+            ></things-editor-color>
+            <label> <i18n-msg msgid="label.font-size">Font Size</i18n-msg> </label>
+            <input type="number" value-key="series.defaultFontSize" .value=${this.series.defaultFontSize || 10} />
+            <label> <i18n-msg msgid="label.position">Position</i18n-msg> </label>
+            <select value-key="series.dataLabelAnchor" .value=${this.series.dataLabelAnchor || 'center'}>
+              <option value="start">Start</option>
+              <option value="center" selected>Center</option>
+              <option value="end">End</option>
+            </select>
+          `
+        : html``}
     `
   }
 
@@ -268,7 +263,7 @@ export default class PropertyEditorChartJSAbstract extends LitElement {
       }).toRgbString()
     }
 
-    addSeriesOption.chartType = chartType
+    addSeriesOption.type = addSeriesOption.chartType = chartType
     return addSeriesOption
   }
 
