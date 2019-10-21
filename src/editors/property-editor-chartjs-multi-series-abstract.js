@@ -112,7 +112,7 @@ export default class PropertyEditorChartJSMultiSeriesAbstract extends PropertyEd
 
       <legend><i18n-msg msgid="label.series">Series</i18n-msg></legend>
 
-      <div fullwidth>${this.multiSeriesTabTemplate()}</div>
+      ${this.multiSeriesTabTemplate()}
 
       <legend><i18n-msg msgid="label.x-axes">X Axes</i18n-msg></legend>
 
