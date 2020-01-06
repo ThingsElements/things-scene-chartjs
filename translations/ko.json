@@ -1,3 +1,5 @@
 {
-    "label.stack-group": "누적 그룹"
+  "label.stack-group": "누적 그룹",
+  "label.bar-spacing": "막대 간격",
+  "label.tick-spacing": "눈금 간격"
 }
