@@ -44,6 +44,10 @@ export default {
         legend: {
           display: true,
           position: 'top'
+        },
+        scale: {
+          ticks: {},
+          pointLabels: {}
         }
       }
     },

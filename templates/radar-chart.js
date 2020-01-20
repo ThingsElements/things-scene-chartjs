@@ -52,7 +52,8 @@ export default {
           position: 'top'
         },
         scale: {
-          ticks: {}
+          ticks: {},
+          pointLabels: {}
         }
       }
     },

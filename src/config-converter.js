@@ -156,9 +156,14 @@ function _configureBackwardsCompatible(type, options) {
       if (!options.scales) options.scales = {}
       break
     case 'radar':
+    case 'polarArea':
       if (options.defaultFontColor) {
         options.scale.ticks.fontColor = options.defaultFontColor
-        options.scale.pointLabels = { fontColor: options.defaultFontColor }
+        if (options.scale.pointLabels) {
+          options.scale.pointLabels.fontColor = options.defaultFontColor
+        } else {
+          options.scale.pointLabels = { fontColor: options.defaultFontColor }
+        }
       }
       options.scale.ticks.backdropColor = options.fillStyle ? options.fillStyle : '#00ff0000'
       break
